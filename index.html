@@ -308,6 +308,7 @@ nav .in{flex-wrap:nowrap}
       <b>Extranet</b><span>Shared services, such as one Internet service for every VPN.</span>
     </div>
     <p class="why">Plan PE-CE routing together with the provider. Backdoor links next to MPLS can cause loops and racing, especially with OSPF or EIGRP as the PE-CE protocol.</p>
+  <p class="why" style="margin:12px 0 4px"><b>MPLS L3VPN: VRF, RD, RT</b></p><div data-dg="mplsvpn"></div>
   </details>
 
   
@@ -426,6 +427,7 @@ nav .in{flex-wrap:nowrap}
       <tr><td>Protocols</td><td>OSPF, EIGRP, IS-IS, BGP</td><td>OSPF, IS-IS, EIGRP, LDP, BGP</td><td>IS-IS, BGP (IOS)</td></tr>
     </table>
     <div class="mn" style="margin-top:10px">BFD beats tuned hellos: sub-second, protocol-independent, partly in the data plane<br>BFD echo mode: packets loop back through the neighbor's forwarding path<br>EIGRP graceful shutdown sends a <em>goodbye</em> so peers reconverge at once</div>
+  <p class="why" style="margin:12px 0 4px"><b>Keep forwarding on a supervisor switchover</b></p><div data-dg="ssonsf"></div><p class="why" style="margin:12px 0 4px"><b>BFD vs tuned hellos</b></p><div data-dg="bfd"></div>
   </details>
 
   <details class="sec" data-o="2.2" data-d="c"><summary>PoE &amp; Wake-on-LAN <span class="src">ENSLD</span></summary>
@@ -450,6 +452,7 @@ nav .in{flex-wrap:nowrap}
       <tr><td style="text-align:left">Rogue DHCP / ARP spoofing</td><td style="text-align:left"><b>DHCP snooping</b> + <b>DAI</b></td></tr>
     </table>
     <p class="why">Unlike router ACLs, VACLs apply to all packets in the VLAN, bridged or routed. Port security protects against MAC spoofing by binding MACs to ports.</p>
+  <p class="why" style="margin:12px 0 4px"><b>Where each L2 security feature goes</b></p><div data-dg="l2sec"></div>
   </details>
 
   <details class="sec" data-o="2.3" data-d="c"><summary>Campus virtualization &amp; path isolation <span class="src">ARCH</span></summary>
@@ -671,6 +674,7 @@ nav .in{flex-wrap:nowrap}
       <tr><td>Analogy</td><td>Private courier</td><td>Parcel service levels</td></tr>
     </table>
     <p class="why">IntServ uses Call Admission Control so new flows can't break existing guarantees. DiffServ maps many applications into a few classes, which is why it's the enterprise default.</p>
+  <p class="why" style="margin:12px 0 4px"><b>IntServ vs DiffServ along the path</b></p><div data-dg="intdiff"></div>
   </details>
 
   <details class="sec" data-o="4.3" data-d="s"><summary>Network management design <span class="src">ENSLD</span></summary>
@@ -682,6 +686,7 @@ nav .in{flex-wrap:nowrap}
       <tr><td>Protect with</td><td>Mgmt VRF/VLAN, ACLs, QoS priority</td><td>Console servers, mgmt ports</td></tr>
     </table>
     <div class="mn" style="margin-top:10px"><em>SNMPv3</em> adds authentication + encryption · NMS uses <em>GetBulk</em> for tables · the agent sits on the managed device<br>RMON1 = L1/L2 statistics · NetFlow = flow records · CDP (Cisco) vs LLDP (standard) · syslog<br>Prioritize management traffic so you can still reach devices during congestion</div>
+  <p class="why" style="margin:12px 0 4px"><b>Management flows</b></p><div data-dg="nmflow"></div>
   </details>
 
   <details class="sec" data-o="4.5" data-d="s"><summary>Multicast services: MSDP &amp; Anycast RP <span class="src">ARCH · ENSLD</span></summary>
@@ -720,6 +725,7 @@ nav .in{flex-wrap:nowrap}
       <tr><td>Avoid for</td><td>Rare events</td><td>Fast-changing counters</td></tr>
     </table>
     <div class="mn" style="margin-top:10px">Push (MDT) vs pull (SNMP, CLI) · subscriptions to YANG models · near-real-time structured data<br>On-change must be supported by the YANG module</div>
+  <p class="why" style="margin:12px 0 4px"><b>Pull vs push</b></p><div data-dg="mdt"></div>
   </details>
 
   <details class="sec" data-o="5.4" data-d="a"><summary>gRPC &amp; gNMI <span class="src">ENSLD</span></summary>
@@ -728,6 +734,7 @@ nav .in{flex-wrap:nowrap}
       <b>Ops</b><span>GetConfig · MergeConfig · ReplaceConfig · DeleteConfig · GetOper · ShowCmdTextOutput</span>
       <b>gNMI</b><span>gRPC Network Management Interface: install/change/delete config, read operational data, YANG-modeled, Subscribe for telemetry</span>
     </div>
+  <p class="why" style="margin:12px 0 4px"><b>gNMI operations</b></p><div data-dg="gnmi"></div>
   </details>
 
   
@@ -741,6 +748,7 @@ nav .in{flex-wrap:nowrap}
     </svg>
     <div class="mn">Cloud OnRamp for <em>IaaS</em> (site-to-cloud, multicloud) · for <em>SaaS</em> (best exit to O365 etc.)<br>Cloud Interconnect via Megaport/Equinix · Cloud Hub over Google's backbone</div>
       <p class="why" style="margin-top:8px"><b>Blueprint terms (5.5):</b> <b>direct connect</b> = private link to the cloud · <b>cloud on-ramp</b> = SD-WAN automation into SaaS/IaaS · <b>MPLS direct connect</b> = your MPLS VPN extended into the cloud provider · <b>WAN integration</b> = the cloud becomes another site of your WAN (SD-WAN Cloud Hub/Interconnect, MPLS).</p>
+  <p class="why" style="margin:12px 0 4px"><b>Cloud on-ramp options</b></p><div data-dg="cloudconn"></div>
   </details>
 <details class="sec" data-o="5.6" data-d="a"><summary>Cloud service models <span class="src">CCDE · ENSLD</span></summary>
     <table class="mx">
@@ -1333,6 +1341,19 @@ Object.assign(DG,{loopfree:{h:200,n:[["d1",45,30,"Dist"],["d2",135,30,"Dist"],["
 function cardDiag(c){for(const k in CD)if(c[1].startsWith(k))return CD[k];return null}
 
 function qDiag(q){for(const k in QD)if(q[1].startsWith(k))return QD[k];return null}
+Object.assign(DG,{
+ssonsf:{h:175,z:[[8,8,176,124,"One chassis · SSO","t"]],n:[["act",96,40,"Active sup ✗ fails"],["stb",96,100,"Standby sup → active"],["peer",296,100,"Peer router"]],l:[["act","stb","d","state sync"],["stb","peer","b","kept up"]],t:[[96,124,"line cards keep forwarding (NSF)","g"],[180,152,"GR/NSF: peer must be GR-aware (helper)","o"],[180,168,"NSR: state already synced, peer needs nothing","t"]]},
+bfd:{h:125,n:[["a",62,45,"Distribution"],["b",298,45,"Core"]],l:[["a","b","m","OSPF hello 10 s · dead 40 s",-7],["a","b","g","BFD e.g. 50 ms × 3",7]],t:[[180,95,"BFD detects the failure in ~150 ms and tells OSPF","g"],[180,112,"protocol-independent · one session serves all IGPs/BGP","m"]]},
+l2sec:{h:215,n:[["dhcp",60,22,"DHCP server"],["dist",200,22,"Distribution"],["acc",200,100,"Access switch"],["pc",80,172,"User PC"],["rog",300,172,"Rogue DHCP / switch"]],l:[["dhcp","dist"],["dist","acc","g","trusted uplink"],["acc","pc","s","untrusted"],["acc","rog","x"]],t:[[300,58,"Root Guard on","o"],[300,70,"dist downlinks","o"],[95,92,"DHCP snooping →","t"],[95,104,"binding table","t"],[95,116,"feeds DAI + IPSG","t"],[180,200,"edge ports: PortFast + BPDU Guard · port security","g"]]},
+mplsvpn:{h:192,z:[[92,50,176,54,"","m"]],n:[["a1",36,30,"CE A"],["b1",36,118,"CE B"],["pe1",118,78,"PE1"],["p",180,78,"P"],["pe2",242,78,"PE2"],["a2",324,30,"CE A"],["b2",324,118,"CE B"]],l:[["a1","pe1","r"],["b1","pe1","b"],["pe1","p"],["p","pe2"],["pe2","a2","r"],["pe2","b2","b"],["pe1","pe2","a","MP-iBGP (VPNv4)",-22]],t:[[180,100,"provider MPLS core","m"],[180,150,"VRF per customer on the PEs · P routers only swap labels","m"],[180,166,"RD + 10.0.0.0/8 = unique VPNv4 prefix","t"],[180,182,"RT export/import decides which VRF gets the route","o"]]},
+intdiff:{h:190,z:[[4,10,352,62,"IntServ","r"],[4,96,352,62,"DiffServ","g"]],n:[["s1",42,44,"Sender"],["r1",134,44,"Router"],["r2",226,44,"Router"],["d1",318,44,"Receiver"],["s2",42,130,"Host"],["e2",134,130,"Edge: mark"],["c1",226,130,"Core: PHB"],["c2",318,130,"Core: PHB"]],l:[["s1","r1","f"],["r1","r2","f"],["r2","d1","f"],["s2","e2","f"],["e2","c1","f"],["c1","c2","f"]],t:[[180,86,"RSVP PATH/RESV, per-flow state on every hop → hard guarantee, poor scale","r"],[180,172,"mark once at the edge (DSCP), each hop treats the class → scales","g"],[180,186,"no reservation → no hard end-to-end guarantee","m"]]},
+nmflow:{h:195,n:[["nms",44,95,"NMS (SNMP)"],["col",200,22,"NetFlow collector"],["dev",200,95,"Router / switch"],["sys",200,168,"Syslog server"],["oob",318,95,"OOB net"]],l:[["nms","dev","f","GET/SET 161",-7],["dev","nms","p","trap 162",7],["dev","col","f","flow export"],["dev","sys","f","syslog UDP 514"],["dev","oob","d"]],t:[[318,122,"separate","m"],[318,134,"mgmt network","m"]]},
+mdt:{h:180,z:[[4,6,352,64,"SNMP: pull","m"],[4,92,352,64,"Model-driven telemetry: push","g"]],n:[["n",62,40,"SNMP  NMS"],["d1",298,40,"Device"],["d2",62,126,"Device"],["c",298,126,"Collector"]],l:[["n","d1","f","poll · request/response",-6],["d2","c","ga","subscription stream",-6]],t:[[180,62,"repeated polls cost device CPU · coarse intervals","m"],[180,148,"periodic → trending (CPU) · on-change → state (if up/down)","g"],[180,174,"YANG paths · NETCONF/gNMI/gRPC transport","t"]]},
+gnmi:{h:140,n:[["c",62,50,"gNMI client"],["t",290,50,"Device (gNMI target)"]],l:[["c","t","f","Capabilities · Get · Set",-7],["t","c","ga","Subscribe: stream",7]],t:[[180,100,"one gRPC channel over HTTP/2 · protobuf encoding","t"],[180,116,"config + streaming telemetry on YANG (OpenConfig) paths","g"]]},
+cloudconn:{h:208,n:[["br",58,95,"SD-WAN branch"],["saas",280,18,"SaaS / M365"],["iaas",280,70,"AWS / Azure / GCP"],["colo",280,122,"Megaport / Equinix"],["dc",280,174,"Cloud via private link"]],l:[["br","saas","f"],["br","iaas","f"],["br","colo","f"],["br","dc","d"]],t:[[296,41,"OnRamp SaaS: best path","o"],[296,92,"OnRamp IaaS (vManage)","o"],[296,144,"OnRamp Multicloud / colo","o"],[280,198,"Direct Connect / ExpressRoute","t"]]}
+});
+Object.assign(CD,{"Keep forwarding during a supervisor switchover":"ssonsf","Switchover without relying on peers at all":"ssonsf","Sub-second failure detection":"bfd","STP Toolkit components":"l2sec","Provider handles routing between sites":"mplsvpn","Hard per-flow guarantees with RSVP":"intdiff","Scalable QoS with classes":"intdiff","NMS operation to fetch large tables":"nmflow","Device pushes data instead of being polled":"mdt","MDT subscription that sends only on change":"mdt","gNMI does":"gnmi","Connect SD-WAN sites to AWS":"cloudconn","Site-to-site and site-to-cloud over Megaport":"cloudconn"});
+Object.assign(QD,{"A dual-supervisor core switch must keep forwarding":["e","ssonsf"],"You need sub-second failover between distribution and core":["e","bfd"],"Clients get addresses from a rogue DHCP server":["e","l2sec"],"Two MPLS VPN customers both use 10.0.0.0/8":["e","mplsvpn"],"Which QoS model provides hard end-to-end guarantees":["e","intdiff"],"Which collects flow data for planning":["e","nmflow"],"Impact of model-driven telemetry compared to SNMP polling":["e","mdt"],"Which uses a single gRPC channel":["e","gnmi"],"Branches should reach workloads in AWS and Azure":["e","cloudconn"]});
 
 const D={
  r:{n:"Routing & Addressing",w:25,c:"var(--c1)",t:["OSPF","IS-IS","EIGRP","BGP","IPv6 migration","Summarization"]},
