@@ -821,7 +821,7 @@ nav .in{flex-wrap:nowrap}
       <tr><td>AF4x</td><td>AF41 · 34</td><td>AF42 · 36</td><td>AF43 · 38</td></tr>
     </table>
     <p class="why" style="margin:6px 0 0">Higher class = better queue. Within a class, WRED drops x3 before x2 before x1. EF 46 · CS<em>x</em> = 8·x.</p>
-    <div class="mn" style="margin-top:10px">AF<em>xy</em> = 8·<em>x</em> + 2·<em>y</em> &nbsp;→ AF31 = 26 · CSx = 8·x<br>Voice: ≤150 ms one-way · ≤30 ms jitter · ≤1 % loss</div>
+    <div class="mn" style="margin-top:10px">AF<em>xy</em> = 8·<em>x</em> + 2·<em>y</em> &nbsp;→ AF31 = 26 · CSx = 8·x<br>Voice: ≤150 ms one-way (ARCH: 150–200 ms max) · ≤30 ms jitter · ≤1 % loss</div>
   </div>
 
   <div class="sec"><h3>OSPF LSAs</h3>
@@ -977,7 +977,7 @@ nav .in{flex-wrap:nowrap}
       <tr><td>Catalyst/DNA Center RTT</td><td class="n">100 ms rec. / 200 max</td></tr>
       <tr><td>Fabric MTU</td><td class="n">9100</td></tr>
       <tr><td>MSS over 1500-byte WAN</td><td class="n">1250</td></tr>
-      <tr><td>Transit control plane private AS</td><td class="n">65540</td></tr>
+      <tr><td>Transit control plane AS (reserved, auto-set by DNA Center)</td><td class="n">65540</td></tr>
       <tr><td>SD-WAN transport VPN</td><td class="n">VPN 0</td></tr>
       <tr><td>SD-WAN management VPN</td><td class="n">VPN 512</td></tr>
       <tr><td>SD-WAN private colors</td><td class="n">mpls, metro-ethernet, private1–6</td></tr>
