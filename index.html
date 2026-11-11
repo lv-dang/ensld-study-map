@@ -111,12 +111,16 @@ mark{background:#5a4a12;color:#ffe9a8;border-radius:3px;padding:0 2px}
 nav .in{flex-wrap:nowrap}
 .ek{grid-template-columns:38px 1fr;row-gap:7px}.ek b{color:var(--mute)!important;font-size:12px}.ek span{font-size:13px;line-height:1.45}.ek em{color:var(--c3);font-style:normal;font-weight:600}
 .mt{display:flex;flex-direction:column;align-items:stretch;gap:6px;background:var(--panel2);border:1px solid transparent;border-radius:12px;padding:9px 10px;margin-bottom:8px;font-size:14px}.mt span{flex:1}.mt select{width:100%;background:#1f2840;color:var(--ink);border:1px solid #4a5a80;border-radius:8px;padding:7px 6px;font:500 13px Inter}.mt.r{border-color:var(--ok)}.mt.w{border-color:var(--bad)}
+.verb{font:600 11px "JetBrains Mono",monospace;color:var(--c1);background:transparent;border:1px solid #2c3a5a;border-radius:999px;padding:2px 8px;margin-left:6px;vertical-align:middle;cursor:pointer}#vnew,#chlog{background:var(--panel2);border:1px solid #2c3a5a;border-radius:12px;padding:10px 12px;margin-top:10px;font-size:13px;line-height:1.45}#chlog b,#vnew b{color:var(--c1)}#chlog ul,#vnew ul{margin:4px 0 8px 18px;padding:0}#vnew .x{float:right;background:none;border:0;color:var(--mute);font-size:16px;cursor:pointer}
+#qscore{white-space:nowrap;flex:none;margin-left:10px}
 </style>
 </head>
 <body>
 <header>
   <h1>ENSLD <span>300-420</span> · Last Minute</h1>
-  <div class="sub">Think like a designer: requirement → solution</div>
+  <div class="sub">Think like a designer: requirement → solution <button id="verb" class="verb" title="Version and change log">v</button></div>
+  <div id="vnew" style="display:none"></div>
+  <div id="chlog" style="display:none"></div>
 </header>
 <nav><div class="in">
   <button data-v="map" class="on">🗺️ Overview</button>
@@ -134,7 +138,7 @@ nav .in{flex-wrap:nowrap}
   <div id="domains"></div>
 
   <details class="sec ready" open><summary>🎯 Am I ready to pass? <span class="src">blueprint v1.1</span></summary>
-    <p class="why" style="margin-top:0">Cisco publishes the domain weights but not the cut score. The exam has ~55–65 questions in 90 minutes, and third-party estimates put the pass mark at ~750–850/1000. So these targets are a plan for coverage, not a guarantee:</p>
+    <p class="why" style="margin-top:0">Cisco publishes the domain weights and the 90 minutes, but neither the question count nor the cut score. Third-party estimates: ~55–65 questions and a pass mark of ~750–850/1000. So these targets are a plan for coverage, not a guarantee:</p>
     <div class="lsa">
       <b>Quiz ≥126</b><span>About two full mock exams of unique questions, weighted by domain, with at least 5 per sub-objective (3 for Automation), so you're scored on questions you haven't memorized.</span>
       <b>Cards ≥150</b><span>At least 5 testable facts per sub-objective (4 for Automation), more for heavy topics like BGP and SD-Access.</span>
@@ -322,7 +326,7 @@ nav .in{flex-wrap:nowrap}
       <tr><td>/56</td><td style="text-align:left">Small/medium company → 256 subnets</td></tr>
       <tr><td>/64</td><td style="text-align:left">One LAN subnet (or one consumer)</td></tr>
     </table>
-    <div class="mn" style="margin-top:10px">Give each site a block that summarizes, e.g. 16 × /64 → one <em>/60</em><br>Link the plan to IPv4: reuse the IPv4 3rd octet or VLAN ID as the IPv6 subnet ID<br>ULA <em>FC00::/7</em> only in rare cases (NAT66). The IETF does not recommend NAT for IPv6<br>IPv4: hierarchical, contiguous blocks per site/area so ABRs and distribution switches can summarize<br>IPv4 private space: RFC 1918 (10/8, 172.16/12, 192.168/16) internally + NAT/PAT at the Internet edge · /31 on point-to-point links</div>
+    <div class="mn" style="margin-top:10px">Give each site a block that summarizes, e.g. 16 × /64 → one <em>/60</em><br>Link the plan to IPv4: reuse the IPv4 3rd octet or VLAN ID as the IPv6 subnet ID<br>ULA <em>FC00::/7</em> = private, internal-only addresses, rarely used. Reaching the Internet from ULA would need NAT66/NPTv6, which the IETF does not recommend<br>IPv4: hierarchical, contiguous blocks per site/area so ABRs and distribution switches can summarize<br>IPv4 private space: RFC 1918 (10/8, 172.16/12, 192.168/16) internally + NAT/PAT at the Internet edge · /31 on point-to-point links</div>
       <p class="why" style="margin:12px 0 4px"><b>Hierarchical IPv6 plan</b></p><div data-dg="ipv6tree"></div>
   </details>
 
@@ -437,9 +441,9 @@ nav .in{flex-wrap:nowrap}
       <tr><td>Standard</td><td>802.3af</td><td>802.3at</td><td>Cisco</td><td>Cisco</td></tr>
       <tr><td>PSE port</td><td>15.4 W</td><td>30 W</td><td>60 W</td><td>90 W</td></tr>
       <tr><td>To device</td><td>12.95 W</td><td>25.5 W</td><td>51 W</td><td>71.3 W</td></tr>
-      <tr><td>Pairs / cable</td><td>2 · Cat5e</td><td>2 · Cat5e</td><td>4 · Cat5e</td><td>4 · Cat6a</td></tr>
+      <tr><td>Pairs / cable</td><td>2 · Cat5e</td><td>2 · Cat5e</td><td>4 · Cat5e</td><td>4 · Cat5e*</td></tr>
     </table>
-    <p class="why">All of these reach 100 m. WoL sends a "magic packet" to wake sleeping PCs for patching. From remote subnets, routers must allow directed broadcasts.</p>
+    <p class="why">*Cisco lists Cat5e as the minimum for UPOE+ too; the ENSLD guide shows Cat6a. All of these reach 100 m. WoL sends a "magic packet" to wake sleeping PCs for patching. From remote subnets, routers must allow directed broadcasts.</p>
   </details>
 
   <details class="sec" data-o="2.2e" data-d="c"><summary>Layer 2 security toolkit <span class="src">ENSLD · CCDE</span></summary>
@@ -492,7 +496,7 @@ nav .in{flex-wrap:nowrap}
       <tr><td>APs</td><td>Fabric-capable (Wi-Fi 6, Wave 2)</td><td>Any, incl. older</td></tr>
       <tr><td>Use</td><td>Preferred</td><td>Legacy APs / migration</td></tr>
     </table>
-    <div class="mn" style="margin-top:10px">Fabric WLC sits <em>outside</em> the fabric, ≤<em>20 ms</em> from the APs, and registers clients with the control plane<br>Fabric APs connect to edge nodes and live in the <em>INFRA VRF</em> (global table)<br>One WLC set per fabric site · connect WLCs with MEC for redundancy</div>
+    <div class="mn" style="margin-top:10px">Fabric WLC sits <em>outside</em> the fabric, ≤<em>20 ms RTT</em> from the APs, and registers clients with the control plane<br>Fabric APs connect to edge nodes and live in the <em>INFRA VRF</em> (global table)<br>One WLC set per fabric site · connect WLCs with MEC for redundancy</div>
   </details>
   <details class="sec" data-d="c" data-o="2.5"><summary>SD-Access segmentation, border &amp; multicast <span class="src">ENSLD</span></summary>
     <svg class="diagram" viewBox="0 0 360 170" role="img" aria-label="SD-Access macro and micro segmentation">
@@ -505,7 +509,7 @@ nav .in{flex-wrap:nowrap}
       <line x1="90" y1="120" x2="140" y2="132" stroke="#2a3550" stroke-width="2"/><line x1="270" y1="120" x2="220" y2="132" stroke="#2a3550" stroke-width="2"/>
       <text x="300" y="152" font-size="9" fill="#8d98b3" text-anchor="middle">inter-VN only here</text>
     </svg>
-    <div class="mn">Virtual network (VN) = VRF (VNI in VXLAN, ~16M) · SGT = micro, enforced with SGACLs from ISE on edge and border<br>Border peers with the <em>fusion router</em> (eBGP per VN), which leaks routes to shared services (DHCP, DNS, DNA Center)<br>Transits: SD-Access or SD-WAN transit <em>keep</em> VN/SGT · IP transit <em>loses</em> them<br>Control plane: up to <em>6</em> nodes (wired), deploy ≥2 · can be colocated with borders<br>Multicast: headend replication or native multicast, RP on the border, PIM-SM and SSM</div>
+    <div class="mn">Virtual network (VN) = VRF (VNI in VXLAN, ~16M) · SGT = micro, enforced with SGACLs from ISE on edge and border<br>Border peers with the <em>fusion router</em> (eBGP per VN), which leaks routes to shared services (DHCP, DNS, DNA Center)<br>Transits: SD-Access or SD-WAN transit <em>keep</em> VN/SGT · IP transit <em>doesn't carry them natively</em> (VRF-Lite + SXP/inline tagging)<br>Control plane: up to <em>6</em> nodes (wired), deploy ≥2 · can be colocated with borders<br>Multicast: headend replication or native multicast, RP on the border, PIM-SM and SSM</div>
   </details>
 
 
@@ -642,7 +646,7 @@ nav .in{flex-wrap:nowrap}
       <tr><td style="text-align:left">Signaling</td><td>CS3 24</td><td style="text-align:left">CBWFQ</td></tr>
       <tr><td style="text-align:left">Transactional</td><td>AF21 18</td><td style="text-align:left">CBWFQ + WRED</td></tr>
       <tr><td style="text-align:left">Bulk data</td><td>AF11 10</td><td style="text-align:left">CBWFQ + WRED</td></tr>
-      <tr><td style="text-align:left">Network control</td><td>CS6 48</td><td style="text-align:left">no WRED, never drop</td></tr>
+      <tr><td style="text-align:left">Network control</td><td>CS6 48</td><td style="text-align:left">no WRED, protected</td></tr>
       <tr><td style="text-align:left">Best effort</td><td>DF 0</td><td style="text-align:left">≥25 %, WRED</td></tr>
       <tr><td style="text-align:left">Scavenger</td><td>CS1 8</td><td style="text-align:left">minimal, no WRED</td></tr>
     </table>
@@ -686,7 +690,7 @@ nav .in{flex-wrap:nowrap}
       <tr><td>Cost</td><td class="y">low</td><td class="x">higher</td></tr>
       <tr><td>Protect with</td><td>Mgmt VRF/VLAN, ACLs, QoS priority</td><td>Console servers, mgmt ports</td></tr>
     </table>
-    <div class="mn" style="margin-top:10px"><em>SNMPv3</em> adds authentication + encryption · NMS uses <em>GetBulk</em> for tables · the agent sits on the managed device<br>RMON1 = L1/L2 statistics · NetFlow = flow records · CDP (Cisco) vs LLDP (standard) · syslog<br>Prioritize management traffic so you can still reach devices during congestion</div>
+    <div class="mn" style="margin-top:10px"><em>SNMPv3</em> adds authentication + encryption (levels: noAuthNoPriv · authNoPriv · authPriv) · NMS uses <em>GetBulk</em> for tables · the agent sits on the managed device<br>RMON1 = L1/L2 statistics · NetFlow = flow records · CDP (Cisco) vs LLDP (standard) · syslog<br>Prioritize management traffic so you can still reach devices during congestion</div>
   <p class="why" style="margin:12px 0 4px"><b>Management flows</b></p><div data-dg="nmflow"></div>
   </details>
 
@@ -766,7 +770,7 @@ nav .in{flex-wrap:nowrap}
       <tr><td><b>Hybrid</b></td><td style="text-align:left">Ease into the cloud over time</td></tr>
       <tr><td><b>Multi-cloud</b></td><td style="text-align:left">Several providers, avoids lock-in</td></tr>
     </table>
-    <div class="mn" style="margin-top:10px">Hybrid hyperconverged infrastructure: Cisco <em>HyperFlex</em></div>
+    <div class="mn" style="margin-top:10px">Hybrid hyperconverged infrastructure in the ENSLD guide: Cisco <em>HyperFlex</em> (end-of-sale since 2024, so unlikely to be tested)</div>
   </details>
 
   <details class="sec" data-o="5.1" data-d="a"><summary>YANG model flavors <span class="src">ENSLD</span></summary>
@@ -786,6 +790,7 @@ nav .in{flex-wrap:nowrap}
   <div class="filters" id="filters"></div>
   <div class="prog"><span id="pinfo"></span><span id="pstat"></span></div>
   <div id="deck"></div>
+  <div style="text-align:center;margin-top:14px"><button class="reset" id="crs">Reset cards</button></div>
 </section>
 
 <!-- QUIZ -->
@@ -830,7 +835,7 @@ nav .in{flex-wrap:nowrap}
       <tr><td>AF4x</td><td>AF41 · 34</td><td>AF42 · 36</td><td>AF43 · 38</td></tr>
     </table>
     <p class="why" style="margin:6px 0 0">Higher class = better queue. Within a class, WRED drops x3 before x2 before x1. EF 46 · CS<em>x</em> = 8·x.</p>
-    <div class="mn" style="margin-top:10px">AF<em>xy</em> = 8·<em>x</em> + 2·<em>y</em> &nbsp;→ AF31 = 26 · CSx = 8·x<br>Voice: ≤150 ms one-way (ARCH: 150–200 ms max) · ≤30 ms jitter · ≤1 % loss</div>
+    <div class="mn" style="margin-top:10px">AF<em>xy</em> = 8·<em>x</em> + 2·<em>y</em> &nbsp;→ AF31 = 26 · CSx = 8·x<br>Voice: ≤150 ms one-way (Cisco: up to 200 ms if unavoidable) · ≤30 ms jitter · ≤1 % loss</div>
   </div>
 
   <div class="sec"><h3>OSPF LSAs</h3>
@@ -869,9 +874,9 @@ nav .in{flex-wrap:nowrap}
       <tr><td>Very small site</td><td class="n">&lt; 2,000 EP</td></tr>
       <tr><td>Small site</td><td class="n">&lt; 10,000 EP</td></tr>
       <tr><td>Medium site</td><td class="n">&lt; 25,000 EP</td></tr>
-      <tr><td>Large site*</td><td class="n">&lt; 40,000–50,000 EP</td></tr>
+      <tr><td>Large site*</td><td class="n">&lt; 50,000 EP</td></tr>
     </table>
-    <p class="why" style="margin:8px 0">*The course guide says &lt;40,000. The ENSLD guide says up to 50,000 endpoints and 64 VNs. Up to 6 control plane nodes (wired).</p><div class="mn" style="margin-top:10px">SD-Access transit: <em>&lt;10 ms</em> one-way · MTU <em>9100</em><br>1500-byte WAN → tcp adjust-mss <em>1250</em> on client/AP SVIs<br>Transit control plane private AS <em>65540</em></div>
+    <p class="why" style="margin:8px 0">*Cisco's current reference models and the ENSLD guide: up to 50,000 endpoints and 64 VNs, up to 6 control plane nodes (wired). The older course guide says &lt;40,000.</p><div class="mn" style="margin-top:10px">SD-Access transit: <em>&lt;10 ms</em> one-way · MTU <em>9100</em><br>1500-byte WAN → ip tcp adjust-mss <em>1250</em> on client/AP SVIs<br>Transit control plane AS <em>65540</em> (reserved, set by Catalyst Center)</div>
   </div>
 
   <div class="sec"><h3>DMVPN phases <span style="color:var(--mute);font-size:12px">ARCH · CSLG</span></h3>
@@ -920,8 +925,9 @@ nav .in{flex-wrap:nowrap}
       <tr><td>All PIM routers</td><td class="n">224.0.0.13</td></tr>
       <tr><td>Auto-RP announce / discovery</td><td class="n">224.0.1.39 / .40</td></tr>
       <tr><td>Multicast MAC prefix</td><td class="n">0100.5e + low 23 bits</td></tr>
-      <tr><td>Organization-local scope</td><td class="n">239.192–239.251</td></tr>
+      <tr><td>Organization-local scope</td><td class="n">239.192.0.0/14*</td></tr>
     </table>
+    <p class="why" style="margin:8px 0 0">*RFC 2365. The ENSLD guide prints 239.192.0.0–239.251.255.255, which includes the expansion space.</p>
   </div>
 
   <div class="sec"><h3>Timers <span class="src">ENSLD · ARCH · CSLG</span></h3>
@@ -948,7 +954,7 @@ nav .in{flex-wrap:nowrap}
       <tr><td>EIGRP neighbors seen in production</td><td class="n">800+</td></tr>
       <tr><td>EIGRP neighbors run in the lab</td><td class="n">1400+</td></tr>
       <tr><td>RR hierarchy levels</td><td class="n">2–3 max</td></tr>
-      <tr><td>Port-security shared MAC pool</td><td class="n">1024</td></tr>
+      <tr><td>Port-security shared MAC pool (ENSLD guide)</td><td class="n">1024</td></tr>
     </table>
   </div>
 
@@ -974,6 +980,7 @@ nav .in{flex-wrap:nowrap}
       
       
       <tr><td>PoE / PoE+ / UPOE / UPOE+ (PSE)</td><td class="n">15.4 / 30 / 60 / 90 W</td></tr>
+      <tr><td>… at the device (PD)</td><td class="n">12.95 / 25.5 / 51 / 71.3 W</td></tr>
       <tr><td>4G LTE-Advanced peak</td><td class="n">600 / 100 Mbps</td></tr>
     </table>
     
@@ -981,7 +988,7 @@ nav .in{flex-wrap:nowrap}
 
   <div class="sec"><h3>SD-Access &amp; SD-WAN <span class="src">CSLG · ENSLD</span></h3>
     <table>
-      <tr><td>AP → fabric WLC latency</td><td class="n">≤ 20 ms</td></tr>
+      <tr><td>AP ↔ fabric WLC latency</td><td class="n">≤ 20 ms RTT</td></tr>
       <tr><td>SD-Access transit latency</td><td class="n">&lt; 10 ms one-way</td></tr>
       <tr><td>Catalyst/DNA Center RTT</td><td class="n">100 ms rec. / 200 max</td></tr>
       <tr><td>Fabric MTU</td><td class="n">9100</td></tr>
@@ -1041,7 +1048,7 @@ nav .in{flex-wrap:nowrap}
       <tr><td>EIGRP metric inputs (default)</td><td class="n">bandwidth + delay</td></tr>
       <tr><td>BGP local preference default</td><td class="n">100 (higher wins)</td></tr>
       <tr><td>BGP weight (local to router)</td><td class="n">higher wins</td></tr>
-      <tr><td>BGP MED</td><td class="n">lower wins</td></tr>
+      <tr><td>BGP MED</td><td class="n">lower wins · same neighbor AS only</td></tr>
       <tr><td>BGP private ASNs (2-byte)</td><td class="n">64512–65534</td></tr>
       <tr><td>Community value format</td><td class="n">32 bit · ASN:value</td></tr>
       <tr><td>Reserved community ranges</td><td class="n">0:x · 65535:x</td></tr>
@@ -1063,7 +1070,7 @@ nav .in{flex-wrap:nowrap}
     <table style="margin-top:8px">
       <tr><td>GLBP redirect / timeout timers</td><td class="n">10 min / 4 h</td></tr>
       <tr><td>STP default bridge priority</td><td class="n">32768</td></tr>
-      <tr><td>Fabric control plane nodes</td><td class="n">6 wired · 4 per WLC</td></tr>
+      <tr><td>Fabric control plane nodes</td><td class="n">6 wired · 2 with fabric wireless</td></tr>
       <tr><td>VXLAN VNI space</td><td class="n">~16 million</td></tr>
     </table>
     <p class="why" style="margin:8px 0 0">VRRP values and GLBP's 4 AVFs and timers are from your books. The HSRP and GLBP hello timers and priorities are Cisco defaults.</p>
@@ -1128,7 +1135,7 @@ nav .in{flex-wrap:nowrap}
   </div>
 
     <div class="sec"><h3 style="color:var(--c1)">1 · Routing &amp; Addressing <span class="src">25 %</span></h3><div class="lsa ek">
-    <b>1.1</b><span>IPv4: hierarchical, <em>contiguous</em> blocks per site/area so ABRs and distribution switches summarize · IPv6: company <em>/48</em>, site /56 or /60, every LAN <em>/64</em>, ULA FC00::/7 rare (NAT66)</span>
+    <b>1.1</b><span>IPv4: hierarchical, <em>contiguous</em> blocks per site/area so ABRs and distribution switches summarize · IPv6: company <em>/48</em>, site /56 or /60, every LAN <em>/64</em>, ULA FC00::/7 = internal only, rare</span>
     <b>1.2</b><span>IS-IS: <em>L1</em> ≈ totally stubby internal, <em>L2</em> = backbone, <em>L1/L2</em> ≈ ABR · border on the link · ≥1000 routers/area · DIS: no backup, preemptive · use MD5</span>
     <b>1.3</b><span>EIGRP: <em>stubs + summarization</em> limit queries (multiple AS numbers don't) · hub sends default only · dual-hub summary → Null0 black hole · SIA after 3 min</span>
     <b>1.4</b><span>OSPF: stub = no 5 · totally stubby = no 3+5 · <em>NSSA</em> = ASBR inside, 7 → 5 at ABR · Area 0 small (~300) · hub = ABR · SHA auth · SPF throttle 5 s → 10 s</span>
@@ -1142,7 +1149,7 @@ nav .in{flex-wrap:nowrap}
     <b>2.2.e</b><span>BPDU Guard (PortFast ports) · Root Guard (dist downlinks) · Loop Guard/UDLD · <em>port security</em> sticky MAC · <em>VACL</em> filters inside a VLAN · DHCP snooping + DAI</span>
     <b>2.3</b><span>L3 <em>triangles</em> + <em>ECMP</em> · summarize distribution → core · filter at boundaries · tag + filter on two-way redistribution · <em>VRFs</em>: VRF-Lite, EVN, GRE, MPLS</span>
     <b>2.4</b><span>SD-Access: <em>LISP · VXLAN · SGT</em> · CP = HTDB (MS/MR), Border = exit, Edge = anycast GW · ISE = policy, DNA/Catalyst Center = automation · IS-IS underlay</span>
-    <b>2.5</b><span>VN = macro, SGT = micro · <em>fusion router</em> for shared services · IP transit loses SGT · fabric wireless ≤20 ms, OTT for old APs · site models &lt;200 / 2k / 10k / 25k / 40–50k</span>
+    <b>2.5</b><span>VN = macro, SGT = micro · <em>fusion router</em> for shared services · IP transit doesn't carry SGT natively · fabric wireless ≤20 ms RTT, OTT for old APs · site models &lt;200 / 2k / 10k / 25k / 50k</span>
   </div></div>
 
   <div class="sec"><h3 style="color:var(--c3)">3 · WAN <span class="src">20 %</span></h3><div class="lsa ek">
@@ -1178,8 +1185,18 @@ nav .in{flex-wrap:nowrap}
       <b>GETVPN</b><span>Not for public Internet/NAT paths.</span>
       <b>Totally stubby</b><span>Can't contain an ASBR. Use (totally) NSSA instead.</span>
       <b>33 % LLQ</b><span>It's a baseline. Size from real calls when numbers are given.</span>
-      <b>IP transit (SD-Access)</b><span>Loses SGT/VN context. SD-Access and SD-WAN transits keep it.</span>
+      <b>IP transit (SD-Access)</b><span>Doesn't carry SGT/VN natively (needs VRF-Lite + SXP or inline tagging). SD-Access and SD-WAN transits carry both.</span>
       <b>Dial-in vs dial-out</b><span>Dropped from the v1.1 blueprint. Focus on periodic vs on-change.</span>
+      <b>HSRP active ≠ STP root</b><span>Put both on the same distribution switch, or traffic takes an extra hop over the inter-switch link.</span>
+      <b>Weight vs local pref</b><span>Weight is Cisco-only and stays on one router. Local pref is shared across the AS via iBGP.</span>
+      <b>OSPF summarization</b><span>Only on an ABR (inter-area) or ASBR (external). Never inside an area.</span>
+      <b>Virtual link</b><span>Can't cross a stub area. The transit area must be a normal area.</span>
+      <b>EIGRP stub</b><span>Still receives routes. It just isn't queried and isn't used for transit.</span>
+      <b>PoE+ 30 W</b><span>30 W is at the switch port (PSE). Only 25.5 W reaches the device (PD).</span>
+      <b>ISATAP vs 6to4</b><span>ISATAP works inside one site. 6to4 connects sites across the IPv4 Internet.</span>
+      <b>NAT64 alone</b><span>Clients that connect by name also need DNS64 to get AAAA records.</span>
+      <b>Fabric wireless</b><span>WLC must be ≤20 ms RTT from the APs. Otherwise use over-the-top wireless.</span>
+      <b>Trust boundary</b><span>At the access edge. PC markings aren't trusted; IP phones get conditional trust.</span>
     </div>
   </div>
 </section>
@@ -1354,7 +1371,7 @@ gnmi:{h:140,n:[["c",62,50,"gNMI client"],["t",290,50,"Device (gNMI target)"]],l:
 cloudconn:{h:208,n:[["br",58,95,"SD-WAN branch"],["saas",280,18,"SaaS / M365"],["iaas",280,70,"AWS / Azure / GCP"],["colo",280,122,"Megaport / Equinix"],["dc",280,174,"Cloud via private link"]],l:[["br","saas","f"],["br","iaas","f"],["br","colo","f"],["br","dc","d"]],t:[[296,41,"OnRamp SaaS: best path","o"],[296,92,"OnRamp IaaS (vManage)","o"],[296,144,"OnRamp Multicloud / colo","o"],[280,198,"Direct Connect / ExpressRoute","t"]]}
 });
 Object.assign(CD,{"Keep forwarding during a supervisor switchover":"ssonsf","Switchover without relying on peers at all":"ssonsf","Sub-second failure detection":"bfd","STP Toolkit components":"l2sec","Provider handles routing between sites":"mplsvpn","Hard per-flow guarantees with RSVP":"intdiff","Scalable QoS with classes":"intdiff","NMS operation to fetch large tables":"nmflow","Device pushes data instead of being polled":"mdt","MDT subscription that sends only on change":"mdt","gNMI does":"gnmi","Connect SD-WAN sites to AWS":"cloudconn","Site-to-site and site-to-cloud over Megaport":"cloudconn"});
-Object.assign(QD,{"A dual-supervisor core switch must keep forwarding":["e","ssonsf"],"You need sub-second failover between distribution and core":["e","bfd"],"Clients get addresses from a rogue DHCP server":["e","l2sec"],"Two MPLS VPN customers both use 10.0.0.0/8":["e","mplsvpn"],"Which QoS model provides hard end-to-end guarantees":["e","intdiff"],"Which collects flow data for planning":["e","nmflow"],"Impact of model-driven telemetry compared to SNMP polling":["e","mdt"],"Which uses a single gRPC channel":["e","gnmi"],"Branches should reach workloads in AWS and Azure":["e","cloudconn"]});
+Object.assign(QD,{"A dual-supervisor core switch must keep forwarding":["e","ssonsf"],"You need sub-second failover between distribution and core":["e","bfd"],"Clients get addresses from a rogue DHCP server":["e","l2sec"],"Two MPLS VPN customers both use 10.0.0.0/8":["e","mplsvpn"],"Which QoS model provides hard end-to-end guarantees":["e","intdiff"],"Which collects flow data for planning":["e","nmflow"],"What does model-driven telemetry give you":["e","mdt"],"Which uses a single gRPC channel":["e","gnmi"],"Branches should reach workloads in AWS and Azure":["e","cloudconn"]});
 
 const D={
  r:{n:"Routing & Addressing",w:25,c:"var(--c1)",t:["OSPF","IS-IS","EIGRP","BGP","IPv6 migration","Summarization"]},
@@ -1383,7 +1400,7 @@ const C=[
 ["r","RR design causes suboptimal exit selection","Place the RR near the exit, or use ADD-PATH","Hierarchical RRs: at most 2 to 3 levels.","ARCH","1.5"],
 ["r","IPv4 and IPv6 in parallel, long-term migration","Dual stack","The recommended approach.","CSLG","1.6"],
 ["r","IPv6-only clients must reach IPv4 servers","NAT64 + DNS64","DNS64 synthesizes AAAA records from A records.","ENSLD · ARCH","1.6"],
-["r","Why avoid ISATAP, 6to4, Teredo and NAT-PT?","Deprecated and a security risk","Semi-automatic tunnels. Pick mechanisms that match your IPv6 strategy.","ARCH","1.6"],
+["r","Why avoid ISATAP, 6to4, Teredo and NAT-PT?","Deprecated and a security risk","Automatic tunnels with security risks (the course guide calls ISATAP and Teredo semi-automatic). Pick mechanisms that match your IPv6 strategy.","ARCH","1.6"],
 ["r","Connect IPv6 islands over an IPv4 backbone cheaply","LISP (MR/MS + xTR)","HQ acts as Map-Server/Map-Resolver plus xTR, branches are xTRs only.","ARCH","1.6"],
 ["r","Provider offers no native IPv6 at the branch","Tunnel to HQ or a tunnel broker","Tunnel brokers give IPv6 access over manual IPv4 tunnels.","ARCH","1.6"],
 ["r","IPv6 project phases, in order","Discovery → Assessment → Planning & Design → Implementation → Optimization","Skipping a phase raises risk and cost.","ARCH","1.6"],
@@ -1436,7 +1453,7 @@ const C=[
 ["s","Avoid TCP global synchronization","WRED","Drops early, weighted by DSCP. AFx3 goes before AFx1.","ARCH","4.2"],
 ["s","One known source, many receivers","PIM-SSM (232/8, IGMPv3)","No RP needed, uses (S,G) directly.","ARCH","4.5"],
 ["s","Many senders and many receivers","Bidir-PIM","Shared tree only, no (S,G) state. The DF is the router with the best route to the RP.","ARCH","4.5"],
-["s","RP redundancy with load sharing","Anycast RP + MSDP","Same RP address on several routers. MSDP syncs the sources.","ARCH","4.5"],
+["s","RP redundancy with load sharing","Anycast RP + MSDP","Same RP address on several routers. MSDP syncs the sources (IPv4 only; IPv6 uses PIM Anycast-RP).","ARCH","4.5"],
 ["s","Dynamic RP discovery that also supports IPv6","BSR","Auto-RP is Cisco-only and IPv4-only.","ARCH","4.5"],
 ["s","Where should the RP be placed?","Anywhere with SPT threshold 0; near the source with infinity","With the default threshold 0, traffic switches to the SPT and leaves the RP.","ARCH","4.4"],
 ["s","What prevents multicast loops?","RPF check","A packet must arrive on the interface toward the source.","ARCH","4.4"],
@@ -1451,22 +1468,22 @@ const C=[
 ["r","IPv6 block a typical company receives","/48","That's 65,536 /64 subnets. Largest multinationals get a /40, small companies a /56.","ENSLD","1.1"],
 ["r","Prefix length for every IPv6 LAN subnet","/64","Needed for SLAAC. Consumers may get just one /64.","ENSLD","1.1"],
 ["r","Summarize a site with 16 IPv6 /64 subnets","One /60","Allocate each site a block on a nibble boundary so it summarizes cleanly.","ENSLD","1.1"],
-["r","IPv6 private addressing","ULA FC00::/7, used rarely","The IETF does not recommend NAT for IPv6. Use NAT66 only if ULAs are unavoidable.","ENSLD","1.1"],
+["r","IPv6 private addressing","ULA FC00::/7, used rarely","Not Internet-routable, for internal traffic only. Internet access from ULA would need NAT66/NPTv6, which the IETF does not recommend.","ENSLD","1.1"],
 ["r","Quick IPv6 plan on top of an existing IPv4 /24 network","Reuse the IPv4 3rd octet (or VLAN ID) as the IPv6 subnet ID","Example: 192.168.111.0/24 → 2001:db8:123:111::/64.","CSLG","1.1"],
 ["r","Multihomed to two ISPs: avoid becoming a transit AS","Advertise only your own PI space","Use an outbound prefix filter plus an AS-path filter that permits only locally originated routes.","ARCH","1.5"],
 ["r","Ingress load sharing across two ISPs","Split the PI block, send specifics + the aggregate","The aggregate to both ISPs is the backup if one link fails.","ARCH · CSLG","1.5"],
 ["r","Only a /24 and two ISPs","Active/standby with AS-path prepending","A /24 can't be split, because ISPs filter longer prefixes.","ARCH","1.5"],
 ["r","Egress load sharing toward two ISPs","Local preference per prefix set","Prefer ISP 1 for some destinations and ISP 2 for others.","ARCH","1.5"],
 ["r","Several parallel links to one ISP","eBGP between loopbacks + ebgp-multihop","The IGP (or static) does the ECMP between loopbacks via recursive lookup.","CSLG","1.5"],
-["r","Can BGP multipath balance across two different ISPs?","No, only load sharing","BGP picks one best path among routes from different ASNs.","CSLG","1.5"],
+["r","Can BGP multipath balance across two different ISPs?","Not by default, only load sharing","Multipath needs paths from the same neighbor AS. bgp bestpath as-path multipath-relax lifts that when AS-path lengths are equal.","CSLG","1.5"],
 ["r","IS-IS authentication recommendation","MD5 hashing, never plaintext","The ENSLD guide: link, area and domain authentication are plaintext. MD5 was added later and is the recommendation.","ENSLD","1.2"],
 ["c","Sub-second failure detection for OSPF, EIGRP, IS-IS and BGP","BFD","Protocol-independent and partly offloaded to the data plane, so it beats tuned hello timers.","ENSLD","2.1"],
 ["c","Keep forwarding during a supervisor switchover","SSO + NSF / Graceful Restart","Peers keep using known routes while routing state is rebuilt. GR-aware peers are needed.","ENSLD · ARCH","2.1"],
-["c","Switchover without relying on peers at all","NSR (Non-Stop Routing)","Routing state is synced to the standby. On IOS: IS-IS and BGP.","ENSLD","2.1"],
+["c","Switchover without relying on peers at all","NSR (Non-Stop Routing)","Routing state is synced to the standby. Supported for OSPF, IS-IS and BGP on platforms with redundant route processors.","ENSLD","2.1"],
 ["c","EIGRP router about to shut down should warn neighbors","Graceful shutdown (goodbye message)","Neighbors recalculate at once instead of waiting for the hold timer.","CSLG","2.1"],
 ["c","Telepresence unit needs about 50 W","Cisco UPOE","4 pairs over Cat5e: 60 W at the PSE, 51 W to the device.","ENSLD","2.2"],
 ["c","802.3at PoE+ power budget","30 W PSE / 25.5 W to device","802.3af PoE is 15.4 W / 12.95 W.","ENSLD","2.2"],
-["c","Device needs ~70 W over copper","Cisco UPOE+","90 W PSE, 71.3 W to the device. The ENSLD guide lists Cat6a. Cisco now also allows Cat5e, with Cat6a recommended.","ENSLD","2.2"],
+["c","Device needs ~70 W over copper","Cisco UPOE+","90 W PSE, 71.3 W to the device over 4 pairs. Cisco lists Cat5e as the minimum cable (the ENSLD guide shows Cat6a).","ENSLD","2.2"],
 ["c","Wake sleeping PCs remotely for patching","Wake-on-LAN (magic packet)","From another subnet, routers must allow directed broadcasts.","ENSLD","2.2"],
 ["c","Learn a port's MAC dynamically and keep it in the config","Port security sticky MAC","New devices on that port are then denied. Also limit MAC count and set aging.","ENSLD","2.2e"],
 ["c","Filter traffic bridged within a VLAN","VACL (VLAN access map)","Applies to all packets in the VLAN, unlike router ACLs that see routed traffic only.","ENSLD","2.2e"],
@@ -1475,7 +1492,7 @@ const C=[
 ["c","Avoid a subinterface per VRF on every link","EVN (VNET trunk)","A network-wide VNET tag carries all VNs over one trunk.","ARCH","2.3"],
 ["c","SD-Access wireless with SGT policy on new APs","Fabric mode wireless","CAPWAP control to the WLC, client data in VXLAN to the edge node.","ENSLD","2.5"],
 ["c","Older APs must join an SD-Access campus","Over-the-top (OTT) wireless","CAPWAP carries control and data, and the fabric is just transport.","ENSLD","2.5"],
-["c","Max AP-to-WLC latency for fabric wireless","20 ms","Fabric APs run in local mode. The WLC sits outside the fabric.","CSLG","2.5"],
+["c","Max AP-to-WLC latency for fabric wireless","20 ms round trip (RTT)","Fabric APs run in local mode. The WLC sits outside the fabric.","CSLG","2.5"],
 ["c","Which VRF do fabric APs use?","INFRA VRF (global routing table)","The same VRF as the fabric underlay.","ENSLD","2.5"],
 ["w","Point-to-point L2VPN over an MPLS backbone","VPWS","VPLS is the multipoint version.","ENSLD","3.1"],
 ["w","More bandwidth over existing fiber using wavelengths","DWDM","Many lambdas on one fiber pair.","ENSLD","3.1"],
@@ -1490,7 +1507,7 @@ const C=[
 ["w","SD-WAN branch Internet options","DIA, regional hub, cloud exchange (CNF)","Chosen per VPN. DIA uses a per-VPN default route + NAT.","CSLG","3.5"],
 ["a","Optimize Microsoft 365 performance from branches","Cloud OnRamp for SaaS","Real-time path probing steers users to the best exit.","ENSLD","5.5"],
 ["w","Multicast across the SD-WAN overlay","Replicator","Replicators copy streams to the edges with receivers.","ENSLD","3.5"],
-["w","SD-WAN multitenant: which controllers are shared?","vManage and vBond","Each tenant gets its own vSmart.","CSLG","3.5"],
+["w","SD-WAN multitenant: which controllers are shared?","vManage and vBond (vSmart too from 20.4)","Before release 20.4 each tenant needs its own vSmart.","CSLG","3.5"],
 ["s","Hard per-flow guarantees with RSVP signaling","IntServ","Per-flow state on every hop, so it doesn't scale.","ARCH · CSLG","4.1"],
 ["s","Scalable QoS with classes and per-hop behavior","DiffServ","No signaling, \"almost guaranteed\", the enterprise default.","ARCH","4.1"],
 ["s","Main drawback of DiffServ","No absolute end-to-end guarantee","Plus several mechanisms must work together on every hop.","ARCH","4.1"],
@@ -1505,7 +1522,7 @@ const C=[
 ["s","Share active sources between RPs or PIM domains","MSDP","Source-Active (SA) messages. Also used for Anycast RP.","ENSLD · ARCH","4.5"],
 ["s","Auto-RP roles","Candidate RPs + mapping agents","Mapping agents announce group-to-RP mappings.","ARCH","4.5"],
 ["s","Switch forwards multicast only to ports with receivers","IGMP snooping","Without it, multicast floods the VLAN.","ENSLD","4.4"],
-["s","Network control class in CBWFQ","No WRED, no fair-queue pre-sorter","Those packets must never be dropped or reordered.","ARCH","4.2"],
+["s","Network control class in CBWFQ","No WRED, no fair-queue pre-sorter","Early drops or reordering can destabilize routing, so no WRED and no fair-queue pre-sorter.","ARCH","4.2"],
 ["a","gRPC transport and features","HTTP/2, protobuf, bidirectional streaming","An open-source RPC framework from Google.","ENSLD","5.4"],
 ["a","gNMI does …","Get/Set config, read oper data, Subscribe","gRPC Network Management Interface on YANG-modeled data.","ENSLD","5.4"],
 ["a","Compliance requires full control of every component","On-premises","Business owns and runs everything.","CCDE","5.6"],
@@ -1515,7 +1532,7 @@ const C=[
 ["a","Private, SLA-backed link into AWS/Azure","Direct connect (Direct Connect, ExpressRoute)","Often via MPLS or a carrier-neutral facility.","ENSLD","5.5"],
 ["r","IS-IS DIS election and behavior","Highest priority (0-127, default 64), then highest MAC","No backup DIS and preemption is built in. The DIS hello interval is 3× faster.","ARCH · CSLG","1.2"],
 ["r","IS-IS system ID rules","6 bytes; unique in the area for L1, in the domain for L2","Use a domain-wide unique ID, often derived from a loopback IP.","ARCH","1.2"],
-["r","How do L1 routers leave their area?","Via the nearest L1/L2 router","L1/L2 routers keep separate L1 and L2 LSDBs and don't leak L2 routes into L1 by default.","ENSLD","1.2"],
+["r","How do L1 routers leave their area?","Via the nearest L1/L2 router","L1 routers follow a default route to the L1/L2 router that sets the attached bit. L1/L2 routers keep separate LSDBs and don't leak L2 routes into L1 by default.","ENSLD","1.2"],
 ["r","IS-IS topology for a small network","Flat (single area)","Hierarchical for large networks, hybrid when there's no real backbone.","ENSLD","1.2"],
 ["r","Default OSPF SPF throttling on Cisco","Start 5 s, grows to 10 s","Keep SPF-Hold above the time a full SPF run takes, allowing for growth.","ARCH · CSLG","1.4"],
 ["r","OSPF flooding reduction (DoNotAge)","Only in stable networks","Saves the 30-minute LSA refreshes. Biggest gain in full mesh.","ARCH","1.4"],
@@ -1524,7 +1541,7 @@ const C=[
 ["r","EIGRP three-layer hierarchy: where do summaries and policies go?","Summarize at distribution, policies at access","The core just switches fast. Access routers are stubs.","CSLG","1.3"],
 ["r","Valid reason for multiple EIGRP AS numbers","Merger migration or separate admin domains","Not for query limiting, because queries are only delayed.","ARCH · CSLG","1.3"],
 ["c","Which component provides identity and policy in SD-Access?","Cisco ISE","It maps users to SGTs. DNA Center (Catalyst Center) automates the fabric and integrates over pxGrid/ERS.","ENSLD","2.4"],
-["s","IntServ service types","Guaranteed rate (RSVP + WFQ) and controlled load (RSVP + WRED)","Guaranteed rate reserves bandwidth. Controlled load keeps delay low under congestion.","ARCH-SS","4.1"],
+["s","IntServ service types","Guaranteed rate (RSVP + WFQ) and controlled load (RSVP + WRED)","Guaranteed rate reserves bandwidth. Controlled load acts like a lightly loaded network, with no hard guarantee; WRED is how Cisco IOS implements it.","ARCH-SS","4.1"],
 ["s","Where does DSCP live in the IP header?","6 bits of the former ToS byte (+2 ECN bits)","DiffServ uses the DSCP to pick a per-hop behavior.","ARCH-SS","4.1"],
 ["a","Where are Cisco, IETF and OpenConfig YANG models published?","GitHub (YangModels/yang, openconfig/public)","Cisco has native models per OS: IOS XE, IOS XR, NX-OS.","ENSLD","5.1"],
 ["a","YANG building blocks","Container, list, leaf","A container groups nodes, a list holds repeated entries, a leaf holds one value.","ENSLD","5.1"],
@@ -1543,10 +1560,10 @@ const C=[
 ["c","Where to filter routes in the campus","At distribution/aggregation boundaries and redistribution points","Combine with summarization so the core stays small and stable.","ENSLD · CSLG","2.3"],
 ["c","How do SD-Access VNs reach shared services or each other?","Through a fusion router or firewall outside the border","It leaks routes between VRFs. The border peers with it via eBGP per VN.","ENSLD","2.5"],
 ["c","SD-Access macro vs micro segmentation","VN (VRF) = macro · SGT = micro","SGACLs from ISE are enforced on edge and border nodes.","ENSLD","2.5"],
-["c","SD-Access transit that keeps VN and SGT context between sites","SD-Access (distributed campus) or SD-WAN transit","An IP transit decapsulates to plain IP and loses SGT/VN context.","ENSLD","2.5"],
-["c","How many control plane nodes can an SD-Access fabric have?","Up to 6 wired (WLC talks to up to 4)","Deploy at least two for HA. They can be colocated on borders if scale allows.","ENSLD","2.5"],
+["c","SD-Access transit that keeps VN and SGT context between sites","SD-Access (distributed campus) or SD-WAN transit","An IP transit decapsulates to plain IP, so VN needs a VRF-Lite handoff and SGT needs SXP or inline tagging.","ENSLD","2.5"],
+["c","How many control plane nodes can an SD-Access fabric have?","Up to 6 wired-only · 2 with fabric wireless","A WLC talks to 2 control plane nodes (4 only with a dedicated guest pair). Deploy at least two for HA. They can be colocated on borders if scale allows.","ENSLD","2.5"],
 ["c","Multicast in SD-Access","Headend replication or native multicast; RP on the border","PIM-SM and SSM are supported, configured via DNA (Catalyst) Center.","ENSLD","2.5"],
-["w","SD-WAN customer edge platforms","ISR 1000/4000, ASR 1000, vEdge 100/1000/2000, ENCS uCPE","Virtual: ISRv / CSR1000v (Catalyst 8000V) for private and public cloud.","ENSLD","3.1"],
+["w","SD-WAN customer edge platforms","ISR 1000/4000, ASR 1000, vEdge 100/1000/2000, ENCS uCPE","Virtual: ISRv / CSR1000v (Catalyst 8000V). This is the ENSLD guide's list; vEdge is legacy hardware, and current designs use Catalyst 8000 (IOS XE).","ENSLD","3.1"],
 ["w","WAN option with high bandwidth, high reliability, low latency, but high cost","Layer 2 VPN, MPLS L3VPN or DWDM","4G/5G is low/medium bandwidth and less reliable. Metro Ethernet is medium cost.","ENSLD","3.1"],
 ["w","Benefits of an Ethernet handoff at the customer edge","Easy speed increases, value-added services, easy LAN integration","No truck roll or new CPE to raise bandwidth.","ENSLD","3.1"],
 ["w","SD-WAN onboarding options for IOS XE routers","PnP Connect, bootstrap (USB), manual","vEdges use ZTP or manual config (IP, vBond address, org name, system IP, site ID).","ENSLD","3.4"],
@@ -1611,8 +1628,13 @@ function build(){
   deck=review?pool.filter(known).sort((a,b)=>lv(a)-lv(b)):fresh.concat(dueK);
   render();
 }
+function cardReset(pool){pool.forEach(i=>delete st[i]);save();review=false;build();try{domains()}catch(e){}}
 function render(){
   const pool=C.map((c,i)=>i).filter(i=>filt=="all"||C[i][0]==filt),kn=pool.filter(known).length;
+  {const b=document.getElementById("crs"),nm=filt=="all"?"all cards":D[filt].n+" cards",touched=pool.filter(i=>st[i]!=null).length;
+   b.textContent="Reset "+nm;b.disabled=!touched;b.style.opacity=touched?1:.4;b.dataset.arm="";
+   b.onclick=()=>{if(b.dataset.arm){cardReset(pool);return}b.dataset.arm="1";b.textContent=`Tap again to reset ${touched} card${touched==1?"":"s"}`;b.style.color="var(--bad)";
+     setTimeout(()=>{if(b.dataset.arm){b.dataset.arm="";b.textContent="Reset "+nm;b.style.color=""}},4000)}}
   document.getElementById("pinfo").textContent=(filt=="all"?"All domains":D[filt].n)+(review?" · review":"");
   document.getElementById("pstat").textContent=`${kn} / ${pool.length} known`;
   const el=document.getElementById("deck");
@@ -1622,7 +1644,7 @@ function render(){
     el.innerHTML=`<div class="done"><b>All caught up 🎉</b>Known cards come back when they're due (10 min → 1 h → 1 day → 3 days).${nt?`<br>Next card due in ${nt}.`:""}<br>
       <button class="reset" id="rv">Review known cards now</button> <button class="reset" id="rs">Reset this stack</button></div>`;
     document.getElementById("rv").onclick=()=>{review=true;build()};
-    document.getElementById("rs").onclick=()=>{pool.forEach(i=>delete st[i]);save();review=false;build()};return}
+    document.getElementById("rs").onclick=()=>cardReset(pool);return}
   const i=deck[0],c=C[i],d=D[c[0]];
   const src=c[4]?` · <span style="color:var(--mute)">${c[4]}</span>`:"";
   const dk=cardDiag(c),L=lv(i);
@@ -1642,7 +1664,7 @@ buildFilters();build();
 
 // [domain, scenario, options, correctIndex, explanation, subobjective]
 const Q=[
-["c","A customer wants no STP in the campus and has no VLANs spanning access switches.",["Routed access","L2 access with HSRP","Collapsed core with RSTP","VTP transparent"],0,"Routed access puts L3 on the access switch, so no L2 loops exist and no STP or FHRP is needed. It only works when VLANs stay in one closet. (ENSLD)","2.2"],
+["c","A customer wants no STP in the campus and has no VLANs spanning access switches.",["Routed access","L2 access with HSRP","Collapsed core with RSTP","L2 access with MST"],0,"Routed access puts L3 on the access switch, so no L2 loops exist and no STP or FHRP is needed. It only works when VLANs stay in one closet. (ENSLD)","2.2"],
 ["w","300 branches, one hub, branches must call each other directly. The hub should advertise only a summary.",["GRE full mesh","DMVPN Phase 2","DMVPN Phase 3","Static IPsec VTI"],2,"Phase 3 gives spoke-to-spoke tunnels via NHRP redirect + shortcut and still allows hub summarization. Phase 2 needs the full table on spokes, so no summary. (ARCH)","3.2"],
 ["r","An OSPF area has a redistributed partner network but must not get type 5 LSAs from the backbone.",["Stub area","Totally stubby","NSSA","Backbone area"],2,"An NSSA blocks type 5 LSAs but lets its own ASBR inject externals as type 7, which the ABR translates to type 5. A plain stub can't contain an ASBR. (ENSLD)","1.4"],
 ["s","IPTV with a known sender. Clients support IGMPv3.",["PIM sparse mode with RP","PIM-SSM","Bidir-PIM","PIM dense mode"],1,"With a known source and IGMPv3, SSM builds (S,G) trees directly with no RP. Default range 232/8. (ARCH)","4.5"],
@@ -1655,9 +1677,9 @@ const Q=[
 ["r","Hundreds of EIGRP spokes. Queries after a remote failure slow convergence. Best fix?",["Use multiple EIGRP AS numbers","Configure spokes as EIGRP stubs","Disable summarization at the hub","Raise the hello timer"],1,"EIGRP stubs are never queried, so a remote failure doesn't flood every spoke. Multiple AS numbers do NOT stop queries. (ARCH · CSLG)","1.3"],
 ["r","Two route reflectors in one cluster are given the same cluster ID. What happens to routes reflected between them?",["They're accepted and preferred","They're discarded","They're sent back to the client","The RRs drop their sessions"],1,"Each RR sees its own cluster ID in CLUSTER_LIST and discards the route. That's loop prevention. Unique IDs (overlapping clusters) would accept it. (ARCH · CSLG)","1.5"],
 ["c","A single office with ~8,000 endpoints moves to SD-Access. Which reference model?",["Fabric in a Box","Very small site","Small site","Medium site"],2,"Small site = single office or building, under 10,000 endpoints. Very small is under 2,000, medium under 25,000. (CSLG)","2.5"],
-["c","SD-Access transit over a WAN that only carries 1500-byte MTU. What do you set on client/AP SVIs?",["Raise the client SVI MTU to 9100","tcp adjust-mss 1250","Raise the WAN interface MTU to 1550","Disable path MTU discovery on the edges"],1,"SD-Access needs ~9100 MTU. Over a 1500-byte WAN, lower TCP MSS to about 1250 on client/AP SVIs to avoid fragmentation. (CSLG)","2.5"],
+["c","SD-Access transit over a WAN that only carries 1500-byte MTU. What do you set on client/AP SVIs?",["Raise the client SVI MTU to 9100","ip tcp adjust-mss 1250","Raise the WAN interface MTU to 1550","Disable path MTU discovery on the edges"],1,"SD-Access needs ~9100 MTU. Over a 1500-byte WAN, lower TCP MSS to about 1250 on client/AP SVIs to avoid fragmentation. (CSLG)","2.5"],
 ["s","10 Mbps WAN, at most 20 G.711 calls (≈80 kbps each). How do you size the LLQ?",["33 % = 3.3 Mbps by the book","~1.6 Mbps from real demand","50 % to be safe for future growth","No LLQ at all, protect voice with WRED"],1,"20 calls × 80 kbps = 1.6 Mbps. Taking 33 % (3.3 Mbps) wastes bandwidth. The 33 % rule is a baseline, not a mandate. (CCDE)","4.2"],
-["s","Multicast RP discovery must work for IPv6 too.",["Auto-RP","Static RP only","BSR","Dense mode"],2,"BSR is standards-based and supports IPv4 and IPv6. Auto-RP is Cisco-only and IPv4-only. (ARCH)","4.5"],
+["s","Dynamic RP discovery must work for IPv6 too.",["Auto-RP","Static RP only","BSR","Dense mode"],2,"BSR is standards-based and supports IPv4 and IPv6. Auto-RP is Cisco-only and IPv4-only. (ARCH)","4.5"],
 ["a","Change only the description of one interface via REST without touching anything else.",["PUT","POST","PATCH","DELETE"],2,"PATCH merges a partial change. PUT replaces the whole resource, POST creates a new one. (CSLG)","5.2"],
 ["r","Which routers should live in OSPF Area 0?",["Every router located at the headquarters","Only essential backbone routers and ABRs","All WAN routers, so flaps converge faster","All ASBRs, so external routes stay central"],1,"Keep Area 0 small and stable. Too many routers tend to creep into the backbone over time, so admit only the backbone and ABRs. (CSLG)","1.4"],
 ["r","OSPF hub-and-spoke with flapping WAN links. The core must stay stable.",["Extend Area 0 to every spoke router","Make the hub the ABR, spokes in own areas","Make every spoke an ASBR for its LAN","Put all routers in one large flat area"],1,"With the hub as ABR, WAN flaps stay out of Area 0. Extending Area 0 to the spokes only works with a small core and reliable WAN links. (CSLG)","1.4"],
@@ -1665,13 +1687,13 @@ const Q=[
 ["r","A huge network needs three levels of routing hierarchy, but OSPF only has two.",["Add a second, separate backbone area","Interconnect OSPF domains with BGP","Use virtual links between every area","Run OSPFv3 in parallel for the third level"],1,"OSPF supports only backbone plus non-backbone areas. For a third level, connect separate OSPF domains with BGP. (CSLG)","1.4"],
 ["r","Where do area borders sit in IS-IS?",["Inside the L1/L2 router","On the links","On the DIS","On the loopback"],1,"In OSPF the border is inside the ABR. In IS-IS each router is in exactly one area and the border lies on the link, which makes the backbone easier to extend. (CSLG · ENSLD)","1.2"],
 ["r","An IS-IS Level 1 router behaves most like which OSPF router?",["Backbone router in Area 0","Area border router (ABR)","Internal router in a totally stubby area","ASBR redistributing external routes"],2,"L1 routers know only their area and use the nearest L1/L2 router as the way out, just like a totally stubby internal router. (ENSLD)","1.2"],
-["r","Why can IS-IS fit more routers in one area than OSPF?",["It is a distance-vector protocol underneath","One LSP per router, not many small LSAs","It never needs to run the SPF algorithm","It forms no adjacencies on LAN segments"],1,"IS-IS groups a router's information into one LSP, so flooding stays light. At least 1000 routers per area are feasible. (ARCH · CSLG)","1.2"],
+["r","Why can IS-IS fit more routers in one area than OSPF?",["It is a distance-vector protocol underneath","One LSP per router, not many small LSAs","It never needs to run the SPF algorithm","It forms no adjacencies on LAN segments"],1,"IS-IS groups a router's information into one LSP (fragmented only when large), so flooding stays light. At least 1000 routers per area are feasible. (ARCH · CSLG)","1.2"],
 ["r","A prefix must reach iBGP peers but never be sent to any eBGP neighbor.",["no-advertise","no-export","local-as","internet"],1,"no-export keeps the route inside the AS (confederation peers excepted). no-advertise would block it even from iBGP peers. (CSLG · ARCH)","1.5"],
 ["w","Two MPLS VPN customers both use 10.0.0.0/8. What keeps the prefixes unique in the core?",["Route target attached to every prefix","Route distinguisher","A unique VRF name on every PE","The MPLS label of the egress PE"],1,"The RD is prepended to make overlapping prefixes unique. The RT decides which VRF imports them. (CCDE)","3.1"],
 ["w","All remote-site traffic over MPLS L3VPN must be inspected by the DC firewall.",["Full mesh VPN","Hub-and-spoke VPN","Extranet VPN","Multilevel hub-and-spoke"],1,"A hub-and-spoke VPN topology forces spoke traffic through the hub, where the firewall sits. (CCDE)","3.1"],
 ["r","Which addressing makes summarization at the ABR effective?",["Discontiguous subnets per area","Contiguous subnets per area","Random /30s","One /8 for everything"],1,"Structured, contiguous ranges per area let the ABR advertise one summary. (CSLG)","1.1"],
 ["r","Where does an RR take its cluster ID from if none is configured?",["AS number","BGP router ID","Process ID","Loopback 0 always"],1,"The cluster ID is the configured cluster ID, otherwise the BGP router ID. (CSLG)","1.5"],
-["r","IPv6 migration: which is the recommended mechanism?",["ISATAP","6to4","Dual stack","NAT-PT"],2,"Dual stack is recommended. ISATAP and 6to4 are semi-automatic tunnels with security risks, and NAT-PT is historic. (CSLG · ARCH)","1.6"],
+["r","IPv6 migration: which is the recommended mechanism?",["ISATAP","6to4","Dual stack","NAT-PT"],2,"Dual stack is recommended. ISATAP and 6to4 are automatic tunnels with security risks, and NAT-PT is historic. (CSLG · ARCH · ENSLD)","1.6"],
 ["c","Which FHRP is an IETF standard?",["HSRP","GLBP","VRRP","VSS"],2,"VRRP is the open standard. HSRP and GLBP are Cisco protocols, and VSS isn't an FHRP at all. (ENSLD)","2.1"],
 ["c","What is true in a Layer 3 access design?",["You need an FHRP","SVIs sit on the distribution","No FHRP is needed","VLANs span access switches"],2,"The gateway is on the access switch itself, so there's nothing to make redundant with an FHRP. (ENSLD)","2.1"],
 ["c","Add user ports in a closet without replacing the existing switch.",["VSS","EtherChannel","MEC","Stacking"],3,"Stacking adds switches to the existing stack and grows capacity in place. (ENSLD)","2.2"],
@@ -1680,14 +1702,14 @@ const Q=[
 ["c","How should L3 links between distribution and core be built?",["Squares","Triangles","Daisy chain","Single uplink"],1,"Triangles give two equal-cost paths, so a failure is handled in hardware without waiting for the routing protocol. (ENSLD)","2.3"],
 ["c","Which SD-Access node keeps the host tracking database?",["Border node","Edge node","Control plane node","Intermediate node"],2,"The control plane node runs the LISP HTDB plus the Map-Server and Map-Resolver functions. (CSLG)","2.4"],
 ["c","In SD-Access, which node acts as the anycast L3 gateway for endpoints?",["Border","Edge","Control plane","WLC"],1,"Edge nodes authenticate endpoints, register them with the control plane, and act as the anycast gateway. (CSLG)","2.4"],
-["c","Campus with several buildings and ~30,000 endpoints. Which SD-Access reference model?",["Small site","Medium site","Large site","Fabric in a Box"],2,"Medium is under 25,000. Large is under 40,000 (course guide) or 50,000 (ENSLD guide), so 30,000 is a large site either way. (CSLG · ENSLD)","2.5"],
+["c","Campus with several buildings and ~30,000 endpoints. Which SD-Access reference model?",["Small site","Medium site","Large site","Fabric in a Box"],2,"Medium is under 25,000. Large is under 50,000, so 30,000 is a large site. (ENSLD · Cisco)","2.5"],
 ["c","Which SD-Access migration approach offers the simplest rollback?",["Incremental","Parallel","Hybrid","Serial"],1,"Parallel builds the fabric beside the old network, so you can fall back at any time. (CSLG)","2.5"],
 ["c","General latency guideline for an SD-Access transit?",["<10 ms one-way","<125 ms one-way","<1 s round trip","No limit"],0,"The transit should behave like the campus: full port speed, under 10 ms one-way, MTU ~9100. (CSLG)","2.5"],
 ["w","DMVPN Phase 2: what can't you do at the hub?",["Run EIGRP","Summarize routes to spokes","Use mGRE","Build spoke-to-spoke tunnels"],1,"In Phase 2 spokes need the full routing table to build direct tunnels, so the hub can't summarize. Phase 3 fixes this. (ARCH)","3.2"],
 ["w","OSPF over DMVPN Phase 3 (hub stays the next hop for all spokes): which network type on the tunnel?",["Broadcast","Point-to-point","Point-to-multipoint","NBMA"],2,"Point-to-multipoint makes the hub the next hop and avoids DR issues over the cloud. (CSLG · ARCH)","3.2"],
 ["w","SD-WAN TLOC consists of …",["Site ID + VPN ID + label","System IP + color + encapsulation","Public IP + UDP port + NAT type","Router ID + AS number + tag"],1,"The system IP is used because interface addresses can change. Color marks the link type, and encapsulation is IPsec or GRE. (CSLG · ENSLD)","3.4"],
 ["w","Which SD-WAN VPN carries transport and control traffic?",["VPN 0","VPN 1","VPN 511","VPN 512"],0,"VPN 0 is the transport VPN for control connections. VPN 512 is management. (CSLG)","3.4"],
-["w","Which SD-WAN controller should be placed in the DMZ?",["Validator (vBond)","Manager (vManage)","Controller (vSmart)","vAnalytics"],0,"The Validator must be reachable by every edge, including those behind NAT, so it sits in the DMZ. (CSLG)","3.4"],
+["w","Which SD-WAN controller needs a public (non-NATed) address because edges behind NAT learn their public address from it?",["Validator (vBond)","Manager (vManage)","Controller (vSmart)","vAnalytics"],0,"The Validator must be reachable by every edge, including those behind NAT, so it sits in the DMZ. (CSLG)","3.4"],
 ["w","Control connections between SD-WAN devices use …",["SSH and HTTPS","DTLS and TLS","GRE only","IKEv1"],1,"Control and management connections run over DTLS or TLS. OMP rides inside them. (CSLG · ENSLD)","3.4"],
 ["w","An SD-WAN WAN link uses public Internet behind NAT. Which color type?",["Private color","Public color","No color","mpls"],1,"Public colors (internet, lte, biz…) build tunnels to the post-NAT address. Private colors assume no NAT. (ENSLD)","3.4"],
 ["w","Branch users should reach the Internet locally rather than via HQ.",["Hairpinning","Split tunneling","Backhaul all traffic","Q-in-Q"],1,"Local Internet breakout is split tunneling. Translate internal addresses with PAT on the ISP interface. (CSLG)","3.3"],
@@ -1713,12 +1735,12 @@ const Q=[
 ["r","Dual-homed to two ISPs, you notice Internet traffic transiting your AS. Fix?",["Raise local preference toward ISP 1","Advertise only your own PI prefixes","Enable BGP multipath across both ISPs","Send a lower MED to both providers"],1,"Re-advertising one ISP's routes to the other makes you transit. Filter outbound so only locally originated prefixes leave. (ARCH · CSLG)","1.5"],
 ["r","You own a /16 PI block and two ISPs. Best ingress load-sharing design?",["Send the /16 to ISP 1 only","One /17 to each ISP + the /16 to both","Prepend the /16 equally toward both ISPs","Send many /24s to both ISPs"],1,"Specifics split inbound traffic, and the aggregate on both links gives backup. (ARCH)","1.5"],
 ["r","You only own a /24 and connect to two ISPs. What can you achieve?",["Even load balancing across both ISPs","Active/standby with AS-path prepending","Split it into two /25s, one per ISP","Nothing, a /24 can't be multihomed"],1,"/25s get filtered on the Internet, so prepend toward the backup ISP. (ARCH · CSLG)","1.5"],
-["r","Two parallel links to the same ISP router should both carry traffic.",["Two eBGP sessions with maximum-paths 2","eBGP between loopbacks + ebgp-multihop","iBGP over both links to the ISP","A different MED on each of the links"],1,"One session between loopbacks, and the underlying ECMP shares the load. (CSLG)","1.5"],
+["r","Two parallel links to the same ISP router should both carry traffic over a single BGP session.",["Two eBGP sessions with maximum-paths 2","eBGP between loopbacks + ebgp-multihop","iBGP over both links to the ISP","A different MED on each of the links"],1,"One session between loopbacks, and the underlying ECMP shares the load. Two sessions with maximum-paths also work, but that is two sessions. (CSLG)","1.5"],
 ["r","Which IS-IS authentication should you design for?",["Plaintext link","Plaintext area","MD5 hashing","None"],2,"Plaintext exposes the password in the PDU. Use MD5. (ENSLD)","1.2"],
 ["r","Which statement about OSPF and IS-IS area design is correct?",["Both put area borders inside routers","OSPF: border in the ABR; IS-IS: on links","IS-IS also needs a backbone Area 0","An OSPF router can only be in one area"],1,"In OSPF the ABR is in several areas. In IS-IS each router belongs to one area. (CSLG)","1.2"],
 ["w","Which multicast-capable tunneling would you use to carry an IGP over IPsec site-to-site?",["Plain IPsec","GRE over IPsec","GETVPN over Internet","L2TP"],1,"Plain IPsec can't carry multicast or IGP hellos, but GRE wrapped in IPsec can. (ENSLD)","3.2"],
 ["r","An OSPF design places a hub router as ABR for 40 spoke areas. Concern?",["No concern, there is no limit at all","It keeps one LSDB per area; watch CPU/RAM","OSPF forbids more than 3 areas per ABR","It prevents summarization into Area 0"],1,"Each area means one more database. Modern ABRs handle 50+ areas, but watch the load. (CSLG)","1.4"],
-["r","Which is TRUE about BGP communities?",["They are well-known mandatory attributes","Stripped on outgoing updates by default","They change the best-path selection order","They only work between iBGP neighbors"],1,"Communities are optional transitive attributes, but IOS doesn't send them unless send-community is set. (CSLG)","1.5"],
+["r","Which is TRUE about BGP communities?",["They are well-known mandatory attributes","Not sent unless send-community is set","They change the best-path selection order","They only work between iBGP neighbors"],1,"Communities are optional transitive attributes, but IOS doesn't send them unless send-community is set. (CSLG)","1.5"],
 ["r","Which RFC 3021 feature saves addresses on point-to-point links?",["/30 masks","/31 masks","Unnumbered only","/32 masks"],1,"/31s use both addresses on point-to-point links. (CSLG)","1.1"],
 ["c","You need sub-second failover between distribution and core without tuning OSPF timers.",["Lower hello to 1 s","Enable BFD","Enable GR","Use static routes"],1,"BFD detects failures in under a second for any protocol and tells the routing process. (ENSLD)","2.1"],
 ["c","A dual-supervisor core switch must keep forwarding during a supervisor failover.",["BFD with aggressive timers on all links","SSO with NSF/Graceful Restart","HSRP between the two supervisors","UDLD in aggressive mode on all uplinks"],1,"SSO keeps forwarding while NSF/GR stops peers from tearing down routes. (ENSLD · ARCH)","2.1"],
@@ -1733,10 +1755,10 @@ const Q=[
 ["c","In a routed access design, where are VRFs defined?",["Core","Distribution","Access switch","WAN edge"],2,"VRFs sit where L2 meets L3, which is the access switch in routed access. (ARCH)","2.3"],
 ["c","SD-Access campus must enforce SGT policy on wireless clients.",["Over-the-top wireless","Fabric mode wireless","FlexConnect","Autonomous APs"],1,"Fabric wireless sends client traffic in VXLAN with SGTs to the edge. (ENSLD)","2.5"],
 ["c","Older APs that aren't fabric-capable must work in a new SD-Access site.",["Fabric wireless","Over-the-top","Remove them","Mesh mode"],1,"OTT keeps CAPWAP for control and data, and the fabric is just transport. (ENSLD)","2.5"],
-["c","Where is the fabric WLC located?",["Inside the fabric on an edge node","Outside the fabric, ≤20 ms from APs","Only in the cloud, as a service","On the control plane node itself"],1,"The WLC is outside the fabric overlay, with AP-to-WLC latency of 20 ms or less. (CSLG)","2.5"],
+["c","Where is the fabric WLC located?",["Inside the fabric on an edge node","Outside the fabric, ≤20 ms RTT from APs","Only in the cloud, as a service","On the control plane node itself"],1,"The WLC is outside the fabric overlay, with an AP-to-WLC round-trip time of 20 ms or less. (CSLG)","2.5"],
 ["c","Which SD-Access plane uses VXLAN?",["Control","Data","Policy","Management"],1,"LISP is control, VXLAN is data, and SGT/TrustSec is policy. (ENSLD · CSLG)","2.4"],
 ["c","Which underlay protocol does LAN automation typically deploy in SD-Access?",["OSPF","EIGRP","IS-IS","RIP"],2,"IS-IS is the common underlay IGP. (CSLG)","2.4"],
-["c","Which access-layer setting speeds PortFast and improves security on host ports?",["Enable DTP desirable on host ports","Disable trunking on host ports","Put access switches in VTP server mode","Use native VLAN 1 for all host ports"],1,"Turning off trunk negotiation avoids DTP delay and VLAN-hopping risk. (ENSLD)","2.2"],
+["c","Which access-layer setting speeds up port bring-up and improves security on host ports?",["Enable DTP desirable on host ports","Disable trunking on host ports","Put access switches in VTP server mode","Use native VLAN 1 for all host ports"],1,"Turning off trunk negotiation avoids DTP delay and VLAN-hopping risk. (ENSLD)","2.2"],
 ["w","A provider offers a point-to-point Ethernet circuit over its MPLS core.",["VPLS","VPWS","L3VPN","DWDM"],1,"VPWS is point-to-point L2VPN. VPLS is multipoint. (ENSLD)","3.1"],
 ["w","Which technology adds bandwidth on fiber by using different wavelengths?",["Dark fiber","Metro Ethernet","GSM","DWDM"],3,"DWDM multiplexes many wavelengths on one fiber. (ENSLD)","3.1"],
 ["w","Which VPN option doesn't work on public networks that use NAT?",["GETVPN","DMVPN","Remote-access VPN","FlexVPN"],0,"GETVPN keeps the original IP header, so it needs private routable addressing end to end. (ENSLD)","3.2"],
@@ -1747,7 +1769,7 @@ const Q=[
 ["w","SD-WAN must move voice off a link when latency exceeds 150 ms.",["Raise the OMP preference on MPLS","App-aware routing with BFD SLA probes","Static routes with IP SLA tracking","Change the TLOC color of the link"],1,"BFD on each tunnel measures loss, latency and jitter, and app-aware routing picks a compliant path. (ENSLD)","3.5"],
 ["w","European branches should use a European Internet exit, US branches a US exit.",["Direct Internet access at every branch","Regional Internet access via regional hubs","Backhaul all Internet traffic to HQ","Disable Internet access at branches"],1,"Regional access sits between per-branch DIA and one global exit. (CSLG)","3.5"],
 ["a","Users complain about Microsoft 365 performance at SD-WAN branches.",["Cloud OnRamp for SaaS","Cloud OnRamp for IaaS","GETVPN","Raise MTU"],0,"Cloud OnRamp for SaaS probes paths and steers traffic to the best exit. (ENSLD)","5.5"],
-["w","In a multitenant SD-WAN, which controllers are shared by tenants?",["vSmart and WAN Edge","vManage and vBond","vSmart only","None"],1,"vManage and vBond are shared, and each tenant has its own vSmart. (CSLG)","3.5"],
+["w","In a multitenant SD-WAN before release 20.4, which controllers are shared by tenants?",["vSmart and WAN Edge","vManage and vBond","vSmart only","None"],1,"vManage and vBond are shared, and each tenant has its own vSmart. From 20.4, multitenant vSmarts can be shared too. (CSLG)","3.5"],
 ["w","What carries multicast across the SD-WAN overlay?",["The vSmart controller","Replicator","The vBond orchestrator","OMP alone, nothing else needed"],1,"Replicators copy multicast streams to the edges with receivers. (ENSLD)","3.5"],
 ["s","Which QoS model provides hard end-to-end guarantees with signaling?",["DiffServ","IntServ","Best effort","CBWFQ"],1,"IntServ reserves resources per flow with RSVP. (ARCH)","4.1"],
 ["s","Why do enterprises choose DiffServ over IntServ?",["It gives hard end-to-end guarantees","It aggregates flows into classes","It needs no packet marking at all","It requires RSVP signaling on every hop"],1,"DiffServ keeps state per class, not per flow. (ARCH · CSLG)","4.1"],
@@ -1758,39 +1780,39 @@ const Q=[
 ["s","How many bits of an IPv4 multicast address are mapped to the MAC address?",["16","23","24","32"],1,"The low 23 bits go behind 01:00:5e, so 32 groups share each MAC. (ENSLD)","4.4"],
 ["s","Two PIM-SM domains must learn each other's active sources.",["Auto-RP","BSR","MSDP","IGMPv3"],2,"MSDP exchanges Source-Active messages between RPs. (ENSLD · ARCH)","4.5"],
 ["s","Which Auto-RP role announces group-to-RP mappings to all routers?",["Candidate RP","Mapping agent","Bootstrap router (BSR)","Designated router (DR)"],1,"Candidate RPs announce themselves, and mapping agents pick and advertise mappings. (ARCH)","4.5"],
-["s","Why avoid WRED on the network-control CBWFQ class?",["WRED reacts too slowly for control traffic","They must never be dropped or reordered","WRED only works with EF-marked traffic","WRED breaks NAT on the WAN edge router"],1,"Routing protocol packets need guaranteed delivery. (ARCH)","4.2"],
+["s","Why avoid WRED on the network-control CBWFQ class?",["WRED reacts too slowly for control traffic","Dropping or reordering them destabilizes routing","WRED only works with EF-marked traffic","WRED breaks NAT on the WAN edge router"],1,"Early drops or reordering of routing packets can tear down adjacencies, so the class gets no WRED. (ARCH)","4.2"],
 ["s","Which (*,G) statement is true?",["A specific source sending to a group","Any source via the RP shared tree","Always the optimal path from the source","Used only by Source-Specific Multicast"],1,"(*,G) is the shared tree rooted at the RP for any source. (ARCH)","4.4"],
 ["a","Which uses HTTP/2, protobuf and bidirectional streaming?",["NETCONF","RESTCONF","gRPC","SNMP"],2,"gRPC runs over HTTP/2 and supports bidirectional streams. (ENSLD)","5.4"],
 ["a","A business needs full control of every application component for compliance.",["SaaS","PaaS","IaaS","On-premises"],3,"Only on-premises gives full ownership and control. (CCDE)","5.6"],
 ["a","A business wants control of its virtual infrastructure on a pay-as-you-go basis.",["SaaS","PaaS","IaaS","On-premises"],2,"IaaS provides compute, storage and network as a service. (CCDE)","5.6"],
 ["a","Which cloud type lets a business ease into cloud over a long period?",["Private","Public","Hybrid","Multi-cloud"],2,"Hybrid keeps on-prem while moving workloads over time. (CCDE)","5.6"],
 ["a","Which cloud type has the highest cost and most control?",["Hybrid","Private","Multi-cloud","Public"],1,"Private cloud gives the most control at the highest cost. (CCDE)","5.6"],
-["a","Which hyperconverged solution integrates on-prem infrastructure with public cloud?",["Umbrella","UCS Director","Meraki","HyperFlex"],3,"Cisco HyperFlex is the hybrid hyperconverged option. (ENSLD)","5.6"],
+["a","Regulated data must stay on-premises, but seasonal peaks should burst to a public provider. Which deployment model?",["Public cloud only","Private cloud only","Multicloud SaaS","Hybrid cloud"],3,"Hybrid cloud keeps sensitive workloads private and uses public capacity on demand. (ENSLD · CCDE)","5.6"],
 ["s","Hosts in one VLAN get multicast they never joined. Fix at Layer 2?",["PIM dense mode","IGMP snooping","MSDP","Storm control"],1,"IGMP snooping lets the switch forward groups only to ports that joined. (ENSLD)","4.4"],
 ["r","In a three-layer EIGRP design, which layer's routers should be stubs?",["Core","Distribution","Access","Aggregation"],2,"Access routers are leaves, so as stubs they're never queried. (CSLG)","1.3"],
 ["r","Why might a company legitimately run two EIGRP AS numbers?",["To stop queries","During a merger migration","To get unequal-cost load balancing","To enable stubs"],1,"Multiple AS numbers suit mergers or separate admin domains. Queries are only delayed, not stopped. (ARCH · CSLG)","1.3"],
-["r","Two hubs both send 192.168.0.0/22 toward the core. Hub A loses the link to spoke 192.168.2.0/24. What happens?",["Traffic reroutes automatically via Hub B","Hub A black-holes it via its Null0 summary","The core removes the /22 summary","Nothing, both hubs keep forwarding"],1,"Hub A still advertises the summary but has no specific route. Add a hub-to-hub link or leak specifics. (CSLG)","1.3"],
+["r","Two hubs both send 192.168.0.0/22 toward the core as an EIGRP summary. Hub A loses the link to spoke 192.168.2.0/24. What happens?",["Traffic reroutes automatically via Hub B","Hub A black-holes it via its Null0 summary","The core removes the /22 summary","Nothing, both hubs keep forwarding"],1,"Hub A still advertises the summary but has no specific route. Add a hub-to-hub link or leak specifics. (CSLG)","1.3"],
 ["r","An EIGRP router hasn't received a query reply for about 3 minutes.",["It becomes a feasible successor","Stuck in active (SIA)","It performs a graceful restart","It returns to the passive state"],1,"SIA happens when queries spread too far. Contain them with summarization, filtering and stubs. (ARCH)","1.3"],
 ["r","Which statement about EIGRP over DMVPN is true?",["Spokes always form full-mesh adjacencies","Adjacencies are always hub-and-spoke","EIGRP can't run over DMVPN","Split horizon must stay on"],1,"EIGRP peers only hub-to-spoke in every phase, which keeps the adjacency count low. (ARCH)","1.3"],
 ["r","How should OSPF SPF-Hold be set relative to SPF run time?",["Lower than the SPF run time","Equal to the SPF run time","Higher, allowing for growth","Irrelevant to SPF performance"],2,"A new SPF can't start before the previous one finishes. (ARCH · CSLG)","1.4"],
 ["r","Which statement about NAT64 is correct?",["It translates ULA to global IPv6","With DNS64, IPv6-only hosts reach IPv4","It is stateless end-to-end IPv6","Dual-stack hosts always require it"],1,"NAT64 translates the packets, and DNS64 synthesizes AAAA records from A records. (ARCH)","1.6"],
-["r","Which two are tunneling transition mechanisms?",["NAT64 and DNS64","6RD and DS-Lite","Dual stack and DHCPv6","SLB64 and NAT64"],1,"6RD tunnels IPv6 over IPv4 transit, and DS-Lite tunnels IPv4 over IPv6. (ARCH)","1.6"],
+["r","An ISP with an IPv4-only access network wants to offer customers IPv6 quickly, statelessly, from its own prefix.",["6RD","ISATAP","NAT64","Dual stack on the CPE only"],0,"6RD extends 6to4 but uses the provider's own prefix instead of 2002::/16 (RFC 5969). (ENSLD)","1.6"],
 ["r","Which statement about dual stack is correct?",["It needs no extra device resources","Hosts use v4 and v6 without encapsulation","IPv6 starts only after IPv4 times out","It always improves host latency"],1,"Both stacks run natively side by side, at the cost of more memory and CPU. (ARCH)","1.6"],
 ["r","With LISP for IPv6 transit, what lets non-LISP sites reach the LISP site?",["xTR","Map-Server","PxTR","Map-Resolver"],2,"Proxy xTRs bridge LISP and non-LISP sites. (ARCH)","1.6"],
 ["r","Your ISP has no native IPv6, but HQ must reach the IPv6 Internet now.",["NAT-PT on the Internet edge","A tunnel broker","ISATAP between HQ and the ISP","Wait until the ISP offers IPv6"],1,"A tunnel broker gives IPv6 access over manual IPv4 tunnels. (ARCH)","1.6"],
-["c","A user plugs a small switch into a PortFast access port.",["Root Guard puts the port in root-inconsistent","BPDU Guard err-disables the port","Loop Guard blocks the port as loop-inconsistent","UDLD shuts the port as unidirectional"],1,"Any BPDU on a BPDU Guard port shuts it down. (ENSLD)","2.2e"],
+["c","A user plugs a small switch into a PortFast access port. Which protection should react?",["Root Guard puts the port in root-inconsistent","BPDU Guard err-disables the port","Loop Guard blocks the port as loop-inconsistent","UDLD shuts the port as unidirectional"],1,"Any BPDU on a BPDU Guard port shuts it down. (ENSLD)","2.2e"],
 ["c","Where do you apply Root Guard?",["On all host-facing access ports","Distribution downlinks toward access","On the core uplinks toward distribution","On the WAN interfaces of the edge"],1,"It stops an access-side switch from ever becoming root. (ENSLD)","2.2e"],
 ["c","Clients get addresses from a rogue DHCP server, and ARP spoofing follows.",["A VACL on every user VLAN","DHCP snooping + Dynamic ARP Inspection","Port security on every access port only","Storm control on all uplinks"],1,"DHCP snooping builds the binding table, and DAI checks ARP against it. (CCDE)","2.2e"],
 ["c","Mutual redistribution between OSPF and EIGRP at two routers causes loops.",["Raise the AD of both protocols everywhere","Tag routes and filter by tag","Replace redistribution with static routes","Shut down one of the two routers"],1,"Tag on redistribution and deny that tag on the way back. (ARCH)","2.3"],
 ["c","Which component provides identity and SGT policy in SD-Access?",["DNA Center","Cisco ISE","Border node","WLC"],1,"ISE handles AAA, groups and policy. DNA Center orchestrates. (ENSLD)","2.4"],
 ["w","Customer needs multipoint L2 connectivity and its own routing across a provider.",["VPWS","VPLS","MPLS L3VPN","GETVPN"],1,"VPLS emulates a LAN across sites, while VPWS is point-to-point. (ENSLD)","3.1"],
 ["w","In Cisco SD-WAN, what provides segmentation like a VRF?",["TLOC","VPN","Color","Site ID"],1,"SD-WAN VPNs separate traffic end to end, each with its own topology policy. (ENSLD)","3.5"],
-["s","Which IntServ service uses RSVP with WFQ to reserve bandwidth?",["Controlled load","Guaranteed rate","Best effort","Scavenger class"],1,"Guaranteed rate reserves bandwidth. Controlled load uses RSVP with WRED. (ARCH-SS)","4.1"],
+["s","Which IntServ service uses RSVP with WFQ to reserve bandwidth?",["Controlled load","Guaranteed rate","Best effort","Scavenger class"],1,"Guaranteed rate reserves bandwidth. Controlled load gives lightly-loaded-network behavior; Cisco IOS implements it with RSVP and WRED. (ARCH-SS)","4.1"],
 ["s","How many bits make up the DSCP field?",["3","6","8","16"],1,"6 bits of DSCP plus 2 ECN bits equal the old 8-bit ToS byte. (ARCH-SS)","4.1"],
 ["s","Which collects flow data for planning, accounting and billing?",["RMON probes","NetFlow","CDP","Syslog"],1,"NetFlow exports flow records. RMON gives aggregate LAN statistics. (ENSLD)","4.3"],
 ["s","You need neighbor discovery in a multivendor network.",["CDP","LLDP","VTP","NetFlow"],1,"CDP is Cisco-proprietary, and LLDP is the standard. (ENSLD)","4.3"],
 ["a","Which uses a single gRPC channel for config and streaming operational data on YANG models?",["SNMP","gNMI","NETCONF","Syslog"],1,"gNMI handles Get/Set/Subscribe over gRPC. (ENSLD)","5.4"],
-["a","Which gRPC operation retrieves operational data?",["GetConfig","GetOper","MergeConfig","ShowConfig"],1,"GetOper returns operational data, and GetConfig returns configuration. (ENSLD)","5.4"],
+["a","Which operation of Cisco's gRPC service retrieves operational data?",["GetConfig","GetOper","MergeConfig","ShowConfig"],1,"GetOper returns operational data, and GetConfig returns configuration. (ENSLD)","5.4"],
 ["a","Branches should reach workloads in AWS and Azure, provisioned from vManage.",["Cloud OnRamp for SaaS","Cloud OnRamp for Multicloud","GETVPN to each cloud","DMVPN to each cloud region"],1,"Cloud OnRamp for Multicloud automates site-to-cloud connectivity. (ENSLD)","5.5"],
 ["a","Connect sites to several clouds through Megaport or Equinix.",["Cloud Hub","Cloud Interconnect","Cloud OnRamp for SaaS","Direct Internet Access"],1,"Cloud Interconnect uses a cloud-agnostic backbone from interconnect providers. (ENSLD)","5.5"],
 ["r","A router must exchange VPNv4 routes with a PE and IPv6 routes with an ISP. What do you use?",["Two separate BGP processes on the router","MP-BGP with separate address families","OSPFv3 with an address family per protocol","Redistribution of both into EIGRP"],1,"MP-BGP carries each NLRI type in its own address family with its own RIB. (CSLG)","1.5"],
@@ -1799,8 +1821,8 @@ const Q=[
 ["c","Which blueprint item do StackWise Virtual and VSS fall under?",["Loop-free technologies only","Platform abstraction techniques","Graceful restart","Bidirectional Forwarding Detection"],1,"Platform abstraction = several chassis as one logical switch. (ENSLD blueprint 2.1.b)","2.1"],
 ["c","Two SD-Access VNs must both reach DHCP and DNS in the data center.",["Merge both VNs into one","Fusion router/firewall leaking routes","Stretch a shared VLAN into both VNs","Static routes on every edge node"],1,"The border hands VNs to a fusion device that leaks between VRFs or into the global table. (ENSLD)","2.5"],
 ["c","Sales and Marketing share a VN but must not talk to each other.",["Put them in separate VNs","SGT microsegmentation with SGACLs","VACLs on every edge node","Private VLANs on the access ports"],1,"VNs are macro segmentation. SGTs give micro segmentation inside a VN. (ENSLD)","2.5"],
-["c","Which transit loses SGT and VN context between fabric sites?",["SD-Access transit","SD-WAN transit","IP transit","Distributed campus transit"],2,"An IP transit decapsulates to native IP, so policy context is lost. (ENSLD)","2.5"],
-["w","A small branch needs an SD-WAN router up to ~200 Mbps; the DC needs 10 Gbps.",["ISR 1000 / vEdge 2000","ASR 1000 everywhere","CSR1000v only","ENCS only"],0,"ISR 1000 (~200 Mbps) fits the branch, and vEdge 2000 (10 Gbps) fits the DC. (ENSLD platform table)","3.1"],
+["c","Which transit does not carry SGT and VN natively in the fabric encapsulation?",["SD-Access transit","SD-WAN transit","IP transit","Distributed campus transit"],2,"An IP transit decapsulates to native IP. VN then needs a VRF-Lite handoff and SGT needs SXP or inline tagging. SD-Access and SD-WAN transits carry both natively. (ENSLD · Cisco)","2.5"],
+["w","A small branch needs an SD-WAN router up to ~200 Mbps; the DC needs 10 Gbps.",["ISR 1000 / vEdge 2000","ASR 1000 everywhere","CSR1000v only","ENCS only"],0,"ISR 1000 (~200 Mbps) fits the branch, and vEdge 2000 (10 Gbps) fits the DC. This is the ENSLD guide's table; vEdge is end-of-sale, and a Catalyst 8500 fits a 10 Gbps DC today. (ENSLD platform table)","3.1"],
 ["w","Which WAN option has low/medium bandwidth and the lowest reliability?",["DWDM","Metro Ethernet","4G/5G","MPLS L3VPN"],2,"Cellular is best as backup or for quick turn-up. (ENSLD WAN comparison)","3.1"],
 ["w","A new IOS XE SD-WAN router ships to a branch with no IT staff. Which onboarding?",["Manual console configuration","PnP Connect (zero touch)","Bootstrap via USB only","Static NAT toward vBond"],1,"PnP Connect discovers, installs and provisions the device on day 0. (ENSLD)","3.4"],
 ["w","What secures SD-WAN control channels?",["Pre-shared keys over GRE tunnels","Certificates over TLS/DTLS","SNMPv3 with authPriv","MD5 authentication on OMP"],1,"Every element authenticates with certificates before joining. (ENSLD)","3.4"],
@@ -1808,7 +1830,7 @@ const Q=[
 ["w","Which increases SD-WAN control plane availability and scale?",["Building a vManage cluster","Adding more vSmart controllers","Adding more vEdges at each site","Adding more vBond orchestrators"],1,"vSmart is the control plane, so add vSmarts. (ENSLD)","3.5"],
 ["w","Which multicast protocol does Cisco SD-WAN support over the fabric?",["MSDP","PIM-SM","Bidir-PIM","Dense mode"],1,"SD-WAN supports PIM-SM with replicators. (ENSLD)","3.5"],
 ["a","You want CPU utilization every 10 seconds for trending.",["On-change publication","Periodic publication","An SNMP trap per interval","A syslog message per sample"],1,"Periodic subscriptions push at a fixed cadence. (ENSLD)","5.3"],
-["a","Impact of model-driven telemetry compared to SNMP polling",["More polling load on every device","Pushed, YANG-structured live data","It only works with screen-scraped CLI","It needs RMON probes on each segment"],1,"MDT streams structured data based on YANG subscriptions instead of polling. (ENSLD)","5.3"],
+["a","What does model-driven telemetry give you that SNMP polling doesn't?",["More polling load on every device","Pushed, YANG-structured live data","It only works with screen-scraped CLI","It needs RMON probes on each segment"],1,"MDT streams structured data based on YANG subscriptions instead of polling. (ENSLD)","5.3"],
 ["c","In this L2 access design, Dist 2 is HSRP active but Dist 1 is the STP root. What's the problem?",["Nothing, this is best practice","Frames go to Dist 1, then over the trunk","HSRP can't form between the switches","VLANs can no longer span closets"],1,"Align the STP root with the HSRP active gateway so the forwarding uplink leads straight to the gateway. (ENSLD)","2.2"],
 ["s","R3 receives the same multicast stream from R1 (toward the source) and from R2. What happens to the copy from R2?",["It is forwarded as well","Dropped by the RPF check","It is sent to the RP instead","It is converted to unicast"],1,"RPF accepts a multicast packet only on the interface the unicast table uses to reach the source, which prevents loops. (ARCH)","4.4"],
 ["r","A route reflector receives a route from a non-client iBGP peer. Who gets it?",["Everyone, including non-clients","Only clients and eBGP peers","Only the other non-clients","Nobody, it is dropped"],1,"Routes from non-clients are reflected only to clients (and eBGP), never to other non-clients. (ARCH)","1.5"],
@@ -1830,7 +1852,7 @@ const Q=[
 ["r","Order the first BGP best-path criteria, from first checked to last.",["Highest weight","Highest local preference","Locally originated","Shortest AS path","Lowest origin type","Lowest MED"],"order","Mnemonic: We Love Oranges AS Oranges Mean Pure Refreshment. (ENSLD)","1.5"],
 ["w","Order how a new Cisco SD-WAN edge joins the overlay.",["Authenticate with the vBond orchestrator","Open DTLS/TLS sessions to vManage and vSmart","Receive OMP routes, TLOCs and keys","Build IPsec data tunnels with BFD to other edges"],"order","vBond is the first contact, then controllers, then OMP, then the data plane. (ENSLD · CSLG)","3.4"],
 ["w","Order the DMVPN Phase 3 steps that build a spoke-to-spoke tunnel.",["First packets travel spoke → hub → spoke","Hub sends an NHRP redirect to the source spoke","Source spoke resolves the other spoke's NBMA address","Traffic moves to the direct spoke-to-spoke tunnel"],"order","Phase 3 needs ip nhrp redirect on the hub and ip nhrp shortcut on spokes. (ARCH)","3.2"],
-["s","Order the PIM-SM events for a new source and receiver.",["FHR registers the source with the RP","Traffic flows down the shared (*,G) tree","LHR joins the source (S,G) tree","RP branch is pruned from the path"],"order","With the default SPT threshold of 0, the switchover happens right after the first packets arrive. (ARCH)","4.4"],
+["s","Order the PIM-SM events when a new source starts sending to a group whose receiver has already joined the shared tree.",["FHR registers the source with the RP","Traffic flows down the shared (*,G) tree","LHR joins the source (S,G) tree","RP branch is pruned from the path"],"order","With the default SPT threshold of 0, the switchover happens right after the first packets arrive. (ARCH)","4.4"],
 ["c","Order how SD-Access delivers traffic from host A to host B.",["Edge 2 registers host B with the control plane","Edge 1 sends a map-request for host B","Control plane replies with Edge 2's RLOC","Edge 1 encapsulates the traffic in VXLAN to Edge 2"],"order","LISP is the control plane and VXLAN the data plane. (CSLG · ENSLD)","2.4"],
 ["s","Order where each QoS function is applied, from endpoint to WAN.",["Mark at the IP phone (EF)","Trust and classify at the access switch","Queue by DSCP on every hop","Shape to the contracted rate at the WAN edge"],"order","Classify and mark close to the source, queue everywhere, shape where the rate drops. (ARCH)","4.2"],
 ["c", "A campus has 300 VLANs but only two distinct L2 topologies. The switch CPU is high from STP. Best fix?", ["Rapid PVST+ on every VLAN", "MST with two instances", "Disable STP on trunks", "BPDU Filter on all ports"], 1, "MST maps VLANs with the same topology into a few instances. (ENSLD)", "2.2"],
@@ -1876,7 +1898,7 @@ Q.push(
 ["a", "Interface down events must reach the collector within seconds, with no polling.", ["SNMP polling of ifOperStatus every 5 s", "On-change MDT subscription", "Periodic MDT subscription every 5 min", "Syslog at level 7 (debugging) to the collector"], 1, "On-change publication sends an update only when the value changes, the right fit for state like interface status. (ENSLD · CSLG)", "5.3"],
 ["a", "The DC needs a private connection to AWS with consistent latency, not over the Internet.", ["IPsec VPN to a virtual gateway", "AWS Direct Connect", "Cloud OnRamp for SaaS", "A GRE tunnel over the Internet"], 1, "Direct Connect (Azure: ExpressRoute) is a dedicated private link with predictable performance. (ENSLD · CSLG)", "5.5"],
 ["a", "Developers want to deploy their own code without managing the OS or runtime.", ["IaaS", "PaaS", "SaaS", "On-premises private cloud"], 1, "PaaS gives you the platform; you bring only the application and data. IaaS still leaves the OS to you. (ENSLD · CCDE)", "5.6"],
-["r", "Match each OSPF area type to the LSAs it blocks.", [["Standard area", "Nothing"], ["Stub", "Type 5"], ["Totally stubby", "Types 3, 4 and 5"], ["NSSA", "Type 5 (type 7 allowed)"]], "match", "Stubs replace what they block with a default route. NSSA allows local redistribution as type 7. (ENSLD · CSLG)", "1.4"],
+["r", "Match each OSPF area type to the LSAs it blocks.", [["Standard area", "Nothing"], ["Stub", "Type 5"], ["Totally stubby", "Types 3 and 5"], ["NSSA", "Type 5 (type 7 allowed)"]], "match", "Stubs replace what they block with a default route. NSSA allows local redistribution as type 7. (ENSLD · CSLG)", "1.4"],
 ["r", "Match each BGP attribute to its scope.", [["Weight", "One router only (Cisco)"], ["Local preference", "Shared inside your AS"], ["MED", "Hint to the neighbor AS"], ["AS path", "Loop prevention and length"]], "match", "Weight and local preference steer outbound traffic; MED and prepending try to steer inbound. (ENSLD)", "1.5"],
 ["r", "Match each IPv6 mechanism to its transition category.", [["Interfaces run IPv4 and IPv6", "Dual stack"], ["Manual 6in4 tunnel", "Tunneling"], ["ISATAP", "Tunneling"], ["NAT64", "Translation"], ["DNS64", "Translation"]], "match", "Dual stack is preferred; tunneling crosses IPv4-only parts; translation connects IPv6-only to IPv4-only. (ENSLD · ARCH)", "1.6"],
 ["c", "Match each FHRP property to its protocol.", [["IETF standard, preemption on by default", "VRRP"], ["Load balancing behind one virtual IP", "GLBP"], ["Cisco, active/standby, 3 s hello", "HSRP"]], "match", "VRRP is the standard; GLBP balances with up to 4 AVFs; HSRP is Cisco active/standby. (ENSLD)", "2.1"],
@@ -1892,6 +1914,14 @@ Q.push(
 ["a", "Match each YANG module to its source.", [["openconfig-interfaces", "OpenConfig"], ["ietf-ip", "IETF"], ["Cisco-IOS-XE-native", "Cisco native"], ["ietf-interfaces", "IETF"], ["openconfig-bgp", "OpenConfig"]], "match", "Use OpenConfig or IETF for multivendor scripts and native models for platform features. (ENSLD)", "5.1"],
 ["a", "Match each case to its cloud service model.", [["Use the provider's finished app", "SaaS"], ["Deploy your code; provider runs OS and runtime", "PaaS"], ["Manage the OS; provider runs the hardware", "IaaS"], ["Microsoft 365", "SaaS"]], "match", "Moving from IaaS to SaaS, the provider manages more and you control less. (ENSLD · CCDE)", "5.6"]);
 Object.assign(QD,{"The customer wants the provider to handle routing":["e","mplsvpn"],"Area 3 must join OSPF now":["e","vlink"],"Two RPs in one PIM-SM domain":["e","anycast"],"A 40-router iBGP AS":["e","rr"],"An attacker floods an access port":["e","l2sec"],"Interface down events must reach":["e","mdt"],"A few critical video flows":["e","intdiff"],"The DC needs a private connection to AWS":["e","cloudconn"]});
+Object.assign(DG,{
+redistloop:{h:192,n:[["o",60,75,"OSPF domain"],["r1",180,28,"R1"],["r2",180,122,"R2"],["e",300,75,"EIGRP domain"]],l:[["o","r1","f"],["r1","e","f"],["e","r2","f"],["r2","o","r"]],t:[[180,62,"redistribute","m"],[180,98,"…and back in","r"],[180,162,"OSPF route → EIGRP at R1 → back into OSPF at R2","r"],[180,178,"fix: tag on redistribution, deny that tag coming back","g"]]},
+dualhub:{h:182,z:[[4,8,172,128,"Single cloud","g"],[184,8,172,128,"Dual cloud","o"]],n:[["h1",50,42,"Hub 1"],["h2",130,42,"Hub 2"],["s1",50,112,"Spoke"],["s2",130,112,"Spoke"],["h3",230,42,"Hub 1"],["h4",310,42,"Hub 2"],["s3",230,112,"Spoke"],["s4",310,112,"Spoke"]],l:[["h1","s1","b"],["h1","s2","b"],["h2","s1","b"],["h2","s2","b"],["s1","s2","ga"],["h3","s3","b"],["h3","s4","b"],["h4","s3","o"],["h4","s4","o"]],t:[[90,154,"one mGRE · spoke↔spoke ✓","g"],[270,154,"tunnel per hub · easy hub pref","o"],[180,174,"spoke-to-spoke tunnels form only inside one cloud","m"]]},
+glbp:{h:190,n:[["d1",92,30,"Dist 1 · AVG + AVF"],["d2",270,30,"Dist 2 · AVF"],["a",60,130,"PC A"],["b",180,130,"PC B"],["c",300,130,"PC C"]],l:[["d1","d2","d","hellos"],["a","d1","g"],["b","d1","g"],["c","d2","o"]],t:[[38,84,"vMAC 1","g"],[160,84,"vMAC 1","g"],[318,84,"vMAC 2","o"],[180,164,"every PC uses the same gateway IP","m"],[180,180,"AVG answers ARP with different vMACs → load shared","t"]]},
+fusion:{h:200,z:[[4,8,180,160,"Fabric site","t"]],n:[["vc",54,45,"VN Corp"],["vg",54,135,"VN Guest"],["bd",150,90,"Border"],["fu",300,90,"Fusion router"],["sh",300,22,"DHCP / DNS"]],l:[["vc","bd","b"],["vg","bd","r"],["bd","fu","b","VRF Corp",-6],["bd","fu","r","VRF Guest",6],["fu","sh","g"]],t:[[180,190,"fusion router (or firewall) leaks shared-service routes into each VN","m"]]}
+});
+Object.assign(QD,{"Mutual redistribution between OSPF and EIGRP":["e","redistloop"],"DMVPN needs hub redundancy":["e","dualhub"],"Both distribution switches should forward traffic":["e","glbp"],"Two SD-Access VNs must both reach DHCP and DNS":["e","fusion"],
+"You only own a /24 and connect to two ISPs":["e","bgpdir"],"You want ISP B to use its link":["e","bgpdir"],"Which two measures keep a dual-ISP enterprise":["e","transit"],"An OSPF design places a hub router as ABR":["e","abrhub"],"A new IS-IS area must connect":["e","isis"],"Access uplinks to the distribution pair":["e","svl"],"Guest and corporate users must stay in separate routing tables":["e","vrflite"],"Encryption over an existing MPLS L3VPN":["e","mplsvpn"],"OSPF over DMVPN Phase 3":["e","dmvpn3"],"A branch has two routers and two carriers":["e","dualrtr"],"Two vEdge routers at a branch":["e","dualrtr"],"After a static route is added":["e","rpf"],"An Internet IPsec VPN backs up MPLS":["e","wanbackup"]});
 let qh={};try{qh=JSON.parse(localStorage.getItem("ensld-qh")||"{}")}catch(e){}
 let ql={};try{ql=JSON.parse(localStorage.getItem("ensld-ql")||"{}")}catch(e){}
 let mh=[];try{mh=JSON.parse(localStorage.getItem("ensld-mock")||"[]")}catch(e){}
@@ -1899,6 +1929,15 @@ const qsave=()=>{try{localStorage.setItem("ensld-qh",JSON.stringify(qh));localSt
 let qf="all",qmode="practice",qi=0,qr=0,qn=0,qorder=[],mock=null,mtimer=null;
 const qtype=q=>Array.isArray(q[3])?"multi":q[3]==="order"?"order":q[3]==="match"?"match":"single";
 const qanswer=q=>{const t=qtype(q);return t=="single"?q[2][q[3]]:t=="multi"?q[3].map(j=>q[2][j]).join(" + "):t=="match"?q[2].map(p=>p[0]+" → <b>"+p[1]+"</b>").join("<br>"):q[2].map((o,k)=>(k+1)+". "+o).join("<br>")};
+const sessSave=n=>{try{localStorage.setItem("ensld-qs",JSON.stringify({qf,qmode,qi:n==null?qi:n,qr,qn,qorder,mock,hint:baseHint(document.getElementById("qhint").textContent)}))}catch(e){}};
+const baseHint=s=>(s||"").replace(/^((Resumed where you left off|Resumed) · )+/,"");
+const sessClear=()=>{try{localStorage.removeItem("ensld-qs")}catch(e){}};
+function mockTimer(){clearInterval(mtimer);mtimer=setInterval(()=>{const el=document.getElementById("qtime");if(!el||!mock)return;const s=Math.max(0,Math.round((mock.end-Date.now())/1e3));
+      el.textContent=Math.floor(s/60)+":"+String(s%60).padStart(2,"0");el.style.color=s<600?"var(--bad)":"var(--c1)";if(s<=0){qi=qorder.length;quiz()}},1000)}
+function sessRestore(){let s;try{s=JSON.parse(localStorage.getItem("ensld-qs")||"null")}catch(e){}
+  if(!s||!Array.isArray(s.qorder)||!s.qorder.length||s.qorder.some(i=>!Q[i])||s.qi>=s.qorder.length)return false;
+  if(s.mock&&s.mock.end<=Date.now()){qorder=s.qorder;mock=s.mock;qmode="mock";qi=qorder.length;qFilters();quiz();return true}
+  ({qf,qmode,qi,qr,qn,qorder,mock}=s);qFilters();document.getElementById("qhint").textContent="Resumed · "+baseHint(s.hint);upd();if(mock)mockTimer();quiz();return true}
 function record(id,ok){if(!(id in qh))qh[id]=ok?1:0;ql[id]=ok?1:0;qsave()}
 function weakObjs(){const r=[];Object.keys(OBJ).forEach(k=>{const ids=Q.map((q,i)=>i).filter(i=>Q[i][5]==k),seen=ids.filter(i=>i in qh),ok=seen.filter(i=>qh[i]).length;
   if(seen.length&&ok/seen.length<.85)r.push(k)});return r}
@@ -1917,25 +1956,29 @@ function qStart(){
   clearInterval(mtimer);mock=null;qi=qr=qn=0;
   const inDom=i=>qf=="all"||Q[i][0]==qf,all=Q.map((q,i)=>i);
   let hint="";
-  if(qmode=="practice"){qorder=shuf(all.filter(inDom));hint="All question types · answers shuffled"}
+  if(qmode=="practice"){const p=all.filter(inDom);qorder=shuf(p.filter(i=>!(i in qh))).concat(shuf(p.filter(i=>i in qh)));hint="Unanswered questions first · answers shuffled"}
   else if(qmode=="wrong"){qorder=shuf(all.filter(i=>inDom(i)&&ql[i]===0));hint="Questions your last answer got wrong · answer right to clear them"}
   else if(qmode=="weak"){const w=weakObjs();const pool=all.filter(i=>inDom(i)&&w.includes(Q[i][5]));
     qorder=shuf(pool.filter(i=>!(i in qh)||ql[i]===0)).concat(shuf(pool.filter(i=>(i in qh)&&ql[i]!==0)));hint=w.length?"Sub-objectives under 85 %: "+w.join(", "):"No weak sub-objectives yet. Answer some questions first."}
   else{const per={};Object.entries(D).forEach(([k,d])=>per[k]=Math.round(60*d.w/100));
-    qorder=shuf([].concat(...Object.keys(per).map(k=>shuf(all.filter(i=>Q[i][0]==k)).slice(0,per[k]))));
+    let mu=[];try{mu=JSON.parse(localStorage.getItem("ensld-mu")||"[]")}catch(e){}
+    const pick=[].concat(...Object.keys(per).map(k=>{const dp=all.filter(i=>Q[i][0]==k);let fresh=dp.filter(i=>!mu.includes(i));
+      if(fresh.length<per[k]){mu=mu.filter(i=>Q[i]&&Q[i][0]!=k);const rest=shuf(dp.filter(i=>!fresh.includes(i)));return fresh.concat(rest).slice(0,per[k])}
+      return shuf(fresh).slice(0,per[k])}));
+    try{localStorage.setItem("ensld-mu",JSON.stringify([...new Set(mu.concat(pick))]))}catch(e){}
+    qorder=shuf(pick);
     mock={start:Date.now(),end:Date.now()+90*60e3,ans:{}};hint="60 questions weighted like the exam · 90 minutes · no feedback until the end · no going back";
-    mtimer=setInterval(()=>{const el=document.getElementById("qtime");if(!el)return;const s=Math.max(0,Math.round((mock.end-Date.now())/1e3));
-      el.textContent=Math.floor(s/60)+":"+String(s%60).padStart(2,"0");el.style.color=s<600?"var(--bad)":"var(--c1)";if(s<=0){qi=qorder.length;quiz()}},1000)}
+    mockTimer()}
   document.getElementById("qhint").textContent=hint;upd();quiz();
 }
 function quiz(){
   const box=document.getElementById("qbox");
-  if(qi>=qorder.length){clearInterval(mtimer);
+  if(qi>=qorder.length){clearInterval(mtimer);sessClear();
     if(mock){finishMock(box);return}
     if(!qorder.length){box.innerHTML=`<div class="done"><b>Nothing here</b>${qmode=="wrong"?"No wrong answers to retry 🎉":"Answer some questions in Practice first."}</div>`;return}
     const p=qn?qr/qn:0;box.innerHTML=`<div class="done"><b>${qr} of ${qn} correct</b>${p>=.85?"Strong.":"Try Retry wrong or Weak topics next."}<br><button class="reset" id="qrs">Again</button></div>`;
     document.getElementById("qrs").onclick=()=>{qFilters();qStart()};return}
-  const id=qorder[qi],q=Q[id],d=D[q[0]],t=qtype(q);
+  const id=qorder[qi],q=Q[id],d=D[q[0]],t=qtype(q);sessSave();
   const head=`<div class="prog"><span style="color:${d.c};font-weight:600">${d.n}</span><span>${mock?`<b id="qtime" style="font-family:'JetBrains Mono'">90:00</b> · `:""}${qi+1} / ${qorder.length}</span></div>`;
   const dq=(qDiag(q)||[])[0]=="q"?drawDG(qDiag(q)[1]):"";
   const tag=t=="multi"?`<div class="lbl" style="color:var(--c3)">Choose ${q[3].length}</div>`:t=="order"?`<div class="lbl" style="color:var(--c3)">Put in the right order: tap the steps 1 → ${q[2].length}</div>`:t=="match"?`<div class="lbl" style="color:var(--c3)">Match each item · drag-and-drop style</div>`:"";
@@ -1946,23 +1989,23 @@ function quiz(){
   else{opts=shuf(q[2].map((o,j)=>({o,ok:t=="single"?j==q[3]:q[3].includes(j)})));body=opts.map((o,k)=>`<button class="opt" data-k="${k}">${t=="multi"?"☐ ":""}${o.o}</button>`).join("")}
   box.innerHTML=head+`<div class="scen">${q[1]}</div>${dq}${tag}${body}${t!="single"?`<button class="next" id="chk" style="display:${t=="multi"?"block":"none"}">Check answer</button>`:""}<div id="qx" class="why" style="display:none;background:var(--panel2);border-radius:12px;padding:12px;margin:4px 0 6px"></div><button class="next" id="nx">${mock&&qi==qorder.length-1?"Finish exam":"Next →"}</button>`;
   const btns=[...box.querySelectorAll(".opt")];let done=false,sel=[];
-  const finish=ok=>{done=true;if(mock){mock.ans[id]=ok;record(id,ok);document.getElementById("nx").style.display="block";const c=document.getElementById("chk");if(c)c.style.display="none";btns.forEach(b=>b.disabled=true);return}
-    qn++;if(ok)qr++;record(id,ok);upd();
+  const finish=(ok,pick)=>{done=true;if(mock){mock.ans[id]=ok;(mock.pick=mock.pick||{})[id]=pick||"";record(id,ok);sessSave(qi+1);document.getElementById("nx").style.display="block";const c=document.getElementById("chk");if(c)c.style.display="none";btns.forEach(b=>b.disabled=true);return}
+    qn++;if(ok)qr++;record(id,ok);upd();sessSave(qi+1);
     const x=document.getElementById("qx");x.innerHTML=`<b style="color:${ok?"var(--ok)":"var(--bad)"}">${ok?"Correct.":"Not quite."}</b> ${t!="single"?`<div style="margin:6px 0"><b>Answer:</b> ${qanswer(q)}</div>`:""}${q[4]}${(qDiag(q)||[])[0]=="e"?`<div style="margin-top:10px">${drawDG(qDiag(q)[1])}</div>`:""}`;x.style.display="block";
     const c=document.getElementById("chk");if(c)c.style.display="none";document.getElementById("nx").style.display="block"};
-  if(t=="single")btns.forEach((b,k)=>b.onclick=()=>{if(done)return;const ok=opts[k].ok;if(mock){b.classList.add("sel")}else{if(!ok)b.classList.add("w");btns[opts.findIndex(o=>o.ok)].classList.add("r")}finish(ok)});
+  if(t=="single")btns.forEach((b,k)=>b.onclick=()=>{if(done)return;const ok=opts[k].ok;if(mock){b.classList.add("sel")}else{if(!ok)b.classList.add("w");btns[opts.findIndex(o=>o.ok)].classList.add("r")}finish(ok,opts[k].o)});
   if(t=="multi"){btns.forEach((b,k)=>b.onclick=()=>{if(done)return;if(sel.includes(k)){sel=sel.filter(x=>x!=k);b.classList.remove("sel");b.textContent="☐ "+opts[k].o}else if(sel.length<q[3].length){sel.push(k);b.classList.add("sel");b.textContent="☑ "+opts[k].o}});
     document.getElementById("chk").onclick=()=>{if(done||sel.length!=q[3].length)return;const ok=sel.every(k=>opts[k].ok);
-      if(!mock)btns.forEach((b,k)=>{if(opts[k].ok)b.classList.add("r");else if(sel.includes(k))b.classList.add("w")});finish(ok)}}
+      if(!mock)btns.forEach((b,k)=>{if(opts[k].ok)b.classList.add("r");else if(sel.includes(k))b.classList.add("w")});finish(ok,sel.map(k=>opts[k].o+(opts[k].ok?"":" <b style=\"color:var(--bad)\">✗</b>")).join("<br>"))}}
   if(t=="order"){const show=()=>{document.getElementById("ordsel").innerHTML="Your order: "+(sel.length?sel.map((k,n)=>`<b>${n+1}.</b> ${opts[k].o}`).join(" → "):'<span style="color:var(--mute)">tap below</span>');
       btns.forEach((b,k)=>b.style.opacity=sel.includes(k)?.35:1);document.getElementById("chk").style.display=sel.length==q[2].length&&!done?"block":"none"};
     btns.forEach((b,k)=>b.onclick=()=>{if(done||sel.includes(k))return;sel.push(k);show()});
     document.getElementById("undo").onclick=()=>{if(done)return;sel.pop();show()};
-    document.getElementById("chk").onclick=()=>{if(done)return;const ok=sel.every((k,n)=>opts[k].j==n);finish(ok);document.getElementById("undo").style.display="none"}}
+    document.getElementById("chk").onclick=()=>{if(done)return;const ok=sel.every((k,n)=>opts[k].j==n);finish(ok,sel.map((k,n)=>(n+1)+". "+opts[k].o+(opts[k].j==n?"":" <b style=\"color:var(--bad)\">✗</b>")).join("<br>"));document.getElementById("undo").style.display="none"}}
   if(t=="match"){const ss=[...box.querySelectorAll(".mt select")];const chk=document.getElementById("chk");
     ss.forEach(s=>s.onchange=()=>{chk.style.display=ss.every(x=>x.value)&&!done?"block":"none"});
     chk.onclick=()=>{if(done||!ss.every(x=>x.value))return;const ok=ss.every(s=>s.value==opts[+s.dataset.k].c);
-      if(!mock)ss.forEach(s=>s.parentNode.classList.add(s.value==opts[+s.dataset.k].c?"r":"w"));ss.forEach(s=>s.disabled=true);finish(ok)}}
+      if(!mock)ss.forEach(s=>s.parentNode.classList.add(s.value==opts[+s.dataset.k].c?"r":"w"));ss.forEach(s=>s.disabled=true);finish(ok,ss.map(s=>{const o=opts[+s.dataset.k];return o.o+" → "+s.value+(s.value==o.c?"":" <b style=\"color:var(--bad)\">✗</b>")}).join("<br>"))}}
   document.getElementById("nx").onclick=()=>{qi++;quiz();document.getElementById("v-quiz").scrollIntoView()};
 }
 function finishMock(box){
@@ -1975,8 +2018,8 @@ function finishMock(box){
   box.innerHTML=`<div class="done" style="padding:10px 0"><b style="color:${pct>=85?"var(--ok)":pct>=70?"var(--c3)":"var(--bad)"}">${pct}% · ${score} of ${ids.length}</b>${mins} min used · unanswered counts as wrong<br>${pct>=85?"On target. Keep it there.":"Below the 85 % practice target. Review the misses below."}</div>
    <table class="mx"><tr><th style="text-align:left">Domain</th><th>Right</th><th>Score</th></tr>${rows}</table>
    ${mh.length>1?`<p class="why" style="margin-top:8px">Recent mocks: ${mh.map(m=>m.p+"%").join(" · ")}</p>`:""}
-   <h3 style="font:700 15px 'Space Grotesk';margin:14px 0 6px">Review your ${wrong.length} misses</h3>
-   ${wrong.map(i=>{const q=Q[i];return `<div class="sec" style="margin-bottom:8px"><div class="lbl" style="color:${D[q[0]].c}">${D[q[0]].n} · ${q[5]}</div><div style="font-weight:600;margin-bottom:6px">${q[1]}</div><div class="why"><b style="color:var(--ok)">Answer:</b> ${qanswer(q)}<br>${q[4]}</div>${qDiag(q)?drawDG(qDiag(q)[1]):""}</div>`}).join("")}
+   <h3 style="font:700 15px 'Space Grotesk';margin:14px 0 6px">Review your ${wrong.length} misses · your choice vs the right answer</h3>
+   ${wrong.map(i=>{const q=Q[i];return `<div class="sec" style="margin-bottom:8px"><div class="lbl" style="color:${D[q[0]].c}">${D[q[0]].n} · ${q[5]}</div><div style="font-weight:600;margin-bottom:6px">${q[1]}</div><div class="why"><div style="margin-bottom:6px"><b style="color:var(--bad)">Your answer:</b> ${(mock.pick||{})[i]||"<i>not answered</i>"}</div><b style="color:var(--ok)">Correct answer:</b> ${qanswer(q)}<br>${q[4]}</div>${qDiag(q)?drawDG(qDiag(q)[1]):""}</div>`}).join("")}
    <button class="reset" id="qrs">New mock exam</button>`;
   document.getElementById("qrs").onclick=()=>qStart();mock=null;qFilters();upd();
 }
@@ -2056,8 +2099,41 @@ function doSearch(){
 }
 document.getElementById("sq").addEventListener("input",doSearch);
 
-qFilters();qStart();
-readiness();coverage();
+
+const VER="1.8.8";
+const CHANGES=[
+["1.8.8","2026-11-11",["Audit fixes: IP transit doesn't carry SGT/VN natively (VRF-Lite + SXP), NSR covers OSPF too, network control wording, BGP communities not sent without send-community, ISATAP/6to4 are automatic tunnels","Clearer stems on 5 quiz questions; a duplicate IPv6 tunneling question replaced with a 6RD scenario"]],
+["1.8.7","2026-11-11",["Mock exam results show the answer you chose for each miss, next to the correct answer (wrong picks marked ✗ for choose-two, ordering and matching)"]],
+["1.8.6","2026-11-11",["Fixed: domain tiles on the Overview were empty on first load","Mock exams now avoid questions used in earlier mocks","Audit fixes: org-local multicast scope 239.192.0.0/14, control plane nodes with fabric wireless, 20 ms is RTT, ip tcp adjust-mss, multitenant vSmart from 20.4, BGP multipath-relax, ULA wording, HyperFlex question replaced","Clearer stems on 7 quiz questions"]],
+["1.8.5","2026-11-08",["Book values updated where current Cisco sources differ: SD-Access large site <50,000 endpoints, UPOE+ minimum cable Cat5e, voice delay ≤150 ms (200 ms only if unavoidable)"]],
+["1.8.4","2026-11-07",["Fixed: the quiz hint repeated \"Resumed where you left off\" after every reload","Quiz score no longer wraps onto several lines"]],
+["1.8.3","2026-11-07",["Topology diagrams added to 17 quiz explanations that depend on a layout, including 4 new ones: redistribution loop, dual-hub DMVPN, GLBP, SD-Access fusion router"]],
+["1.8.2","2026-11-07",["10 more classic traps on the Exam day tab: HSRP vs STP root, weight vs local pref, OSPF summarization, virtual links, EIGRP stub, PoE+ watts, ISATAP vs 6to4, NAT64/DNS64, fabric wireless latency, trust boundary"]],
+["1.8.1","2026-11-07",["Reset cards button is always available on the Trigger cards tab (tap twice to confirm)"]],
+["1.8.0","2026-11-07",["Quiz resumes where you left off after a reload or tab switch (Practice and Mock, timer included)","New Practice rounds start with questions you haven't answered","Version number and this change log"]],
+["1.7.0","2026-11-07",["36 new design-scenario questions","15 drag-and-drop-style matching questions (new question type)","Less answer-length bias"]],
+["1.6.0","2026-11-07",["9 new diagrams: SSO/NSF, BFD, L2 security placement, MPLS L3VPN, IntServ vs DiffServ, management flows, telemetry push vs pull, gNMI, cloud on-ramp"]],
+["1.5.0","2026-11-07",["Fact-check against the books: voice delay range noted, AS 65540 relabelled, defaults confirmed"]],
+["1.4.0","",["Exam day, Numbers and Overview checked against the v1.1 blueprint and gaps filled"]],
+["1.3.0","",["Timed mock exam, Retry wrong, Weak topics","Spaced repetition for cards","Choose-two and ordering questions","Search tab and exam-day sheet","Independent fact-check, guessable answers fixed"]],
+["1.2.0","",["Readiness panel measures your progress","Diagrams in cards, quiz explanations and hard topics","Content limited to the v1.1 exam topics"]],
+["1.1.0","",["Quiz explanations","More cards, questions, overview visuals and numbers, sized to pass targets"]],
+["1.0.0","",["First version: overview, trigger cards, scenario quiz, numbers"]]];
+(function(){
+  const vb=document.getElementById("verb"),cl=document.getElementById("chlog"),vn=document.getElementById("vnew");
+  const li=c=>`<div><b>v${c[0]}</b>${c[1]?` · <span style="color:var(--mute)">${c[1]}</span>`:""}<ul>${c[2].map(x=>`<li>${x}</li>`).join("")}</ul></div>`;
+  vb.textContent="v"+VER;
+  cl.innerHTML=`<div style="margin-bottom:6px;color:var(--mute)">Change log · check the version here to see which copy you have</div>`+CHANGES.map(li).join("");
+  vb.onclick=()=>{cl.style.display=cl.style.display=="none"?"block":"none"};
+  let seen=null,used=false;try{seen=localStorage.getItem("ensld-ver");used=Object.keys(localStorage).some(k=>k.startsWith("ensld-")&&k!="ensld-ver")}catch(e){}
+  if(seen!==VER&&used){vn.innerHTML=`<button class="x" aria-label="Close">✕</button>Updated to <b>v${VER}</b>${seen?` (from v${seen})`:""}<ul>${(seen?CHANGES.filter(c=>cmpV(c[0],seen)>0):CHANGES.slice(0,1)).flatMap(c=>c[2]).map(x=>`<li>${x}</li>`).join("")}</ul>`;
+    vn.style.display="block";vn.querySelector(".x").onclick=()=>vn.style.display="none"}
+  try{localStorage.setItem("ensld-ver",VER)}catch(e){}
+})();
+try{if(localStorage.getItem("ensld-fix188")!="1"){delete ql[132];delete qh[132];qsave();localStorage.setItem("ensld-fix188","1")}}catch(e){}
+function cmpV(a,b){const x=a.split(".").map(Number),y=b.split(".").map(Number);for(let i=0;i<3;i++){if(x[i]!=y[i])return x[i]-y[i]}return 0}
+if(!sessRestore()){qFilters();qStart()}
+domains();readiness();coverage();
 </script>
 </body>
 </html>
