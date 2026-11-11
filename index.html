@@ -1205,10 +1205,10 @@ nav .in{flex-wrap:nowrap}
 <script>
 // ---- quiz diagrams ----
 const DG={
-blackhole:{h:180,n:[["core",180,18,"Core"],["hA",100,78,"Hub A"],["hB",260,78,"Hub B"],["s1",55,150,"192.168.1.0/24"],["s2",180,150,"192.168.2.0/24"],["s3",305,150,"192.168.3.0/24"]],
- l:[["core","hA"],["core","hB"],["hA","s1"],["hA","s2","x"],["hA","s3"],["hB","s1"],["hB","s2"],["hB","s3"]],t:[[180,52,"both hubs advertise 192.168.0.0/22","o"]]},
+blackhole:{h:195,n:[["core",180,18,"Core"],["hA",100,78,"Hub A"],["hB",260,78,"Hub B"],["s1",55,150,"192.168.1.0/24"],["s2",180,150,"192.168.2.0/24"],["s3",305,150,"192.168.3.0/24"]],
+ l:[["core","hA"],["core","hB"],["hA","s1"],["hA","s2","x"],["hA","s3"],["hB","s1"],["hB","s2"],["hB","s3"]],t:[[180,184,"both hubs advertise 192.168.0.0/22 to the core","o"]]},
 dmvpn3:{h:165,n:[["hub",180,20,"Hub (NHRP server)"],["a",70,115,"Spoke 1"],["b",290,115,"Spoke 2"]],l:[["hub","a"],["hub","b"],["a","b","d","direct tunnel"]],t:[[180,155,"1st packet via hub → NHRP redirect → shortcut","m"]]},
-nssa:{h:170,z:[[8,12,120,88,"Area 0","b"],[150,12,202,88,"Area 10","t"]],n:[["core",62,58,"Core"],["abr",150,58,"ABR"],["asbr",265,58,"ASBR"],["p",265,145,"Partner network"]],
+nssa:{h:170,z:[[8,12,120,76,"Area 0","b"],[150,12,202,76,"Area 10","t"]],n:[["core",62,58,"Core"],["abr",150,58,"ABR"],["asbr",265,58,"ASBR"],["p",265,145,"Partner network"]],
  l:[["core","abr"],["abr","asbr"],["asbr","p","d","redistributed"]]},
 abrhub:{h:175,z:[[70,4,220,90,"Area 0","b"],[14,104,332,64,"Area 1 (WAN + spokes)","t"]],n:[["core",180,30,"Core"],["hub",180,90,"Hub = ABR"],["s1",80,140,"Spoke"],["s2",180,140,"Spoke"],["s3",280,140,"Spoke"]],
  l:[["core","hub"],["hub","s1"],["hub","s2"],["hub","s3"]]},
@@ -1216,8 +1216,8 @@ dualisp:{h:175,n:[["a",80,20,"ISP A"],["b",280,20,"ISP B"],["r1",80,95,"R1"],["r
 transit:{h:150,n:[["a",60,25,"ISP 1"],["b",300,25,"ISP 2"],["y",180,115,"Your AS"]],l:[["a","y","f","ISP 1 routes"],["y","b","x","must NOT pass on"]],t:[[180,145,"advertise only your own PI prefixes","g"]]},
 split:{h:150,n:[["a",70,25,"ISP A"],["b",290,25,"ISP B"],["y",180,120,"Your AS 128.66.0.0/16"]],l:[["y","a","f","/17 #1 + /16"],["y","b","f","/17 #2 + /16"]]},
 rrcl:{h:150,n:[["r1",90,25,"RR1 cluster-ID .254"],["r2",270,25,"RR2 cluster-ID .254"],["c",180,120,"Client A"]],l:[["r1","r2","d","iBGP"],["c","r1"],["c","r2"]]},
-svl:{h:185,z:[[60,58,240,58,"StackWise Virtual = one logical switch","p"]],n:[["core",180,18,"Core"],["d1",120,90,"Dist 1"],["d2",240,90,"Dist 2"],["a1",100,160,"Access"],["a2",260,160,"Access"]],
- l:[["core","d1"],["core","d2"],["a1","d1","b"],["a1","d2","b"],["a2","d1","b"],["a2","d2","b"]],t:[[180,182,"MEC: every uplink forwards, no STP blocking, no FHRP","g"]]},
+svl:{h:206,z:[[60,58,240,58,"","p"]],n:[["core",180,18,"Core"],["d1",120,90,"Dist 1"],["d2",240,90,"Dist 2"],["a1",100,160,"Access"],["a2",260,160,"Access"]],
+ l:[["core","d1"],["core","d2"],["a1","d1","b"],["a1","d2","b"],["a2","d1","b"],["a2","d2","b"]],t:[[292,50,"SVL: one logical switch","p"],[180,186,"MEC: all uplinks forward,","g"],[180,198,"no STP blocking, no FHRP","g"]]},
 tri:{h:160,n:[["c1",45,20,"Core"],["c2",145,20,"Core"],["d1",45,105,"Dist"],["d2",145,105,"Dist"],["c3",215,20,"Core"],["c4",315,20,"Core"],["d3",215,105,"Dist"],["d4",315,105,"Dist"]],
  l:[["c1","c2"],["c1","d1","b"],["c1","d2","b"],["c2","d1","b"],["c2","d2","b"],["c3","c4"],["c3","d3","r"],["c4","d4","r"],["d3","d4","r"]],t:[[95,145,"✓ triangles: ECMP, HW failover","g"],[265,145,"✗ squares: wait for IGP","r"]]},
 dcl2:{h:120,n:[["a",65,60,"DC1 switch"],["b",295,60,"DC2 switch"]],l:[["a","b","s","circuit 1",-6],["a","b","x","circuit 2 (STP blocked)",6]]},
@@ -1233,13 +1233,13 @@ msdp:{h:150,n:[["a",80,30,"RP domain A"],["b",280,30,"RP domain B"],["s",80,120,
 hqos:{h:140,z:[[115,22,130,92,"parent: shape 100 Mbps","o"]],n:[["r",55,68,"WAN router"],["p",305,68,"Provider"]],l:[["r","p","s","1 Gbps handoff"]],t:[[180,82,"child: LLQ · CBWFQ","t"],[180,96,"· best effort","t"],[180,135,"queue inside the shaped rate","m"]]},
 dualrtr:{h:170,n:[["a",100,20,"Carrier A"],["b",260,20,"Carrier B"],["r1",100,90,"R1"],["r2",260,90,"R2"],["lan",180,150,"Site LAN"]],l:[["a","r1","b"],["b","r2","b"],["r1","r2"],["r1","lan"],["r2","lan"]],t:[[180,60,"no single point of failure","g"]]},
 para:{h:125,n:[["y",70,60,"Your router (lo0)"],["i",290,60,"ISP router (lo0)"]],l:[["y","i","s","link 1",-6],["y","i","s","link 2",6]],t:[[180,115,"one eBGP session between loopbacks?","m"]]},
-isis:{h:130,z:[[15,22,140,82,"L2 area","b"],[205,22,140,82,"L1 area","t"]],n:[["l2",95,65,"L2 router"],["l12",265,65,"L1/L2"]],l:[["l2","l12","o","border = this link"]]},
+isis:{h:130,z:[[15,22,140,82,"L2 area","b"],[205,22,140,82,"L1 area","t"]],n:[["l2",95,65,"L2 router"],["l12",265,65,"L1/L2"]],l:[["l2","l12","o"]],t:[[180,120,"↑ the area border is this link","o"]]},
 sla:{h:160,n:[["br",55,80,"Branch edge"],["dc",305,80,"DC edge"]],l:[["br","dc","b","MPLS · 40 ms ✓",-6],["br","dc","x","Internet · 180 ms",6]],t:[[180,150,"BFD probes per tunnel → app-aware routing","m"]]},
 dialin:{h:120,n:[["r",70,60,"Receiver"],["d",290,60,"Switch"]],l:[["r","d","f","1) receiver dials in + subscribes",-6],["d","r","f","2) switch pushes data",6]]},
 nat64:{h:170,n:[["h",55,55,"IPv6-only host"],["n",180,55,"NAT64"],["v",305,55,"IPv4 server"],["dns",180,140,"DNS64"]],l:[["h","n","s","IPv6"],["n","v","s","IPv4"],["h","dns","d","AAAA built from A"]]},
 eigrp3:{h:170,n:[["c",180,18,"Core: switch fast"],["d1",100,80,"Dist: summarize"],["d2",260,80,"Dist: summarize"],["a1",50,145,"Access stub"],["a2",140,145,"Access stub"],["a3",220,145,"Access stub"],["a4",310,145,"Access stub"]],
  l:[["c","d1"],["c","d2"],["d1","a1"],["d1","a2"],["d2","a3"],["d2","a4"]]},
-wlc:{h:180,z:[[12,58,250,110,"Fabric","b"]],n:[["wlc",300,25,"Fabric WLC"],["bd",130,30,"Border"],["e",130,95,"Edge"],["ap",130,148,"Fabric AP"]],l:[["bd","e"],["e","ap","t","VXLAN data"],["wlc","ap","d","CAPWAP ≤20 ms"],["wlc","bd"]]},
+wlc:{h:180,t:[[88,124,"VXLAN data","t"]],z:[[12,58,190,110,"Fabric","b"]],n:[["wlc",300,25,"Fabric WLC"],["bd",130,30,"Border"],["e",130,95,"Edge"],["ap",130,148,"Fabric AP"]],l:[["bd","e"],["e","ap","t"],["wlc","ap","d","CAPWAP ≤20 ms RTT"],["wlc","bd"]]},
 rtdaccess:{h:160,n:[["d1",110,25,"Dist"],["d2",250,25,"Dist"],["a1",110,105,"Access = L3 GW"],["a2",250,105,"Access = L3 GW"]],l:[["d1","a1","b","routed"],["d1","a2","b"],["d2","a1","b"],["d2","a2","b","routed"],["d1","d2"]],t:[[180,150,"no VLAN spans closets → no STP loops, no FHRP","g"]]},
 ospfAreaQ:{h:120,z:[[10,20,100,70,"Area 0","b"],[130,20,220,70,"Spoke areas","t"]],n:[["c",60,55,"Core"],["abr",130,55,"ABR"],["s",270,55,"Spoke (no redistribution)"]],l:[["c","abr"],["abr","s"]]}
 };
@@ -1274,9 +1274,9 @@ function drawDG(k){
     const mx=(x1+x2)/2,my=(y1+y2)/2;
     if(st=="x")out+=`<text x="${mx}" y="${my+4}" font-size="13" fill="#f56565" text-anchor="middle" font-weight="700">✗</text>`;
     if(lb){let lx=mx,ly=my,an="middle";
-      if(Math.abs(dy)<1){ly=off>0?my+13:my-5;}
+      if(Math.abs(dy)<1){ly=off>0?(st=="x"?my+19:my+13):st=="x"?my+17:my-5;}
       else if(Math.abs(dx)<1){lx=mx+8;ly=my+3;an="start";if(st=="x")lx=mx+12;}
-      else{lx=mx+(dx*dy>0?-6:6);an=dx*dy>0?"end":"start";}
+      else{const k=Math.abs(dx/dy),W=lb.length*4.9,g=st=="x"?11:5;if(k>2.2){ly=my-W/(2*k)-4}else{ly=my+3;lx=mx+(dx*dy>0?-1:1)*(4*k+g);an=dx*dy>0?"end":"start"}}
       out+=`<text x="${lx}" y="${ly}" font-size="9" fill="${st=="s"?"#c3cbe0":c}" text-anchor="${an}">${lb}</text>`}
   });
   d.n.forEach(([i,x,y,lb])=>{const P=N[i];out+=`<rect x="${x-P.w/2}" y="${y-11}" width="${P.w}" height="22" rx="7" fill="#1f2840" stroke="#4fd1c5" stroke-width="1.5"/><text x="${x}" y="${y+4}" font-size="10" fill="#e8ecf5" text-anchor="middle" font-weight="600">${lb}</text>`});
@@ -1288,7 +1288,7 @@ eigrpstub:{h:180,n:[["c",180,18,"Core"],["h",180,78,"Hub"],["s1",70,145,"Stub sp
 inbound:{h:165,n:[["a",80,20,"ISP A"],["b",280,20,"ISP B"],["y",180,115,"Your AS"]],l:[["y","a","f","normal path"],["y","b","f","AS-path prepended ×3"]],t:[[180,155,"→ inbound traffic prefers ISP A","g"]]},
 rr:{h:150,n:[["rr",180,20,"Route reflector"],["c1",50,105,"Client"],["c2",140,105,"Client"],["c3",220,105,"Client"],["c4",310,105,"Client"]],l:[["rr","c1"],["rr","c2"],["rr","c3"],["rr","c4"]],t:[[180,142,"n sessions instead of an n(n−1)/2 full mesh","g"]]},
 overlap:{h:160,n:[["r1",100,25,"RR1 · ID .1"],["r2",260,25,"RR2 · ID .2"],["c",180,115,"Client B"]],l:[["r1","r2","d","accepted"],["c","r1"],["c","r2"]],t:[[180,152,"shorter CLUSTER_LIST wins → direct route from client","m"]]},
-lisp:{h:160,z:[[8,28,120,50,"IPv6 island","t"],[232,28,120,50,"IPv6 island","t"]],n:[["hq",68,60,"HQ xTR + MS/MR"],["br",292,60,"Branch xTR"],["c",180,135,"IPv4 backbone"]],l:[["hq","c"],["c","br"],["hq","br","a","IPv6 in LISP over IPv4",-16]]},
+lisp:{h:160,t:[[68,92,"IPv6 island","t"],[292,92,"IPv6 island","t"]],z:[[8,28,120,50,"","t"],[232,28,120,50,"","t"]],n:[["hq",68,60,"HQ xTR + MS/MR"],["br",292,60,"Branch xTR"],["c",180,135,"IPv4 backbone"]],l:[["hq","c"],["c","br"],["hq","br","a","IPv6 in LISP over IPv4",-16]]},
 dmvpn1:{h:165,n:[["h",180,20,"Hub: mGRE · NHRP server"],["a",70,115,"Spoke: p2p GRE"],["b",290,115,"Spoke: p2p GRE"]],l:[["h","a"],["h","b"],["a","b","x","no direct tunnel"]],t:[[180,155,"spoke ↔ spoke always through the hub","m"]]},
 tloc:{h:175,n:[["e",70,75,"WAN Edge 1.1.1.1"],["m",290,35,"MPLS"],["i",290,115,"Internet"]],l:[["e","m","t"],["e","i","o"]],t:[[180,150,"TLOC 1 = 1.1.1.1 · mpls · ipsec","t"],[180,167,"TLOC 2 = 1.1.1.1 · biz-internet · ipsec","o"]]},
 llq:{h:155,n:[["in",40,70,"Traffic"],["q1",180,25,"LLQ (EF) ≤33%, policed"],["q2",180,70,"CBWFQ classes"],["q3",180,115,"Default ≥25%"],["o",325,70,"Link"]],l:[["in","q1","f"],["in","q2","f"],["in","q3","f"],["q1","o","f"],["q2","o","f"],["q3","o","f"]],t:[[180,148,"LLQ is always served first","g"]]},
@@ -1317,7 +1317,7 @@ const CD={"What are \"loop-free technologies\"":"loopfree","Loop-free U vs inver
 Object.assign(DG,{
 stphsrp:{h:190,n:[["d1",95,45,"Dist 1"],["d2",265,45,"Dist 2"],["a",180,135,"Access (VLAN 10)"]],l:[["d1","d2","s","trunk"],["a","d1","b","forwarding"],["a","d2","x","blocked"]],t:[[95,22,"STP root + HSRP active","g"],[265,22,"2nd root + HSRP standby","m"],[180,180,"same switch → no extra hop over the trunk","g"]]},
 stpmis:{h:190,n:[["d1",95,45,"Dist 1"],["d2",265,45,"Dist 2"],["a",180,135,"Access (VLAN 10)"]],l:[["d1","d2","f","trunk"],["a","d1","b","STP forwarding"],["a","d2","x","STP blocked"]],t:[[95,22,"STP root","o"],[265,22,"HSRP active","o"],[180,180,"where does traffic to the gateway go?","m"]]},
-rpf:{h:170,n:[["s",50,30,"Source"],["r1",180,30,"R1"],["r2",180,125,"R2"],["r3",310,78,"R3"]],l:[["s","r1","f"],["r1","r3","b"],["r1","r2","f"],["r2","r3","x"]],t:[[310,112,"accepts only from R1","g"],[310,125,"(its path to the source)","g"],[250,160,"copy via R2 fails RPF → dropped","r"]]},
+rpf:{h:170,n:[["s",50,30,"Source"],["r1",180,30,"R1"],["r2",180,125,"R2"],["r3",310,78,"R3"]],l:[["s","r1","f"],["r1","r3","b"],["r1","r2","f"],["r2","r3","x"]],t:[[310,114,"accepts only R1","g"],[310,127,"(path to source)","g"],[250,160,"copy via R2 fails RPF → dropped","r"]]},
 qospath:{h:130,n:[["p",40,40,"Phone"],["a",130,40,"Access"],["c",220,40,"Core"],["w",310,40,"WAN edge"]],l:[["p","a","f"],["a","c","f"],["c","w","f"]],
  t:[[40,72,"marks EF","t"],[130,72,"trust / classify","t"],[130,85,"police, re-mark","t"],[220,72,"queue by DSCP","t"],[310,72,"shape to CIR","o"],[310,85,"LLQ + CBWFQ","o"],[180,118,"egress queuing on every hop → provider","m"]]},
 ipv6tree:{h:195,n:[["c",180,20,"Company 2001:db8:abc::/48"],["s1",90,85,"Site A :0000::/56"],["s2",270,85,"Site B :0100::/56"],["v1",45,150,":0000::/64"],["v2",135,150,":0001::/64"],["v3",225,150,":0100::/64"],["v4",315,150,":0101::/64"]],
@@ -1330,9 +1330,9 @@ Object.assign(QD,{"In this L2 access design, Dist 2 is HSRP active":["q","stpmis
 
 Object.assign(DG,{
 lsaflow:{h:200,z:[[6,18,118,130,"Area 1 (normal)","t"],[124,18,112,130,"Area 0","b"],[236,18,118,130,"Area 2 (NSSA)","o"]],
- n:[["r",58,60,"Router"],["a1",124,85,"ABR"],["a2",236,85,"ABR"],["as",300,55,"ASBR"],["x",300,180,"External"]],
+ n:[["r",58,60,"Router"],["a1",124,85,"ABR"],["a2",236,85,"ABR"],["as",325,55,"ASBR"],["x",325,180,"External"]],
  l:[["x","as","f"],["as","a2","f"],["a2","a1","f"],["a1","r","f"]],
- t:[[58,105,"1/2 stay inside","t"],[58,118,"gets 3 + 5","t"],[180,60,"type 5","o"],[180,118,"3 = inter-area","b"],[180,131,"made by ABRs","b"],[300,105,"type 7 inside NSSA","o"],[300,118,"ABR turns 7 → 5","o"]]},
+ t:[[58,105,"1/2 stay inside","t"],[58,118,"gets 3 + 5","t"],[180,60,"type 5","o"],[180,118,"3 = inter-area","b"],[180,131,"made by ABRs","b"],[278,112,"type 7","o"],[278,124,"inside NSSA","o"],[278,136,"ABR: 7 → 5","o"]]},
 bgpdir:{h:175,n:[["a",60,25,"ISP A"],["b",300,25,"ISP B"],["y",180,95,"Your AS"]],l:[["y","a","ga","outbound"],["b","y","f","inbound"]],
  t:[[180,140,"OUT (you choose): Weight (1 router), Local Pref (whole AS)","g"],[180,158,"IN (you ask them): AS-path prepend, MED, communities","o"]]},
 rrrules:{h:215,n:[["rr",180,22,"Route reflector"],["c",65,95,"Client"],["n",295,95,"Non-client"],["e",180,140,"eBGP peer"]],l:[["rr","c"],["rr","n","d"],["rr","e"]],
@@ -1368,7 +1368,7 @@ intdiff:{h:190,z:[[4,10,352,62,"IntServ","r"],[4,96,352,62,"DiffServ","g"]],n:[[
 nmflow:{h:195,n:[["nms",44,95,"NMS (SNMP)"],["col",200,22,"NetFlow collector"],["dev",200,95,"Router / switch"],["sys",200,168,"Syslog server"],["oob",318,95,"OOB net"]],l:[["nms","dev","f","GET/SET 161",-7],["dev","nms","p","trap 162",7],["dev","col","f","flow export"],["dev","sys","f","syslog UDP 514"],["dev","oob","d"]],t:[[318,122,"separate","m"],[318,134,"mgmt network","m"]]},
 mdt:{h:180,z:[[4,6,352,64,"SNMP: pull","m"],[4,92,352,64,"Model-driven telemetry: push","g"]],n:[["n",62,40,"SNMP  NMS"],["d1",298,40,"Device"],["d2",62,126,"Device"],["c",298,126,"Collector"]],l:[["n","d1","f","poll · request/response",-6],["d2","c","ga","subscription stream",-6]],t:[[180,62,"repeated polls cost device CPU · coarse intervals","m"],[180,148,"periodic → trending (CPU) · on-change → state (if up/down)","g"],[180,174,"YANG paths · NETCONF/gNMI/gRPC transport","t"]]},
 gnmi:{h:140,n:[["c",62,50,"gNMI client"],["t",290,50,"Device (gNMI target)"]],l:[["c","t","f","Capabilities · Get · Set",-7],["t","c","ga","Subscribe: stream",7]],t:[[180,100,"one gRPC channel over HTTP/2 · protobuf encoding","t"],[180,116,"config + streaming telemetry on YANG (OpenConfig) paths","g"]]},
-cloudconn:{h:208,n:[["br",58,95,"SD-WAN branch"],["saas",280,18,"SaaS / M365"],["iaas",280,70,"AWS / Azure / GCP"],["colo",280,122,"Megaport / Equinix"],["dc",280,174,"Cloud via private link"]],l:[["br","saas","f"],["br","iaas","f"],["br","colo","f"],["br","dc","d"]],t:[[296,41,"OnRamp SaaS: best path","o"],[296,92,"OnRamp IaaS (vManage)","o"],[296,144,"OnRamp Multicloud / colo","o"],[280,198,"Direct Connect / ExpressRoute","t"]]}
+cloudconn:{h:208,n:[["br",58,95,"SD-WAN branch"],["saas",280,18,"SaaS / M365"],["iaas",280,70,"AWS / Azure / GCP"],["colo",280,122,"Megaport / Equinix"],["dc",280,174,"Cloud via private link"]],l:[["br","saas","f"],["br","iaas","f"],["br","colo","f"],["br","dc","d"]],t:[[300,45,"OnRamp SaaS: best path","o"],[296,92,"OnRamp IaaS (vManage)","o"],[296,144,"OnRamp Multicloud / colo","o"],[280,198,"Direct Connect / ExpressRoute","t"]]}
 });
 Object.assign(CD,{"Keep forwarding during a supervisor switchover":"ssonsf","Switchover without relying on peers at all":"ssonsf","Sub-second failure detection":"bfd","STP Toolkit components":"l2sec","Provider handles routing between sites":"mplsvpn","Hard per-flow guarantees with RSVP":"intdiff","Scalable QoS with classes":"intdiff","NMS operation to fetch large tables":"nmflow","Device pushes data instead of being polled":"mdt","MDT subscription that sends only on change":"mdt","gNMI does":"gnmi","Connect SD-WAN sites to AWS":"cloudconn","Site-to-site and site-to-cloud over Megaport":"cloudconn"});
 Object.assign(QD,{"A dual-supervisor core switch must keep forwarding":["e","ssonsf"],"You need sub-second failover between distribution and core":["e","bfd"],"Clients get addresses from a rogue DHCP server":["e","l2sec"],"Two MPLS VPN customers both use 10.0.0.0/8":["e","mplsvpn"],"Which QoS model provides hard end-to-end guarantees":["e","intdiff"],"Which collects flow data for planning":["e","nmflow"],"What does model-driven telemetry give you":["e","mdt"],"Which uses a single gRPC channel":["e","gnmi"],"Branches should reach workloads in AWS and Azure":["e","cloudconn"]});
@@ -2100,8 +2100,9 @@ function doSearch(){
 document.getElementById("sq").addEventListener("input",doSearch);
 
 
-const VER="1.8.8";
+const VER="1.8.9";
 const CHANGES=[
+["1.8.9","2026-11-11",["Diagram labels no longer cross lines or area borders (17 diagrams fixed, incl. the OSPF LSA flow); label placement on diagonal links improved for all diagrams"]],
 ["1.8.8","2026-11-11",["Audit fixes: IP transit doesn't carry SGT/VN natively (VRF-Lite + SXP), NSR covers OSPF too, network control wording, BGP communities not sent without send-community, ISATAP/6to4 are automatic tunnels","Clearer stems on 5 quiz questions; a duplicate IPv6 tunneling question replaced with a 6RD scenario"]],
 ["1.8.7","2026-11-11",["Mock exam results show the answer you chose for each miss, next to the correct answer (wrong picks marked ✗ for choose-two, ordering and matching)"]],
 ["1.8.6","2026-11-11",["Fixed: domain tiles on the Overview were empty on first load","Mock exams now avoid questions used in earlier mocks","Audit fixes: org-local multicast scope 239.192.0.0/14, control plane nodes with fabric wireless, 20 ms is RTT, ip tcp adjust-mss, multitenant vSmart from 20.4, BGP multipath-relax, ULA wording, HyperFlex question replaced","Clearer stems on 7 quiz questions"]],
