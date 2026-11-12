@@ -113,12 +113,23 @@ nav .in{flex-wrap:nowrap}
 .mt{display:flex;flex-direction:column;align-items:stretch;gap:6px;background:var(--panel2);border:1px solid transparent;border-radius:12px;padding:9px 10px;margin-bottom:8px;font-size:14px}.mt span{flex:1}.mt select{width:100%;background:#1f2840;color:var(--ink);border:1px solid #4a5a80;border-radius:8px;padding:7px 6px;font:500 13px Inter}.mt.r{border-color:var(--ok)}.mt.w{border-color:var(--bad)}
 .verb{font:600 11px "JetBrains Mono",monospace;color:var(--c1);background:transparent;border:1px solid #2c3a5a;border-radius:999px;padding:2px 8px;margin-left:6px;vertical-align:middle;cursor:pointer}#vnew,#chlog{background:var(--panel2);border:1px solid #2c3a5a;border-radius:12px;padding:10px 12px;margin-top:10px;font-size:13px;line-height:1.45}#chlog b,#vnew b{color:var(--c1)}#chlog ul,#vnew ul{margin:4px 0 8px 18px;padding:0}#vnew .x{float:right;background:none;border:0;color:var(--mute);font-size:16px;cursor:pointer}
 #qscore{white-space:nowrap;flex:none;margin-left:10px}
+
+.filters{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;padding-bottom:2px}
+.filters::-webkit-scrollbar,nav .in::-webkit-scrollbar{display:none}
+nav .in{scrollbar-width:none}
+.chip{flex:0 0 auto;white-space:nowrap}
+.more{-webkit-mask-image:linear-gradient(90deg,#000 82%,transparent);mask-image:linear-gradient(90deg,#000 82%,transparent)}
+.qz .filters{margin-bottom:8px}
+.qz .prog{align-items:baseline}
+@media (max-width:480px){header{padding:12px 14px 6px}h1{font-size:19px}.sub{font-size:12px;margin-top:2px}nav button{padding:8px 10px;font-size:13px}}
+html{scrollbar-gutter:stable}
+@supports not (scrollbar-gutter:stable){html{overflow-y:scroll}}
 </style>
 </head>
 <body>
 <header>
-  <h1>ENSLD <span>300-420</span> · Last Minute</h1>
-  <div class="sub">Think like a designer: requirement → solution <button id="verb" class="verb" title="Version and change log">v</button></div>
+  <h1>ENSLD <span>300-420</span> · Last Minute <button id="verb" class="verb" title="Version and change log">v</button></h1>
+  <div class="sub">Think like a designer: requirement → solution</div>
   <div id="vnew" style="display:none"></div>
   <div id="chlog" style="display:none"></div>
 </header>
@@ -799,6 +810,7 @@ nav .in{flex-wrap:nowrap}
   <div class="filters" id="qfilters"></div>
   <div class="prog"><span id="qhint"></span><span class="score" id="qscore">0 / 0</span></div>
   <div class="sec" id="qbox"></div>
+  <div style="text-align:center;margin-top:14px"><button class="reset" id="qclr" style="display:none">Clear Retry wrong list</button></div>
 </section>
 
 <!-- NUMBERS -->
@@ -1247,7 +1259,7 @@ const QD={
 "Two hubs both send":["q","blackhole"],"300 branches, one hub":["e","dmvpn3"],"An OSPF area has a redistributed partner":["q","nssa"],"OSPF hub-and-spoke with flapping":["e","abrhub"],
 "Your AS should always send outbound":["q","dualisp"],"Dual-homed to two ISPs, you notice":["e","transit"],"Your AS owns 128.66.0.0/16 and connects ":["e","split"],"Two route reflectors in one cluster":["q","rrcl"],
 "StackWise Virtual pairs the distribution":["e","svl"],"You connect two distribution switches to":["e","tri"],"Two 10G L2 circuits connect switches in ":["q","dcl2"],"Where do you apply Root Guard":["e","rootg"],
-"A user plugs a small switch":["e","bpdug"],"Guest traffic must stay isolated across ":["e","gre"],"An SD-Access edge node needs the RLOC of":["e","sda"],"In SD-Access, which node acts as the anycast":["e","sda"],
+"A user plugs a small switch":["e","bpdug"],"Guest traffic must stay isolated across ":["e","gre"],"An SD-Access edge node needs the RLOC of":["e","sda"],"Users roam between floors served by diff":["e","sda"],
 "IPTV with a known sender":["e","ssm"],"Your multicast design keeps all traffic ":["e","sptinf"],"In Bidir-PIM, which router":["e","bidir"],"Two PIM-SM domains must learn":["e","msdp"],
 "Ethernet WAN handoff at 1 Gbps":["e","hqos"],"A branch has two routers, each with a circuit":["e","dualrtr"],"Two parallel links to the same ISP":["q","para"],"Where do area borders sit in IS-IS":["e","isis"],
 "SD-WAN must move voice":["e","sla"],"Which statement about NAT64":["e","nat64"],"In a three-layer EIGRP design":["e","eigrp3"],
@@ -1706,7 +1718,7 @@ const Q=[
 ["c","STP must remain in the access layer. Which mode?",["802.1D","RPVST+","MST with one instance","PVST"],1,"RPVST+ gives the best convergence when STP is required. Add the STP Toolkit. (ENSLD)","2.2","qyqa5if"],
 ["c","You connect two distribution switches to two core switches with routed links. Which layout lets ECMP handle a link failure in hardware?",["Squares","Triangles","Daisy chain","Single uplink"],1,"Triangles give two equal-cost paths, so a failure is handled in hardware without waiting for the routing protocol.<br>✗ Squares leave each distribution switch one path, so a failure waits for the routing protocol. (ENSLD)","2.3","q154aqem"],
 ["c","An SD-Access edge node needs the RLOC of a destination host. Which node does it ask?",["Border node","Edge node","Control plane node","Intermediate node"],2,"The control plane node runs the LISP HTDB plus the Map-Server and Map-Resolver functions.<br>✗ The border node only handles traffic leaving the fabric; it doesn't keep the host database. (CSLG)","2.4","q3ntplu"],
-["c","In SD-Access, which node acts as the anycast L3 gateway for endpoints?",["Border","Edge","Control plane","WLC"],1,"Edge nodes authenticate endpoints, register them with the control plane, and act as the anycast gateway.<br>✗ The border is the fabric exit; endpoints use the edge node as their gateway. (CSLG)","2.4","qaxkogz"],
+["c", "Users roam between floors served by different SD-Access edge nodes but keep the same default gateway IP and MAC. Which nodes provide that gateway?", ["Border nodes", "Edge nodes", "Control plane nodes", "Fabric WLCs"], 1, "Every edge node hosts the same anycast gateway for the subnet, so the gateway follows the user.<br>✗ The border is the fabric exit; endpoints use the edge node as their gateway. (CSLG)", "2.4", "qaxkogz"],
 ["c","Campus with several buildings and ~30,000 endpoints. Which SD-Access reference model?",["Small site","Medium site","Large site","Fabric in a Box"],2,"Medium is under 25,000. Large is under 50,000, so 30,000 is a large site. (ENSLD · Cisco)","2.5","qba1x9p"],
 ["c","The customer must be able to fall back to the old campus network at any point during the SD-Access move. Which migration approach?",["Incremental","Parallel","Hybrid","Serial"],1,"Parallel builds the fabric beside the old network, so you can fall back at any time.<br>✗ Incremental moves sites step by step, but rolling back means undoing the already-migrated parts. (CSLG)","2.5","q1yn2xwu"],
 ["c","General latency guideline for an SD-Access transit?",["<10 ms one-way","<125 ms one-way","<1 s round trip","No limit"],0,"The transit should behave like the campus: full port speed, under 10 ms one-way, MTU ~9100.<br>✗ 125 ms is a WAN-style budget; the SD-Access transit should perform like the campus. (CSLG)","2.5","q4cmu7x"],
@@ -1721,7 +1733,7 @@ const Q=[
 ["w","The backup WAN circuit failed together with the primary because both used the same provider port. What should the next SLA require?",["Same physical port, separate backup PVC","Separate provider equipment and paths","Same trunk to the provider for lower cost","Nothing special beyond a standard SLA"],1,"Backup PVCs on the same physical port do almost nothing, because the port is likelier to fail than a PVC.<br>✗ A separate PVC on the same port fails together with the port. (ARCH-SS)","3.3","q1tw8p0u"],
 ["s","Minimum bandwidth recommended for best effort?",["5 %","10 %","25 %","50 %"],2,"Best effort should get about 25 %, real-time at most 33 %, and scavenger at most 5 %. (ARCH)","4.2","qkvacap"],
 ["s","Should WRED run on the LLQ?",["Yes, always","No","Only on WAN links","Only for video"],1,"The LLQ is already policed. Run congestion avoidance only on non-priority queues.<br>✗ WRED on the LLQ would drop voice early; the priority queue's implicit policer already limits it. (ARCH)","4.2","q1hcroif"],
-["s","With DSCP-based WRED, which AF value is dropped first?",["AF11","AF12","AF13","AF41"],2,"Within a class, drop precedence 3 goes before 2, and 2 before 1.<br>✗ AF41 is a different class; drop precedence only compares values within one class. (ARCH)","4.2","q1s3l2ap"],
+["s", "The bulk-data class carries AF11, AF12 and AF13 and starts to congest. Which packets does DSCP-based WRED drop first?", ["AF11", "AF12", "AF13", "AF41"], 2, "Within a class, drop precedence 3 goes before 2, and 2 before 1.<br>✗ AF41 is a different class; drop precedence only compares values within one class. (ARCH)", "4.2", "q1s3l2ap"],
 ["s","Ethernet WAN handoff at 1 Gbps but only 100 Mbps contracted.",["Police inbound at 100 Mbps on the WAN port","Parent shaper at 100 Mbps + child queuing","Do nothing, the provider will buffer it","Enable WRED only on the WAN interface"],1,"Shape outbound to the contracted rate, then queue inside the shaped rate (HQoS). Otherwise the carrier drops the excess.<br>✗ Policing inbound doesn't stop the provider dropping your outbound excess; shaping does. (ARCH)","4.2","qk3twlx"],
 ["s","Your multicast design keeps all traffic on the shared tree (SPT threshold infinity) to save state. Where do you place the RP?",["Anywhere, placement never matters","Close to the source","Close to the receivers, on the LHR","Only on a core router, never elsewhere"],1,"With infinity, traffic stays on the shared tree through the RP, so it can become a congestion point. Place it near the source.<br>✗ Near the receivers is fine with threshold 0, but with infinity all traffic stays on the RP path. (ARCH)","4.4","q11pl49p"],
 ["s","In Bidir-PIM, which router becomes the designated forwarder (DF)?",["Best route to receivers","Best route to the RP","Best route to the source","Highest IP"],1,"The DF on each segment is the router with the best unicast route to the RP.<br>✗ The DF is chosen per segment by its route to the RP, not to sources or receivers. (ARCH)","4.5","qj0svka"],
@@ -1746,12 +1758,12 @@ const Q=[
 ["w","Which multicast-capable tunneling would you use to carry an IGP over IPsec site-to-site?",["Plain IPsec","GRE over IPsec","GETVPN over Internet","L2TP"],1,"Plain IPsec can't carry multicast or IGP hellos, but GRE wrapped in IPsec can. (ENSLD)","3.2","qxijjx7"],
 ["r","An OSPF design places a hub router as ABR for 40 spoke areas. Concern?",["No concern, there is no limit at all","It keeps one LSDB per area; watch CPU/RAM","OSPF forbids more than 3 areas per ABR","It prevents summarization into Area 0"],1,"Each area means one more database. Modern ABRs handle 50+ areas, but watch the load.<br>✗ OSPF has no 3-area limit per ABR; the real cost is one LSDB and SPF per area. (CSLG)","1.4","qsgaql8"],
 ["r","Which is TRUE about BGP communities?",["They are well-known mandatory attributes","Not sent unless send-community is set","They change the best-path selection order","They only work between iBGP neighbors"],1,"Communities are optional transitive attributes, but IOS doesn't send them unless send-community is set.<br>✗ Communities are optional transitive, not well-known mandatory. (CSLG)","1.5","q18l70sm"],
-["r","Which RFC 3021 feature saves addresses on point-to-point links?",["/30 masks","/31 masks","Unnumbered only","/32 masks"],1,"/31s use both addresses on point-to-point links.<br>✗ /30s waste two of four addresses on every link. (CSLG)","1.1","q1tigvi7"],
+["r", "Your plan has thousands of routed point-to-point links and IPv4 space is tight. Which mask do you use on them?", ["/30 masks", "/31 masks", "Unnumbered only", "/32 masks"], 1, "/31 masks (RFC 3021) use both addresses on a point-to-point link.<br>✗ /30s waste two of four addresses on every link. (CSLG)", "1.1", "q1tigvi7"],
 ["c","You need sub-second failover between distribution and core without tuning OSPF timers.",["Lower hello to 1 s","Enable BFD","Enable GR","Use static routes"],1,"BFD detects failures in under a second for any protocol and tells the routing process.<br>✗ Fast hellos also work but mean tuning timers on every protocol, which the question rules out. (ENSLD)","2.1","qtg3syy"],
 ["c","A core switch has two supervisors. During a supervisor switchover, traffic must keep flowing and routing peers must keep their routes.",["BFD with aggressive timers on all links","SSO with NSF/Graceful Restart","HSRP between the two supervisors","UDLD in aggressive mode on all uplinks"],1,"SSO keeps forwarding while NSF/GR stops peers from tearing down routes.<br>✗ BFD speeds up failure detection but does nothing to keep forwarding during a switchover. (ENSLD · ARCH)","2.1","q1a7otsz"],
 ["c","Which mechanism lets a router recover from switchover without help from its neighbors?",["GR","NSR","BFD","Fast hellos"],1,"NSR syncs routing state to the standby, so peers don't even notice.<br>✗ GR needs GR-aware neighbors to help rebuild routing state. (ENSLD)","2.1","q1jly93g"],
 ["c","A new digital signage display needs 51 W at the device. What is the lowest PoE option that meets this?",["802.3af","802.3at","Cisco UPOE","Cisco UPOE+"],2,"UPOE delivers 60 W at the PSE and 51 W to the device over 4 pairs.<br>✗ 802.3at (PoE+) delivers only 25.5 W at the device. (ENSLD)","2.2","qkn769w"],
-["c","What's the maximum power per PSE port for 802.3at PoE+?",["15.4 W","30 W","60 W","90 W"],1,"PoE+ = 30 W PSE, 25.5 W at the device.<br>✗ 15.4 W is 802.3af, and 60 W is Cisco UPOE. (ENSLD)","2.2","qez27je"],
+["c", "IP phones with a video screen need 22 W at the device. Which is the lowest PoE standard that delivers this?", ["802.3af PoE", "802.3at PoE+", "Cisco UPOE", "Cisco UPOE+"], 1, "PoE+ delivers 30 W at the switch port and 25.5 W at the device, enough for 22 W.<br>✗ 802.3af delivers only 12.95 W at the device. (ENSLD)", "2.2", "qez27je"],
 ["c","Admins want to patch sleeping PCs at night from a remote subnet.",["PoE+ enabled on every desk port","Wake-on-LAN, directed broadcast allowed","DHCP snooping on all access VLANs","PortFast enabled on all host ports"],1,"WoL magic packets wake the NIC. Remote subnets need directed broadcasts permitted.<br>✗ PortFast only skips STP states when the port comes up; it can't wake a sleeping PC. (ENSLD)","2.2","q12lwg8w"],
 ["c","Only the first device that connects to a port should ever be allowed there.",["A VACL that permits only that MAC","Port security with sticky MAC","BPDU Guard on the access port","Storm control with a low threshold"],1,"Sticky MAC saves the learned MAC in the config and blocks others. (ENSLD)","2.2e","qmtm09r"],
 ["c","You must drop certain traffic between hosts in the same VLAN.",["Router ACL on the SVI","VACL","Root Guard","PBR"],1,"A VACL filters all packets in the VLAN, including bridged ones.<br>✗ A router ACL on the SVI only sees routed traffic, not traffic bridged inside the VLAN. (ENSLD)","2.2e","q96vusd"],
@@ -1761,13 +1773,13 @@ const Q=[
 ["c","Wireless clients on new APs must get the same SGT-based policy as wired users in the SD-Access campus.",["Over-the-top wireless","Fabric mode wireless","FlexConnect","Autonomous APs"],1,"Fabric wireless sends client traffic in VXLAN with SGTs to the edge.<br>✗ Over-the-top wireless uses the fabric only as transport, so clients get no SGT policy. (ENSLD)","2.5","q8tjkha"],
 ["c","Older APs that aren't fabric-capable must work in a new SD-Access site.",["Fabric wireless","Over-the-top","Remove them","Mesh mode"],1,"OTT keeps CAPWAP for control and data, and the fabric is just transport.<br>✗ Fabric wireless needs fabric-capable APs, which is exactly what's missing. (ENSLD)","2.5","qwzltsy"],
 ["c","Where is the fabric WLC located?",["Inside the fabric on an edge node","Outside the fabric, ≤20 ms RTT from APs","Only in the cloud, as a service","On the control plane node itself"],1,"The WLC is outside the fabric overlay, with an AP-to-WLC round-trip time of 20 ms or less.<br>✗ The WLC isn't a fabric role; it sits outside on a services block or in the DC. (CSLG)","2.5","q1vkcoh1"],
-["c","Which SD-Access plane uses VXLAN?",["Control","Data","Policy","Management"],1,"LISP is control, VXLAN is data, and SGT/TrustSec is policy.<br>✗ LISP is the control plane; it finds the destination but doesn't carry the data. (ENSLD · CSLG)","2.4","q1ei0lo2"],
+["c", "An engineer captures UDP 4789 traffic between two SD-Access edge nodes. Which fabric plane is that?", ["Control", "Data", "Policy", "Management"], 1, "UDP 4789 is VXLAN, the SD-Access data plane. LISP is the control plane and SGT/TrustSec the policy plane.<br>✗ LISP is the control plane; it finds the destination but doesn't carry the data. (ENSLD · CSLG)", "2.4", "q1ei0lo2"],
 ["c","Which underlay protocol does LAN automation typically deploy in SD-Access?",["OSPF","EIGRP","IS-IS","RIP"],2,"IS-IS is the common underlay IGP.<br>✗ OSPF is possible manually, but LAN automation deploys IS-IS. (CSLG)","2.4","q1jorgr5"],
 ["c","Which access-layer setting speeds up port bring-up and improves security on host ports?",["Enable DTP desirable on host ports","Disable trunking on host ports","Put access switches in VTP server mode","Use native VLAN 1 for all host ports"],1,"Turning off trunk negotiation avoids DTP delay and VLAN-hopping risk.<br>✗ DTP desirable does the opposite: it negotiates trunks and invites VLAN hopping. (ENSLD)","2.2","q1fj3elw"],
 ["w","A provider offers a point-to-point Ethernet circuit over its MPLS core.",["VPLS","VPWS","L3VPN","DWDM"],1,"VPWS is point-to-point L2VPN. VPLS is multipoint. (ENSLD)","3.1","q452z35"],
-["w","Which technology adds bandwidth on fiber by using different wavelengths?",["Dark fiber","Metro Ethernet","GSM","DWDM"],3,"DWDM multiplexes many wavelengths on one fiber.<br>✗ Dark fiber is just the unlit fiber; DWDM is what adds wavelengths on it. (ENSLD)","3.1","qylsyl1"],
+["w", "Two data centers share one dark-fiber pair that is already full. You need much more capacity without laying new fiber.", ["A second leased dark-fiber pair", "Metro Ethernet service", "4G/5G backup links", "DWDM"], 3, "DWDM multiplexes many wavelengths on the same fiber, multiplying its capacity.<br>✗ Another dark-fiber pair means new fiber, which the question rules out. (ENSLD)", "3.1", "qylsyl1"],
 ["w","Which VPN option doesn't work on public networks that use NAT?",["GETVPN","DMVPN","Remote-access VPN","FlexVPN"],0,"GETVPN keeps the original IP header, so it needs private routable addressing end to end.<br>✗ DMVPN handles NAT with NAT-T; GETVPN can't because it reuses the original addresses. (ENSLD)","3.2","qnpzp4h"],
-["w","Which VPN technology combines IPsec and GRE with dynamic tunnels?",["GETVPN","DMVPN","MPLS L3VPN","IKE"],1,"DMVPN = mGRE + NHRP + IPsec.<br>✗ GETVPN is tunnel-less; it has no GRE and no dynamic tunnels. (ENSLD)","3.2","q9mgb0g"],
+["w", "300 branches on Internet links need encrypted spoke-to-spoke tunnels built on demand, with routing protocols over them.", ["GETVPN", "DMVPN", "MPLS L3VPN", "Static IPsec VTIs to every peer"], 1, "DMVPN = mGRE + NHRP + IPsec: dynamic spoke-to-spoke tunnels that carry routing protocols.<br>✗ GETVPN is tunnel-less and doesn't work across the NATed Internet. (ENSLD)", "3.2", "q9mgb0g"],
 ["w","Branches need an SLA for voice but want cheaper bulk transport.",["MPLS-only WAN","Internet-only WAN","Hybrid WAN","Dark fiber"],2,"Hybrid sends priority traffic over MPLS and the rest over Internet VPN.<br>✗ MPLS-only meets the voice SLA but isn't cheaper for bulk traffic. (ENSLD)","3.3","q121ryh7"],
 ["w","All 80 sites use one MPLS provider. What is the main design risk?",["You need several different QoS models","A carrier outage hits every site","You must manage many more vendors","You get no SLA at all from the carrier"],1,"One fault domain. Dual carriers split it.<br>✗ One carrier actually means one QoS model and one vendor; that's its upside. (ENSLD)","3.3","qmour6o"],
 ["w","A branch has two routers, each with a circuit from the same carrier, and an FHRP on the LAN. Which single point of failure remains?",["The carrier's shared network and POP","The FHRP between the two routers","Each of the two branch routers","None, the branch is fully redundant"],0,"Two routers and two circuits remove device and link failures, but one carrier is still one fault domain. Dual carriers remove it.<br>✗ Each router has a backup in the other one, and the FHRP fails over between them. (ENSLD)","3.3","q23bvmb"],
@@ -1779,7 +1791,7 @@ const Q=[
 ["s","A few voice trunks need bandwidth reserved hop by hop, signaled before calls start. Which QoS model?",["DiffServ","IntServ","Best effort","DiffServ with LLQ for voice"],1,"IntServ reserves resources per flow with RSVP.<br>✗ DiffServ prioritizes classes but reserves nothing and signals nothing in advance.<br>✗ LLQ prioritizes voice but reserves nothing end to end and can't refuse a call. (ARCH)","4.1","qav12k4"],
 ["s","Why do enterprises choose DiffServ over IntServ?",["It gives hard end-to-end guarantees","It aggregates flows into classes","It needs no packet marking at all","It requires RSVP signaling on every hop"],1,"DiffServ keeps state per class, not per flow.<br>✗ Hard end-to-end guarantees are what IntServ gives, not DiffServ. (ARCH · CSLG)","4.1","q1m92zb0"],
 ["s","In IntServ, what prevents a new flow from breaking existing guarantees?",["WRED on the reserved queues","Call Admission Control","Policing at the network edge","LLQ for the reserved flows"],1,"CAC rejects flows that can't be admitted.<br>✗ WRED and policing manage congestion but can't refuse a flow before it starts. (CSLG)","4.1","q1ic9cgr"],
-["s","Which is true of an OOB management network?",["Uses the production infrastructure","Uses a separate physical network","Provides no segmentation","Is the cheapest option"],1,"OOB keeps management reachable when production fails.<br>✗ OOB isn't cheap; it needs its own switches, ports and links. (ENSLD)","4.3","q1en75eq"],
+["s", "During a core outage, admins must still reach every device's console and management interface. What do you design?", ["An in-band management VLAN on production links", "A separate out-of-band management network", "SNMP traps to the NMS", "Syslog to a central server"], 1, "OOB uses its own switches and links, so management stays reachable when production fails.<br>✗ An in-band VLAN rides the same links that just failed. (ENSLD)", "4.3", "q1en75eq"],
 ["s","Auditors flag SNMP community strings sent in clear text and demand authenticated, encrypted polling. Which version?",["SNMPv1","SNMPv2c","SNMPv3","SNMPv4"],2,"SNMPv3 adds the user-based security model.<br>✗ SNMPv2c still uses clear-text community strings, and there is no SNMPv4. (ENSLD)","4.3","q73j94j"],
 ["s","Which SNMP component contains the agent?",["The NMS manager","The managed device","The MIB itself","The trap receiver"],1,"The agent runs on the managed device and answers the NMS. (ENSLD)","4.3","qcae6bv"],
 ["s","Groups 224.1.1.1 and 225.1.1.1 end up on the same Ethernet MAC address. How many IP address bits does the MAC mapping use?",["16","23","24","32"],1,"The low 23 bits go behind 01:00:5e, so 32 groups share each MAC. (ENSLD)","4.4","q13w0b96"],
@@ -1787,7 +1799,7 @@ const Q=[
 ["s","Which Auto-RP role announces group-to-RP mappings to all routers?",["Candidate RP","Mapping agent","Bootstrap router (BSR)","Designated router (DR)"],1,"Candidate RPs announce themselves, and mapping agents pick and advertise mappings. (ARCH)","4.5","q2ihoaw"],
 ["s","A design review asks why the network-control class (CS6) has no WRED configured. What is the reason?",["WRED reacts too slowly for control traffic","Dropping or reordering them destabilizes routing","WRED only works with EF-marked traffic","WRED breaks NAT on the WAN edge router"],1,"Early drops or reordering of routing packets can tear down adjacencies, so the class gets no WRED. (ARCH)","4.2","q6fp2by"],
 ["s","Which (*,G) statement is true?",["A specific source sending to a group","Any source via the RP shared tree","Always the optimal path from the source","Used only by Source-Specific Multicast"],1,"(*,G) is the shared tree rooted at the RP for any source. (ARCH)","4.4","qnkwn1q"],
-["a","Which uses HTTP/2, protobuf and bidirectional streaming?",["NETCONF","RESTCONF","gRPC","SNMP"],2,"gRPC runs over HTTP/2 and supports bidirectional streams.<br>✗ RESTCONF uses HTTP requests with JSON or XML, not protobuf streams. (ENSLD)","5.4","q1p0wtl9"],
+["a", "The collector team wants telemetry streamed over HTTP/2 with compact binary encoding.", ["NETCONF", "RESTCONF", "gRPC", "SNMP"], 2, "gRPC runs over HTTP/2 with protobuf encoding and supports bidirectional streams.<br>✗ RESTCONF uses HTTP requests with JSON or XML, not protobuf streams. (ENSLD)", "5.4", "q1p0wtl9"],
 ["a","A defense contractor must own and control every component of an application stack for compliance. Which deployment?",["SaaS","PaaS","IaaS","On-premises"],3,"Only on-premises gives full ownership and control.<br>✗ IaaS still leaves the hardware and facility to the provider. (CCDE)","5.6","qq8yxd2"],
 ["a","A startup wants to manage its own virtual servers and OS images, pay only for what it uses, and own no hardware.",["SaaS","PaaS","IaaS","On-premises"],2,"IaaS provides compute, storage and network as a service.<br>✗ PaaS hides the OS, but the startup wants to manage its own OS images. (CCDE)","5.6","q1800x8j"],
 ["a","Which cloud type lets a business ease into cloud over a long period?",["Private","Public","Hybrid","Multi-cloud"],2,"Hybrid keeps on-prem while moving workloads over time.<br>✗ Multi-cloud spreads workloads across providers; it says nothing about keeping on-prem. (CCDE)","5.6","q1ogau2g"],
@@ -1811,7 +1823,7 @@ const Q=[
 ["c","Mutual redistribution between OSPF and EIGRP at two routers causes loops.",["Raise the AD of both protocols everywhere","Tag routes and filter by tag","Replace redistribution with static routes","Shut down one of the two routers"],1,"Tag on redistribution and deny that tag on the way back.<br>✗ Raising AD everywhere changes route preference but doesn't stop routes being fed back. (ARCH)","2.3","q1x0s8c"],
 ["c","In an SD-Access design, which component authenticates users and assigns their SGTs?",["DNA Center","Cisco ISE","Border node","WLC"],1,"ISE handles AAA, groups and policy. DNA Center orchestrates. (ENSLD)","2.4","qwl013g"],
 ["w","Customer needs multipoint L2 connectivity and its own routing across a provider.",["VPWS","VPLS","MPLS L3VPN","GETVPN"],1,"VPLS emulates a LAN across sites, while VPWS is point-to-point. (ENSLD)","3.1","q1jfopyw"],
-["w","In Cisco SD-WAN, what provides segmentation like a VRF?",["TLOC","VPN","Color","Site ID"],1,"SD-WAN VPNs separate traffic end to end, each with its own topology policy.<br>✗ A TLOC identifies a transport attachment point, not a segment. (ENSLD)","3.5","q11wjuxm"],
+["w", "Guests, POS terminals and corporate users must stay separated end to end across the SD-WAN overlay. What do you configure?", ["A TLOC per group", "A VPN per group", "A color per group", "A site ID per group"], 1, "SD-WAN VPNs are the VRF equivalent: they separate traffic end to end, each with its own topology policy.<br>✗ A TLOC identifies a transport attachment point, not a segment. (ENSLD)", "3.5", "q11wjuxm"],
 ["s","Which IntServ service uses RSVP with WFQ to reserve bandwidth?",["Controlled load","Guaranteed rate","Best effort","Scavenger class"],1,"Guaranteed rate reserves bandwidth. Controlled load gives lightly-loaded-network behavior; Cisco IOS implements it with RSVP and WRED. (ARCH-SS)","4.1","q1azm2ka"],
 ["s","How many bits make up the DSCP field?",["3","6","8","16"],1,"6 bits of DSCP plus 2 ECN bits equal the old 8-bit ToS byte. (ARCH-SS)","4.1","qhfwht1"],
 ["s","Which collects flow data for planning, accounting and billing?",["RMON probes","NetFlow","CDP","Syslog"],1,"NetFlow exports flow records. RMON gives aggregate LAN statistics. (ENSLD)","4.3","qgjj64j"],
@@ -1823,7 +1835,7 @@ const Q=[
 ["r","A router must exchange VPNv4 routes with a PE and IPv6 routes with an ISP. What do you use?",["Two separate BGP processes on the router","MP-BGP with separate address families","OSPFv3 with an address family per protocol","Redistribution of both into EIGRP"],1,"MP-BGP carries each NLRI type in its own address family with its own RIB.<br>✗ Separate BGP processes aren't possible on IOS; there is one BGP process per router. (CSLG)","1.5","q1mj0ksy"],
 ["r","You write the outbound filter toward your ISP so only your PI prefixes are advertised. Which tool is preferred?",["Numbered ACL","Prefix list","Distribute list with wildcard ACL","Route tags"],1,"Prefix lists are made for prefix filtering. IPv6 ACLs must be named and are meant for packet filtering.<br>✗ Numbered ACLs can filter prefixes but can't match prefix lengths cleanly. (CSLG)","1.5","qbewrjq"],
 ["r","A business partner starts advertising your data center prefix back to you. Best design fix?",["Raise the AD of all partner-learned routes","Defensive inbound filtering on the peering","A static route to the data center prefix","Remove the partner link entirely"],1,"Accept only the prefixes the partner should send, never your own or a default route. (CSLG)","1.5","q1ppnbt4"],
-["c","Which blueprint item do StackWise Virtual and VSS fall under?",["Loop-free technologies only","Platform abstraction techniques","Graceful restart","Bidirectional Forwarding Detection"],1,"Platform abstraction = several chassis as one logical switch.<br>✗ Loop-free technologies is a separate item (2.2), even though SVL also removes blocked links. (ENSLD blueprint 2.1.b)","2.1","q3msywz"],
+["c", "Operations wants the two distribution switches managed as one device, with one configuration and one control plane.", ["StackWise Virtual", "HSRP with tuned timers", "Two separate switches running MST", "VTP server mode on both switches"], 0, "StackWise Virtual (VSS on older platforms) is platform abstraction: two chassis act as one logical switch with one config and one control plane.<br>✗ HSRP keeps two separate switches and only shares the gateway address. (ENSLD blueprint 2.1.b)", "2.1", "q3msywz"],
 ["c","Two SD-Access VNs must both reach DHCP and DNS in the data center.",["Merge both VNs into one","Fusion router/firewall leaking routes","Stretch a shared VLAN into both VNs","Static routes on every edge node"],1,"The border hands VNs to a fusion device that leaks between VRFs or into the global table.<br>✗ Merging the VNs would remove the segmentation the VNs exist for. (ENSLD)","2.5","q12nz2i1"],
 ["c","Sales and Marketing share a VN but must not talk to each other.",["Put them in separate VNs","SGT microsegmentation with SGACLs","VACLs on every edge node","Private VLANs on the access ports"],1,"VNs are macro segmentation. SGTs give micro segmentation inside a VN.<br>✗ Separate VNs would work but need a fusion device to talk again; SGTs keep them in one VN. (ENSLD)","2.5","q1yixjcj"],
 ["c","Which transit does not carry SGT and VN natively in the fabric encapsulation?",["SD-Access transit","SD-WAN transit","IP transit","Distributed campus transit"],2,"An IP transit decapsulates to native IP. VN then needs a VRF-Lite handoff and SGT needs SXP or inline tagging. SD-Access and SD-WAN transits carry both natively. (ENSLD · Cisco)","2.5","q8r72l5"],
@@ -1954,7 +1966,12 @@ function weakObjs(){const r=[];Object.keys(OBJ).forEach(k=>{const ids=Q.map((q,i
 const MODES={practice:"Practice",due:"Due for review",wrong:"Retry wrong",weak:"Weak topics",mock:"Mock exam"};
 function qFilters(){
   const m=document.getElementById("qmodes");
-  const nw=Q.filter((q,i)=>ql[i]===0).length,wk=weakObjs().length,nd=dueList().length;
+  const inD=i=>qf=="all"||Q[i][0]==qf;
+  const nw=Q.filter((q,i)=>inD(i)&&ql[i]===0).length,wk=weakObjs().filter(k=>qf=="all"||Q.some(q=>q[5]==k&&q[0]==qf)).length,nd=dueList().filter(inD).length;
+  {const b=document.getElementById("qclr"),nm=qf=="all"?"":" ("+D[qf].n+")";b.style.display=qmode=="wrong"&&nw?"inline-block":"none";b.dataset.arm="";b.style.color="";b.textContent="Clear Retry wrong list"+nm;
+   b.onclick=()=>{if(b.dataset.arm){Q.forEach((q,i)=>{if(inD(i)&&ql[i]===0)delete ql[i]});qsave();qFilters();qStart();return}
+     b.dataset.arm="1";b.textContent=`Tap again to clear ${nw} question${nw==1?"":"s"}`;b.style.color="var(--bad)";
+     setTimeout(()=>{if(b.dataset.arm){b.dataset.arm="";b.textContent="Clear Retry wrong list"+nm;b.style.color=""}},4000)}}
   m.innerHTML=Object.entries(MODES).map(([k,n])=>`<button class="chip ${qmode==k?"on":""}" data-m="${k}" style="${qmode==k?"color:var(--c1)":""}">${n}${k=="due"?` (${nd})`:k=="wrong"?` (${nw})`:k=="weak"?` (${wk})`:k=="mock"?" ⏱":""}</button>`).join("");
   m.querySelectorAll(".chip").forEach(b=>b.onclick=()=>{qmode=b.dataset.m;qFilters();qStart()});
   const f=document.getElementById("qfilters");f.style.display=qmode=="mock"?"none":"flex";
@@ -1986,38 +2003,49 @@ function quiz(){
   const box=document.getElementById("qbox");
   if(qi>=qorder.length){clearInterval(mtimer);sessClear();
     if(mock){finishMock(box);return}
-    if(!qorder.length){box.innerHTML=`<div class="done"><b>Nothing here</b>${qmode=="wrong"?"No wrong answers to retry 🎉":qmode=="due"?"Nothing is due right now. Come back later.":"Answer some questions in Practice first."}</div>`;return}
+    if(!qorder.length){const tot=qmode=="wrong"?Q.filter((q,i)=>ql[i]===0).length:qmode=="due"?dueList().length:0,elsewhere=qf!="all"&&tot>0;
+      box.innerHTML=`<div class="done"><b>Nothing here</b>${qmode=="wrong"?"No wrong answers to retry"+(qf=="all"?" 🎉":" in "+D[qf].n+"."):qmode=="due"?"Nothing is due right now"+(qf=="all"?". Come back later.":" in "+D[qf].n+"."):"Answer some questions in Practice first."}${elsewhere?`<br>${tot} in other domains. <button class="reset" id="qall" style="margin-top:8px">Show all domains</button>`:""}</div>`;
+      const a=document.getElementById("qall");if(a)a.onclick=()=>{qf="all";qFilters();qStart()};return}
     const p=qn?qr/qn:0;box.innerHTML=`<div class="done"><b>${qr} of ${qn} correct</b>${p>=.85?"Strong.":"Try Retry wrong or Weak topics next."}<br><button class="reset" id="qrs">Again</button></div>`;
     document.getElementById("qrs").onclick=()=>{qFilters();qStart()};return}
   const id=qorder[qi],q=Q[id],d=D[q[0]],t=qtype(q);sessSave();
-  const head=`<div class="prog"><span style="color:${d.c};font-weight:600">${d.n}</span><span>${mock?`<b id="qtime" style="font-family:'JetBrains Mono'">90:00</b> · `:""}${qi+1} / ${qorder.length}</span></div>`;
+  const head=`<div class="prog"><span style="color:${d.c};font-weight:600">${d.n}</span><span>${mock?`<b id="qtime" style="font-family:'JetBrains Mono'">90:00</b> · `:""}Q ${qi+1}/${qorder.length}</span></div>`;
   const dq=(qDiag(q)||[])[0]=="q"?drawDG(qDiag(q)[1]):"";
-  const tag=t=="multi"?`<div class="lbl" style="color:var(--c3)">Choose ${q[3].length}</div>`:t=="order"?`<div class="lbl" style="color:var(--c3)">Put in the right order: tap the steps 1 → ${q[2].length}</div>`:t=="match"?`<div class="lbl" style="color:var(--c3)">Match each item · drag-and-drop style</div>`:"";
+  const tag=t=="multi"?`<div class="lbl" style="color:var(--c3)">Choose ${q[3].length}</div>`:t=="order"?`<div class="lbl" style="color:var(--c3)">Put in the right order: tap the steps 1 → ${q[2].length} (tap a chosen step to redo from there)</div>`:t=="match"?`<div class="lbl" style="color:var(--c3)">Match each item · drag-and-drop style</div>`:"";
   let body="",opts;
   if(t=="order"){opts=shuf(q[2].map((o,j)=>({o,j})));body=`<div id="ordsel" class="mn" style="min-height:24px;margin-bottom:10px;font-family:Inter">Your order: <span style="color:var(--mute)">tap below</span></div>`+opts.map((o,k)=>`<button class="opt" data-k="${k}">${o.o}</button>`).join("")+`<button class="reset" id="undo" style="margin-bottom:8px">Undo</button>`}
   else if(t=="match"){opts=shuf(q[2].map((p,j)=>({o:p[0],c:p[1]})));const cats=shuf([...new Set(q[2].map(p=>p[1]))]);
     body=opts.map((o,k)=>`<div class="mt"><span>${o.o}</span><select data-k="${k}"><option value="">choose…</option>${cats.map(c=>`<option>${c}</option>`).join("")}</select></div>`).join("")}
   else{opts=shuf(q[2].map((o,j)=>({o,ok:t=="single"?j==q[3]:q[3].includes(j)})));body=opts.map((o,k)=>`<button class="opt" data-k="${k}">${t=="multi"?"☐ ":""}${o.o}</button>`).join("")}
-  box.innerHTML=head+`<div class="scen">${q[1]}</div>${dq}${tag}${body}${t!="single"?`<button class="next" id="chk" style="display:${t=="multi"?"block":"none"}">Check answer</button>`:""}<div id="qx" class="why" style="display:none;background:var(--panel2);border-radius:12px;padding:12px;margin:4px 0 6px"></div><button class="next" id="nx">${mock&&qi==qorder.length-1?"Finish exam":"Next →"}</button>`;
+  box.innerHTML=head+`<div class="scen">${q[1]}</div>${dq}${tag}${body}<button class="next" id="chk">Check answer</button><div id="qx" class="why" style="display:none;background:var(--panel2);border-radius:12px;padding:12px;margin:4px 0 6px"></div><button class="next" id="nx">${mock&&qi==qorder.length-1?"Finish exam":"Next →"}</button>`;
   const btns=[...box.querySelectorAll(".opt")];let done=false,sel=[];
   const finish=(ok,pick)=>{done=true;if(mock){mock.ans[id]=ok;(mock.pick=mock.pick||{})[id]=pick||"";record(id,ok);sessSave(qi+1);document.getElementById("nx").style.display="block";const c=document.getElementById("chk");if(c)c.style.display="none";btns.forEach(b=>b.disabled=true);return}
     qn++;if(ok)qr++;record(id,ok);upd();sessSave(qi+1);
     const x=document.getElementById("qx");x.innerHTML=`<b style="color:${ok?"var(--ok)":"var(--bad)"}">${ok?"Correct.":"Not quite."}</b> ${t!="single"?`<div style="margin:6px 0"><b>Answer:</b> ${qanswer(q)}</div>`:""}${q[4]}${(qDiag(q)||[])[0]=="e"?`<div style="margin-top:10px">${drawDG(qDiag(q)[1])}</div>`:""}`;x.style.display="block";
     const c=document.getElementById("chk");if(c)c.style.display="none";document.getElementById("nx").style.display="block"};
-  if(t=="single")btns.forEach((b,k)=>b.onclick=()=>{if(done)return;const ok=opts[k].ok;if(mock){b.classList.add("sel")}else{if(!ok)b.classList.add("w");btns[opts.findIndex(o=>o.ok)].classList.add("r")}finish(ok,opts[k].o)});
-  if(t=="multi"){btns.forEach((b,k)=>b.onclick=()=>{if(done)return;if(sel.includes(k)){sel=sel.filter(x=>x!=k);b.classList.remove("sel");b.textContent="☐ "+opts[k].o}else if(sel.length<q[3].length){sel.push(k);b.classList.add("sel");b.textContent="☑ "+opts[k].o}});
-    document.getElementById("chk").onclick=()=>{if(done||sel.length!=q[3].length)return;const ok=sel.every(k=>opts[k].ok);
-      if(!mock)btns.forEach((b,k)=>{if(opts[k].ok)b.classList.add("r");else if(sel.includes(k))b.classList.add("w")});finish(ok,sel.map(k=>opts[k].o+(opts[k].ok?"":" <b style=\"color:var(--bad)\">✗</b>")).join("<br>"))}}
+  const chk=document.getElementById("chk")||(()=>{const c=document.createElement("button");c.className="next";c.id="chk";c.textContent="Check answer";document.getElementById("qx").before(c);return c})();
+  const nx=document.getElementById("nx");chk.textContent="Check answer";
+  const ss=[...box.querySelectorAll(".mt select")];
+  const ready=()=>t=="single"?sel.length==1:t=="multi"?sel.length==q[3].length:t=="order"?sel.length==q[2].length:ss.every(x=>x.value);
+  const evaluate=()=>{
+    if(t=="single"){const k=sel[0];return{ok:opts[k].ok,pick:opts[k].o}}
+    if(t=="multi")return{ok:sel.every(k=>opts[k].ok),pick:sel.map(k=>opts[k].o+(opts[k].ok?"":" <b style=\"color:var(--bad)\">✗</b>")).join("<br>")}
+    if(t=="order")return{ok:sel.every((k,n)=>opts[k].j==n),pick:sel.map((k,n)=>(n+1)+". "+opts[k].o+(opts[k].j==n?"":" <b style=\"color:var(--bad)\">✗</b>")).join("<br>")}
+    return{ok:ss.every(s=>s.value==opts[+s.dataset.k].c),pick:ss.map(s=>{const o=opts[+s.dataset.k];return o.o+" → "+s.value+(s.value==o.c?"":" <b style=\"color:var(--bad)\">✗</b>")}).join("<br>")}};
+  const refresh=()=>{const r=ready()&&!done;if(mock){chk.style.display="none";nx.style.display=r||done?"block":"none"}else{chk.style.display=r?"block":"none"}};
+  const commit=()=>{if(done||!ready())return;const {ok,pick}=evaluate();
+    if(!mock){if(t=="single"||t=="multi")btns.forEach((b,k)=>{if(opts[k].ok)b.classList.add("r");else if(sel.includes(k))b.classList.add("w")});
+      if(t=="match")ss.forEach(s=>s.parentNode.classList.add(s.value==opts[+s.dataset.k].c?"r":"w"))}
+    ss.forEach(s=>s.disabled=true);const u=document.getElementById("undo");if(u)u.style.display="none";finish(ok,pick)};
+  if(t=="single")btns.forEach((b,k)=>b.onclick=()=>{if(done)return;sel=[k];if(!mock){commit();return}btns.forEach((x,j)=>x.classList.toggle("sel",j==k));refresh()});
+  if(t=="multi")btns.forEach((b,k)=>b.onclick=()=>{if(done)return;if(sel.includes(k)){sel=sel.filter(x=>x!=k);b.classList.remove("sel");b.textContent="☐ "+opts[k].o}else if(sel.length<q[3].length){sel.push(k);b.classList.add("sel");b.textContent="☑ "+opts[k].o}refresh()});
   if(t=="order"){const show=()=>{document.getElementById("ordsel").innerHTML="Your order: "+(sel.length?sel.map((k,n)=>`<b>${n+1}.</b> ${opts[k].o}`).join(" → "):'<span style="color:var(--mute)">tap below</span>');
-      btns.forEach((b,k)=>b.style.opacity=sel.includes(k)?.35:1);document.getElementById("chk").style.display=sel.length==q[2].length&&!done?"block":"none"};
-    btns.forEach((b,k)=>b.onclick=()=>{if(done||sel.includes(k))return;sel.push(k);show()});
-    document.getElementById("undo").onclick=()=>{if(done)return;sel.pop();show()};
-    document.getElementById("chk").onclick=()=>{if(done)return;const ok=sel.every((k,n)=>opts[k].j==n);finish(ok,sel.map((k,n)=>(n+1)+". "+opts[k].o+(opts[k].j==n?"":" <b style=\"color:var(--bad)\">✗</b>")).join("<br>"));document.getElementById("undo").style.display="none"}}
-  if(t=="match"){const ss=[...box.querySelectorAll(".mt select")];const chk=document.getElementById("chk");
-    ss.forEach(s=>s.onchange=()=>{chk.style.display=ss.every(x=>x.value)&&!done?"block":"none"});
-    chk.onclick=()=>{if(done||!ss.every(x=>x.value))return;const ok=ss.every(s=>s.value==opts[+s.dataset.k].c);
-      if(!mock)ss.forEach(s=>s.parentNode.classList.add(s.value==opts[+s.dataset.k].c?"r":"w"));ss.forEach(s=>s.disabled=true);finish(ok,ss.map(s=>{const o=opts[+s.dataset.k];return o.o+" → "+s.value+(s.value==o.c?"":" <b style=\"color:var(--bad)\">✗</b>")}).join("<br>"))}}
-  document.getElementById("nx").onclick=()=>{qi++;quiz();document.getElementById("v-quiz").scrollIntoView()};
+      btns.forEach((b,k)=>b.style.opacity=sel.includes(k)?.35:1);refresh()};
+    btns.forEach((b,k)=>b.onclick=()=>{if(done)return;if(sel.includes(k))sel=sel.slice(0,sel.indexOf(k));else sel.push(k);show()});
+    document.getElementById("undo").onclick=()=>{if(done)return;sel.pop();show()}}
+  if(t=="match")ss.forEach(s=>s.onchange=refresh);
+  chk.onclick=commit;refresh();
+  nx.onclick=()=>{if(mock&&!done)commit();qi++;quiz();document.getElementById("v-quiz").scrollIntoView()};
 }
 function finishMock(box){
   const ids=qorder,ans=mock.ans,score=ids.filter(i=>ans[i]).length,pct=Math.round(score/ids.length*100);
@@ -2034,7 +2062,7 @@ function finishMock(box){
    <button class="reset" id="qrs">New mock exam</button>`;
   document.getElementById("qrs").onclick=()=>qStart();mock=null;qFilters();upd();
 }
-function upd(){document.getElementById("qscore").textContent=mock?"mock":`${qr} / ${qn}`}
+function upd(){document.getElementById("qscore").textContent=mock?"mock":`✓ ${qr}/${qn}`}
 
 
 const OBJ={"1.1":"Structured IPv4/IPv6 addressing","1.2":"IS-IS design","1.3":"EIGRP design","1.4":"OSPF design","1.5":"BGP (AFs, filtering, attributes, RR, load sharing)","1.6":"IPv6 migration",
@@ -2111,8 +2139,14 @@ function doSearch(){
 document.getElementById("sq").addEventListener("input",doSearch);
 
 
-const VER="1.9.1";
+const VER="1.9.7";
 const CHANGES=[
+["1.9.7","2026-11-12",["Practice: single-answer questions are checked as soon as you tap an option (no Check button); Check answer stays for choose-two, ordering and matching"]],
+["1.9.6","2026-11-12",["You can change your answer before it counts: in Practice, pick an option and tap Check answer; in the Mock exam, your choice is locked in only when you tap Next"]],
+["1.9.5","2026-11-11",["Fixed: on PC the page no longer jumps sideways when switching between short and long tabs (scrollbar space is always reserved)"]],
+["1.9.4","2026-11-11",["Phone layout: mode and domain buttons in one swipeable row each, version badge next to the title, smaller header, labelled counters (✓ score, Q position), fade shows when a row can be swiped"]],
+["1.9.3","2026-11-11",["11 trivia questions turned into small scenarios (e.g. /31 masks, VXLAN on UDP 4789, PoE+ for 22 W phones, OOB during a core outage)"]],
+["1.9.2","2026-11-11",["Retry wrong, Due for review and Weak topics counts now follow the domain filter, and an empty list tells you how many are in other domains","New \"Clear Retry wrong list\" button (tap twice); your first-try results and readiness stay"]],
 ["1.9.1","2026-11-11",["Audit fixes: GETVPN question and why-not line (original addresses, not QoS), SD-WAN keys come via OMP not IKE, NETCONF can stream too, one IntServ distractor replaced"]],
 ["1.9.0","2026-11-11",["Explanations now say why the most tempting wrong option is wrong (135 questions, marked ✗)","New quiz mode \"Due for review\": questions you got right come back after 1, 3, 7 and 21 days; a miss resets them","33 questions reworded so they no longer copy a card front, and 2 duplicate questions replaced","Progress is now saved per question and card ID, so future fixes can't move your answers onto other questions (your existing progress was carried over)"]],
 ["1.8.9","2026-11-11",["Diagram labels no longer cross lines or area borders (17 diagrams fixed, incl. the OSPF LSA flow); label placement on diagonal links improved for all diagrams"]],
@@ -2144,8 +2178,13 @@ const CHANGES=[
     vn.style.display="block";vn.querySelector(".x").onclick=()=>vn.style.display="none"}
   try{localStorage.setItem("ensld-ver",VER)}catch(e){}
 })();
+try{if(localStorage.getItem("ensld-fix193")!="1"){[154].forEach(i=>{delete ql[i];delete qh[i];delete srs[i]});qsave();localStorage.setItem("ensld-fix193","1")}}catch(e){}
 try{if(localStorage.getItem("ensld-fix190")!="1"){[7,101].forEach(i=>{delete ql[i];delete qh[i];delete srs[i]});qsave();localStorage.setItem("ensld-fix190","1")}}catch(e){}
 try{if(localStorage.getItem("ensld-fix188")!="1"){delete ql[132];delete qh[132];qsave();localStorage.setItem("ensld-fix188","1")}}catch(e){}
+
+function fadeMore(){document.querySelectorAll(".filters,nav .in").forEach(el=>{const f=()=>el.classList.toggle("more",el.scrollWidth-el.clientWidth-el.scrollLeft>4);
+  if(!el.dataset.fm){el.dataset.fm=1;el.addEventListener("scroll",f,{passive:true})}f()})}
+window.addEventListener("resize",fadeMore);setInterval(fadeMore,1500);
 function cmpV(a,b){const x=a.split(".").map(Number),y=b.split(".").map(Number);for(let i=0;i<3;i++){if(x[i]!=y[i])return x[i]-y[i]}return 0}
 if(!sessRestore()){qFilters();qStart()}
 domains();readiness();coverage();
