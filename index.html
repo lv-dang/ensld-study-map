@@ -1775,7 +1775,7 @@ const Q=[
 ["c","Where is the fabric WLC located?",["Inside the fabric on an edge node","Outside the fabric, ≤20 ms RTT from APs","Only in the cloud, as a service","On the control plane node itself"],1,"The WLC is outside the fabric overlay, with an AP-to-WLC round-trip time of 20 ms or less.<br>✗ The WLC isn't a fabric role; it sits outside on a services block or in the DC. (CSLG)","2.5","q1vkcoh1"],
 ["c", "An engineer captures UDP 4789 traffic between two SD-Access edge nodes. Which fabric plane is that?", ["Control", "Data", "Policy", "Management"], 1, "UDP 4789 is VXLAN, the SD-Access data plane. LISP is the control plane and SGT/TrustSec the policy plane.<br>✗ LISP is the control plane; it finds the destination but doesn't carry the data. (ENSLD · CSLG)", "2.4", "q1ei0lo2"],
 ["c","Which underlay protocol does LAN automation typically deploy in SD-Access?",["OSPF","EIGRP","IS-IS","RIP"],2,"IS-IS is the common underlay IGP.<br>✗ OSPF is possible manually, but LAN automation deploys IS-IS. (CSLG)","2.4","q1jorgr5"],
-["c","Which access-layer setting speeds up port bring-up and improves security on host ports?",["Enable DTP desirable on host ports","Disable trunking on host ports","Put access switches in VTP server mode","Use native VLAN 1 for all host ports"],1,"Turning off trunk negotiation avoids DTP delay and VLAN-hopping risk.<br>✗ DTP desirable does the opposite: it negotiates trunks and invites VLAN hopping. (ENSLD)","2.2","q1fj3elw"],
+["c", "PCs take a few extra seconds to come online after plug-in, and an audit flags VLAN-hopping risk on host ports. Which single change fixes both?", ["Use native VLAN 1 on all host ports", "Static access mode with no DTP", "Enable DTP desirable on host ports", "Put access switches in VTP server mode"], 1, "A static access port (switchport mode access, nonegotiate, or the switchport host macro) skips DTP negotiation, so it comes up faster, and an attacker can't negotiate a trunk to hop VLANs.<br>✗ DTP desirable does the opposite: it actively negotiates trunks and invites VLAN hopping. (ENSLD)", "2.2", "q1fj3elw"],
 ["w","A provider offers a point-to-point Ethernet circuit over its MPLS core.",["VPLS","VPWS","L3VPN","DWDM"],1,"VPWS is point-to-point L2VPN. VPLS is multipoint. (ENSLD)","3.1","q452z35"],
 ["w", "Two data centers share one dark-fiber pair that is already full. You need much more capacity without laying new fiber.", ["A second leased dark-fiber pair", "Metro Ethernet service", "4G/5G backup links", "DWDM"], 3, "DWDM multiplexes many wavelengths on the same fiber, multiplying its capacity.<br>✗ Another dark-fiber pair means new fiber, which the question rules out. (ENSLD)", "3.1", "qylsyl1"],
 ["w","Which VPN option doesn't work on public networks that use NAT?",["GETVPN","DMVPN","Remote-access VPN","FlexVPN"],0,"GETVPN keeps the original IP header, so it needs private routable addressing end to end.<br>✗ DMVPN handles NAT with NAT-T; GETVPN can't because it reuses the original addresses. (ENSLD)","3.2","qnpzp4h"],
@@ -2139,8 +2139,9 @@ function doSearch(){
 document.getElementById("sq").addEventListener("input",doSearch);
 
 
-const VER="1.9.7";
+const VER="1.9.8";
 const CHANGES=[
+["1.9.8","2026-11-13",["Clearer wording for the host-port question (static access ports, no trunk negotiation)"]],
 ["1.9.7","2026-11-12",["Practice: single-answer questions are checked as soon as you tap an option (no Check button); Check answer stays for choose-two, ordering and matching"]],
 ["1.9.6","2026-11-12",["You can change your answer before it counts: in Practice, pick an option and tap Check answer; in the Mock exam, your choice is locked in only when you tap Next"]],
 ["1.9.5","2026-11-11",["Fixed: on PC the page no longer jumps sideways when switching between short and long tabs (scrollbar space is always reserved)"]],
