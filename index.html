@@ -665,21 +665,6 @@ html{scrollbar-gutter:stable}
       <p class="why" style="margin:12px 0 4px"><b>Where each QoS tool goes on the path</b></p><div data-dg="qospath"></div>
   </details>
 
-  <details class="sec" data-o="4.4" data-d="s"><summary>Multicast tree types <span class="src">ARCH</span></summary>
-    <p class="why" style="margin-top:0"><b>Source tree</b> = shortest-path tree (S,G) from the source. <b>Shared tree</b> = (*,G) rooted at the <b>rendezvous point</b> (RP). <b>RPF</b> accepts traffic only on the interface toward the source or RP.</p>
-    <table class="mx">
-      <tr><th></th><th>PIM-SM</th><th>PIM-SSM</th><th>Bidir-PIM</th></tr>
-      <tr><td>Tree</td><td>(*,G) then (S,G)</td><td>(S,G) only</td><td>(*,G) only</td></tr>
-      <tr><td>RP</td><td class="d">yes</td><td class="y">none</td><td class="d">yes</td></tr>
-      <tr><td>Best for</td><td>general</td><td>1 known source</td><td>many-to-many</td></tr>
-      <tr><td>Notes</td><td>RP knows all sources</td><td>232/8 + IGMPv3</td><td>DF = best route to RP</td></tr>
-    </table>
-    <div class="mn" style="margin-top:10px">SPT threshold <em>0</em> (default) → traffic leaves the RP, so RP placement matters little<br>Threshold <em>infinity</em> → place the RP near the source<br>RP info: static (no HA*) · Auto-RP (Cisco, IPv4) · BSR (standard, IPv6) · *Anycast RP + MSDP</div>
-      <p class="why" style="margin:12px 0 4px"><b>RPF check</b></p><div data-dg="rpf"></div>
-      <p class="why" style="margin:12px 0 4px"><b>PIM-SM: register → shared tree → SPT</b></p><div data-dg="pimsm"></div>
-  </details>
-
-  
   <details class="sec" data-o="4.1" data-d="s"><summary>IntServ vs DiffServ <span class="src">ARCH · CSLG · ARCH-SS</span></summary>
     <table class="mx">
       <tr><th></th><th>IntServ</th><th>DiffServ</th></tr>
@@ -693,16 +678,18 @@ html{scrollbar-gutter:stable}
   <p class="why" style="margin:12px 0 4px"><b>IntServ vs DiffServ along the path</b></p><div data-dg="intdiff"></div>
   </details>
 
-  <details class="sec" data-o="4.3" data-d="s"><summary>Network management design <span class="src">ENSLD</span></summary>
+  <details class="sec" data-o="4.4" data-d="s"><summary>Multicast tree types <span class="src">ARCH</span></summary>
+    <p class="why" style="margin-top:0"><b>Source tree</b> = shortest-path tree (S,G) from the source. <b>Shared tree</b> = (*,G) rooted at the <b>rendezvous point</b> (RP). <b>RPF</b> accepts traffic only on the interface toward the source or RP.</p>
     <table class="mx">
-      <tr><th></th><th>In-band</th><th>Out-of-band</th></tr>
-      <tr><td>Path</td><td>Production network</td><td>Separate physical network</td></tr>
-      <tr><td>Reachable in outage</td><td class="x">no</td><td class="y">yes</td></tr>
-      <tr><td>Cost</td><td class="y">low</td><td class="x">higher</td></tr>
-      <tr><td>Protect with</td><td>Mgmt VRF/VLAN, ACLs, QoS priority</td><td>Console servers, mgmt ports</td></tr>
+      <tr><th></th><th>PIM-SM</th><th>PIM-SSM</th><th>Bidir-PIM</th></tr>
+      <tr><td>Tree</td><td>(*,G) then (S,G)</td><td>(S,G) only</td><td>(*,G) only</td></tr>
+      <tr><td>RP</td><td class="d">yes</td><td class="y">none</td><td class="d">yes</td></tr>
+      <tr><td>Best for</td><td>general</td><td>1 known source</td><td>many-to-many</td></tr>
+      <tr><td>Notes</td><td>RP knows all sources</td><td>232/8 + IGMPv3</td><td>DF = best route to RP</td></tr>
     </table>
-    <div class="mn" style="margin-top:10px"><em>SNMPv3</em> adds authentication + encryption (levels: noAuthNoPriv · authNoPriv · authPriv) · NMS uses <em>GetBulk</em> for tables · the agent sits on the managed device<br>RMON1 = L1/L2 statistics · NetFlow = flow records · CDP (Cisco) vs LLDP (standard) · syslog<br>Prioritize management traffic so you can still reach devices during congestion</div>
-  <p class="why" style="margin:12px 0 4px"><b>Management flows</b></p><div data-dg="nmflow"></div>
+    <div class="mn" style="margin-top:10px">SPT threshold <em>0</em> (default) → traffic leaves the RP, so RP placement matters little<br>Threshold <em>infinity</em> → place the RP near the source<br>RP info: static (no HA*) · Auto-RP (Cisco, IPv4) · BSR (standard, IPv6) · *Anycast RP + MSDP</div>
+      <p class="why" style="margin:12px 0 4px"><b>RPF check</b></p><div data-dg="rpf"></div>
+      <p class="why" style="margin:12px 0 4px"><b>PIM-SM: register → shared tree → SPT</b></p><div data-dg="pimsm"></div>
   </details>
 
   <details class="sec" data-o="4.5" data-d="s"><summary>Multicast services: MSDP &amp; Anycast RP <span class="src">ARCH · ENSLD</span></summary>
@@ -718,6 +705,18 @@ html{scrollbar-gutter:stable}
       <text x="180" y="152" font-size="10" fill="#8d98b3" text-anchor="middle">Same RP address everywhere · IGP sends each router to the nearest RP</text>
     </svg>
     <div class="mn">MSDP shares <em>active sources</em> between RPs, inside one domain (Anycast RP) or between PIM-SM domains<br>SSM needs no RP at all · Bidir-PIM uses only (*,G), with a DF per segment</div>
+  </details>
+
+  <details class="sec" data-o="4.3" data-d="s"><summary>Network management design <span class="src">ENSLD</span></summary>
+    <table class="mx">
+      <tr><th></th><th>In-band</th><th>Out-of-band</th></tr>
+      <tr><td>Path</td><td>Production network</td><td>Separate physical network</td></tr>
+      <tr><td>Reachable in outage</td><td class="x">no</td><td class="y">yes</td></tr>
+      <tr><td>Cost</td><td class="y">low</td><td class="x">higher</td></tr>
+      <tr><td>Protect with</td><td>Mgmt VRF/VLAN, ACLs, QoS priority</td><td>Console servers, mgmt ports</td></tr>
+    </table>
+    <div class="mn" style="margin-top:10px"><em>SNMPv3</em> adds authentication + encryption (levels: noAuthNoPriv · authNoPriv · authPriv) · NMS uses <em>GetBulk</em> for tables · the agent sits on the managed device<br>RMON1 = L1/L2 statistics · NetFlow = flow records · CDP (Cisco) vs LLDP (standard) · syslog<br>Prioritize management traffic so you can still reach devices during congestion</div>
+  <p class="why" style="margin:12px 0 4px"><b>Management flows</b></p><div data-dg="nmflow"></div>
   </details>
 
   <h2 class="dh" style="color:var(--c5)">5 · Automation</h2>
@@ -2139,8 +2138,9 @@ function doSearch(){
 document.getElementById("sq").addEventListener("input",doSearch);
 
 
-const VER="1.9.9";
+const VER="1.10.0";
 const CHANGES=[
+["1.10.0","2026-11-13",["Overview: Network services panels reordered (QoS bandwidth model, IntServ vs DiffServ, multicast tree types, multicast services, network management)"]],
 ["1.9.9","2026-11-13",["86 scenario questions now end with an explicit question (e.g. \"Which feature stops this?\"), and two \"…\" stems are full questions"]],
 ["1.9.8","2026-11-13",["Clearer wording for the host-port question (static access ports, no trunk negotiation)"]],
 ["1.9.7","2026-11-12",["Practice: single-answer questions are checked as soon as you tap an option (no Check button); Check answer stays for choose-two, ordering and matching"]],
