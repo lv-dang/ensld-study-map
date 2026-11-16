@@ -58,7 +58,7 @@ main{max-width:760px;margin:auto;padding:14px 12px 60px}
 table{width:100%;border-collapse:collapse;font-size:14px}
 td{padding:6px 4px;border-top:1px solid var(--line)}
 tr:first-child td{border-top:0}
-td.n{font-family:'JetBrains Mono';text-align:right;white-space:nowrap;color:var(--c1)}
+td.n{font-family:'JetBrains Mono';text-align:right;white-space:normal;overflow-wrap:anywhere;color:var(--c1);padding-left:10px;width:48%}
 .mn{font-family:'JetBrains Mono';font-size:13px;background:var(--panel2);padding:10px;border-radius:10px;line-height:1.7}
 .mn em{color:var(--c3);font-style:normal;font-weight:700}
 .lsa{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;font-size:14px}
@@ -2142,8 +2142,8 @@ function doSearch(){
 document.getElementById("sq").addEventListener("input",doSearch);
 
 
-const VER="1.11.0";
-const CHANGES=[["1.11.0","2026-11-15",["Every quiz answer now ends with a Further reading list: official Cisco design guides (CVDs), configuration guides and white papers for that blueprint topic. All links were checked and open."]],
+const VER="1.11.1";
+const CHANGES=[["1.11.1","2026-11-16",["Numbers: long values wrap inside their panel instead of running past the right edge on phones"]],["1.11.0","2026-11-15",["Every quiz answer now ends with a Further reading list: official Cisco design guides (CVDs), configuration guides and white papers for that blueprint topic. All links were checked and open."]],
 ["1.10.0","2026-11-13",["Overview: Network services panels reordered (QoS bandwidth model, IntServ vs DiffServ, multicast tree types, multicast services, network management)"]],
 ["1.9.9","2026-11-13",["86 scenario questions now end with an explicit question (e.g. \"Which feature stops this?\"), and two \"…\" stems are full questions"]],
 ["1.9.8","2026-11-13",["Clearer wording for the host-port question (static access ports, no trunk negotiation)"]],
